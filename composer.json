@@ -10,7 +10,8 @@
         }
     ],
     "require": {
-        "php": "^8.4"
+        "php": "^8.4",
+        "webonyx/graphql-php": "^15.19"
     },
     "require-dev": {
         "captainhook/captainhook": "^5.24",
