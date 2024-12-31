@@ -1,0 +1,22 @@
+{
+    "pre-push": {
+        "enabled": true,
+        "actions": [
+            {
+                "action": "composer cs:dry-run"
+            },
+            {
+                "action": "composer rector:dry-run"
+            },
+            {
+                "action": "composer phpstan"
+            },
+            {
+                "action": "composer dependency-analyser"
+            },
+            {
+                "action": "composer phpunit"
+            }
+        ]
+    }
+}

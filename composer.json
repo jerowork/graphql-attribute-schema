@@ -1,20 +1,52 @@
 {
     "name": "jerowork/graphql-attribute-schema",
     "description": "Build your GraphQL Schema (for webonyx/graphql-php) based on attributes",
-    "type": "library",
-    "require": {
-        "php": "^8.4"
-    },
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Jerowork\\GraphqlAttributeSchema\\": "src/"
-        }
-    },
+    "type": "library",
     "authors": [
         {
             "name": "Jeroen de Graaf",
             "email": "hello@jero.work"
         }
-    ]
+    ],
+    "require": {
+        "php": "^8.4"
+    },
+    "require-dev": {
+        "captainhook/captainhook": "^5.24",
+        "friendsofphp/php-cs-fixer": "^3.66",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^11.5",
+        "rector/rector": "^2.0",
+        "shipmonk/composer-dependency-analyser": "^1.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jerowork\\GraphqlAttributeSchema\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jerowork\\GraphqlAttributeSchema\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "cs": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
+        "cs:dry-run": "vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
+        "dependency-analyser": "vendor/bin/composer-dependency-analyser",
+        "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon",
+        "phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit",
+        "rector": "vendor/bin/rector process --ansi",
+        "rector:dry-run": "vendor/bin/rector process --ansi --dry-run",
+        "test": [
+            "@rector:dry-run",
+            "@cs:dry-run",
+            "@phpstan",
+            "@dependency-analyser",
+            "@phpunit"
+        ]
+    }
 }
