@@ -3,10 +3,16 @@
     "description": "Build your GraphQL Schema (for webonyx/graphql-php) based on attributes",
     "license": "MIT",
     "type": "library",
+    "keywords": [
+        "grapqhl",
+        "webonyx",
+        "attributes"
+    ],
     "authors": [
         {
             "name": "Jeroen de Graaf",
-            "email": "hello@jero.work"
+            "email": "hello@jero.work",
+            "homepage": "https://jero.work"
         }
     ],
     "require": {
