@@ -1,0 +1,20 @@
+{
+    "name": "jerowork/graphql-attribute-schema",
+    "description": "Build your GraphQL Schema (for webonyx/graphql-php) based on attributes",
+    "type": "library",
+    "require": {
+        "php": "^8.4"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jerowork\\GraphqlAttributeSchema\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jeroen de Graaf",
+            "email": "hello@jero.work"
+        }
+    ]
+}
