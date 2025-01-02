@@ -17,6 +17,8 @@
     ],
     "require": {
         "php": "^8.4",
+        "psr/container": "^2.0",
+        "roave/better-reflection": "^6.51",
         "webonyx/graphql-php": "^15.19"
     },
     "require-dev": {
@@ -25,6 +27,7 @@
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
         "rector/rector": "^2.0",
+        "rregeer/phpunit-coverage-check": "^0.3",
         "shipmonk/composer-dependency-analyser": "^1.8"
     },
     "autoload": {
@@ -41,6 +44,7 @@
         "sort-packages": true
     },
     "scripts": {
+        "coverage": "vendor/bin/coverage-check var/coverage/clover.xml 95",
         "cs": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
         "cs:dry-run": "vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
         "dependency-analyser": "vendor/bin/composer-dependency-analyser",
@@ -53,7 +57,8 @@
             "@cs:dry-run",
             "@phpstan",
             "@dependency-analyser",
-            "@phpunit"
+            "@phpunit",
+            "@coverage"
         ]
     }
 }

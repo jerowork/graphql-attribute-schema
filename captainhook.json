@@ -16,6 +16,9 @@
             },
             {
                 "action": "composer phpunit"
+            },
+            {
+                "action": "composer coverage"
             }
         ]
     }
