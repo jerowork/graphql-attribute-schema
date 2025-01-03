@@ -1,4 +1,7 @@
 # GraphQL Attribute Schema
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+[![PHP Version](https://img.shields.io/badge/php-%5E8.4-8892BF.svg?style=flat)](http://www.php.net)
+
 Build your GraphQL Schema (for [webonyx/graphql-php](https://github.com/webonyx/graphql-php)) based on attributes.
 
 **Note:** this library is still work in progress, and misses some valuable features (see [todo](todo.md))
