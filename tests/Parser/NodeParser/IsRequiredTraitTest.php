@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
@@ -50,9 +51,9 @@ final class IsRequiredTraitTest extends TestCase
         $type2 = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type1);
-        self::assertFalse($trait->isRequired($type1, new Mutation(type: 'int', isRequired: false)));
+        self::assertFalse($trait->isRequired($type1, new Mutation(type: ScalarType::Int, isRequired: false)));
         self::assertInstanceOf(ReflectionNamedType::class, $type2);
-        self::assertTrue($trait->isRequired($type2, new Mutation(type: 'int', isRequired: true)));
+        self::assertTrue($trait->isRequired($type2, new Mutation(type: ScalarType::Int, isRequired: true)));
     }
 
     #[Test]

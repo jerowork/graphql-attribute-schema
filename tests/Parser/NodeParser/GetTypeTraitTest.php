@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
@@ -65,7 +66,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation(type: 'int'))->equals(Type::createScalar('int')));
+        self::assertTrue($trait->getType($type, new Mutation(type: ScalarType::Int))->equals(Type::createScalar('int')));
     }
 
     #[Test]

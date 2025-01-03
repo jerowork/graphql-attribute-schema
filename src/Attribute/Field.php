@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Attribute;
 
 use Attribute;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 
 #[Attribute(Attribute::TARGET_PROPERTY|Attribute::TARGET_METHOD)]
 final readonly class Field implements BaseAttribute, TypedAttribute
 {
+    /**
+     * @param class-string|ScalarType|null $type
+     */
     public function __construct(
         public ?string $name = null,
         public ?string $description = null,
-        public ?string $type = null,
+        public string|ScalarType|null $type = null,
         public bool $isRequired = true,
     ) {}
 
@@ -26,7 +30,7 @@ final readonly class Field implements BaseAttribute, TypedAttribute
         return $this->description;
     }
 
-    public function getType(): ?string
+    public function getType(): string|ScalarType|null
     {
         return $this->type;
     }
