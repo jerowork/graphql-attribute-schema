@@ -7,6 +7,7 @@ The following attributes can be used:
 - `#[InputType]`
 - `#[Type]`
 - `#[Enum]`
+- `#[EnumValue]`
 - `#[Field]`
 - `#[Arg]`
 
@@ -178,12 +179,14 @@ In order to configure your enum class as enum, just add this attribute on class 
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
+use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
 
 #[Enum]
 enum YourEnumType: string
 {
     case Foo = 'FOO';
     case Bar = 'BAR';
+    #[EnumValue(description: 'A description for case Baz')]
     case Baz = 'BAZ';
 }
 ```
@@ -211,6 +214,14 @@ Enums:
 |---------------|-------------------------------------------------------------|
 | `name`        | Set custom name of enum (instead of based on class)         |
 | `description` | Set description of the enum, readable in the GraphQL schema |
+
+Each case in the `enum` type can be configured as well, with the `#[EnumValue]` attribute on case level.
+
+`#[EnumValue]` attribute can be configured:
+
+| Option        | Description                                                      |
+|---------------|------------------------------------------------------------------|
+| `description` | Set description of the enum case, readable in the GraphQL schema |
 
 ## Field
 
