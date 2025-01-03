@@ -24,7 +24,7 @@ final readonly class RoaveReflector implements Reflector
     {
         $reflector = new DefaultReflector(new SingleFileSourceLocator(
             $filePath,
-            new BetterReflection()->astLocator(),
+            (new BetterReflection())->astLocator(),
         ));
 
         return array_map(
