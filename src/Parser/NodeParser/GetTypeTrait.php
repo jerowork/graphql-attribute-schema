@@ -22,10 +22,6 @@ trait GetTypeTrait
         }
 
         // Retrieve from class
-        if ($type->isBuiltin()) {
-            return Type::createScalar($type->getName());
-        }
-
-        return Type::createObject($type->getName());
+        return $type->isBuiltin() ? Type::createScalar($type->getName()) : Type::createObject($type->getName());
     }
 }
