@@ -21,4 +21,9 @@ final readonly class FieldNode implements Node
         public ?string $methodName,
         public ?string $propertyName,
     ) {}
+
+    public function getTypeId(): ?string
+    {
+        return $this->typeId;
+    }
 }

@@ -6,11 +6,5 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
 interface Node
 {
-    public ?string $typeId {
-        get;
-    }
-
-    public string $name {
-        get;
-    }
+    public function getTypeId(): ?string;
 }

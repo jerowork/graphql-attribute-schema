@@ -16,4 +16,9 @@ final readonly class EnumNode implements Node
         public ?string $description,
         public array $cases,
     ) {}
+
+    public function getTypeId(): string
+    {
+        return $this->typeId;
+    }
 }

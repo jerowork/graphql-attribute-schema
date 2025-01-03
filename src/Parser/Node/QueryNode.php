@@ -21,4 +21,9 @@ final readonly class QueryNode implements Node
         public bool $isRequired,
         public string $methodName,
     ) {}
+
+    public function getTypeId(): string
+    {
+        return $this->typeId;
+    }
 }

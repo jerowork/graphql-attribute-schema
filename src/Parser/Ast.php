@@ -36,7 +36,7 @@ final readonly class Ast
     public function getNodeByTypeId(string $typeId): ?Node
     {
         foreach ($this->nodes as $node) {
-            if ($node->typeId !== $typeId) {
+            if ($node->getTypeId() !== $typeId) {
                 continue;
             }
 

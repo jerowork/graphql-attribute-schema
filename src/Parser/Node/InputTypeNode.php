@@ -16,4 +16,9 @@ final readonly class InputTypeNode implements Node
         public ?string $description,
         public array $fieldNodes,
     ) {}
+
+    public function getTypeId(): string
+    {
+        return $this->typeId;
+    }
 }

@@ -74,6 +74,6 @@ final readonly class RootTypeResolver
             ));
         }
 
-        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $node->name));
+        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $node->getTypeId()));
     }
 }

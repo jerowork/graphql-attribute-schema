@@ -17,4 +17,9 @@ final readonly class ArgNode implements Node
         public bool $isRequired,
         public string $propertyName,
     ) {}
+
+    public function getTypeId(): ?string
+    {
+        return $this->typeId;
+    }
 }
