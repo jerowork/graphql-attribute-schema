@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
-final readonly class QueryNode implements ClassNode
+final readonly class QueryNode implements Node
 {
     /**
      * @param class-string $typeId
