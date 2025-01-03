@@ -1,6 +1,7 @@
 # Usage
 
 The following attributes can be used:
+
 - `#[Mutation]`
 - `#[Query]`
 - `#[InputType]`
@@ -34,6 +35,7 @@ final readonly YourQuery
 ```
 
 ### Automatic schema creation
+
 *GraphQL Attribute Schema* will read the available public method's signature: input arguments and output type. These
 will be automatically configured in the schema (this can be overwritten by using `#[Arg]`, see [Arg](#arg) section).
 
@@ -45,6 +47,7 @@ Also, the name of the mutation or query will be automatically read from the clas
 options).
 
 ### Requirements
+
 Mutations and queries:
 
 - must be in the namespace as defined at `Parser` creation (
@@ -57,13 +60,16 @@ Mutations and queries:
 
 Both `#[Mutation]` and `#[Query]` attribute can be configured:
 
-| Option      | Description                                                              |
-|-------------|--------------------------------------------------------------------------|
-| name        | Set custom name of mutation or query (instead of based on class)         |
-| description | Set description of the mutation or query, readable in the GraphQL schema |
+| Option        | Description                                                                   |
+|---------------|-------------------------------------------------------------------------------|
+| `name`        | Set custom name of mutation or query (instead of based on class)              |
+| `description` | Set description of the mutation or query, readable in the GraphQL schema      |
+| `type`        | Set custom return type; can be either a `#[Type]` FQCN or `ScalarType` (enum) |
+| `isRequired`  | When a custom type is set, isRequired should be set as well                   |
 
 ## InputType
-Input types can be defined with `#[InputType]`. 
+
+Input types can be defined with `#[InputType]`.
 In order to configure your class as input type, just add this attribute on class level:
 
 ```php
@@ -87,8 +93,10 @@ final readonly class YourInputType
 ```
 
 ### Automatic schema creation
-*GraphQL Attribute Schema* will read the `__construct` signature: input arguments. 
-Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten, see [Field](#field) section).
+
+*GraphQL Attribute Schema* will read the `__construct` signature: input arguments.
+Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
+see [Field](#field) section).
 
 Input can be both scalars or objects.
 When using objects, make sure these are defined as well with `#[InputType]` or `#[Enum]`.
@@ -100,12 +108,13 @@ options).
 
 `#[InputType]` attribute can be configured:
 
-| Option      | Description                                                       |
-|-------------|-------------------------------------------------------------------|
-| name        | Set custom name of input type (instead of based on class)         |
-| description | Set description of the input type, readable in the GraphQL schema |
+| Option        | Description                                                       |
+|---------------|-------------------------------------------------------------------|
+| `name`        | Set custom name of input type (instead of based on class)         |
+| `description` | Set description of the input type, readable in the GraphQL schema |
 
 ## Type
+
 Types can be defined with `#[Type]`.
 In order to configure your class as type, just add this attribute on class level:
 
@@ -136,12 +145,16 @@ final readonly class YourType
 ```
 
 ### Automatic schema creation
+
 *GraphQL Attribute Schema* will both read the `__construct` signature: input arguments, as well as read all methods.
 
-Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten, see [Field](#field) section).
+Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
+see [Field](#field) section).
 
-Any method with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten, see [Field](#field) section).
-The return type is seen as field type, any method input arguments are seen as filter arguments (this can be overwritten by using `#[Arg]`, see [Arg](#arg) section)..
+Any method with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
+see [Field](#field) section).
+The return type is seen as field type, any method input arguments are seen as filter arguments (this can be overwritten
+by using `#[Arg]`, see [Arg](#arg) section)..
 
 Input can be both scalars or objects.
 When using objects, make sure these are defined as well with `#[InputType]` or `#[Enum]`.
@@ -153,12 +166,13 @@ options).
 
 `#[Type]` attribute can be configured:
 
-| Option      | Description                                                 |
-|-------------|-------------------------------------------------------------|
-| name        | Set custom name of type (instead of based on class)         |
-| description | Set description of the type, readable in the GraphQL schema |
+| Option        | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| `name`        | Set custom name of type (instead of based on class)         |
+| `description` | Set description of the type, readable in the GraphQL schema |
 
 ## Enum
+
 Enums can be defined with `#[Enum]`.
 In order to configure your enum class as enum, just add this attribute on class level:
 
@@ -173,7 +187,9 @@ enum YourEnumType: string
     case Baz = 'BAZ';
 }
 ```
+
 ### Automatic schema creation
+
 *GraphQL Attribute Schema* will read the enum signature.
 
 The values for the enum will be automatically read from the PHP `enum`; it uses the string version.
@@ -181,6 +197,7 @@ The values for the enum will be automatically read from the PHP `enum`; it uses 
 The name of the enum will be automatically read from the class name (this can be overwritten, see options).
 
 ### Requirements
+
 Enums:
 
 - must be of the PHP native `enum` type (no classes with public constants)
@@ -190,12 +207,13 @@ Enums:
 
 `#[Enum]` attribute can be configured:
 
-| Option      | Description                                                 |
-|-------------|-------------------------------------------------------------|
-| name        | Set custom name of enum (instead of based on class)         |
-| description | Set description of the enum, readable in the GraphQL schema |
+| Option        | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| `name`        | Set custom name of enum (instead of based on class)         |
+| `description` | Set description of the enum, readable in the GraphQL schema |
 
 ## Field
+
 In `#[Type]` and `#[InputType]`, to define fields, the `#[Field]` attribute can be used.
 In order to configure any fields this can be set on constructor property (for `#[InputType]` or `#[Type]`) or
 on method (for `#[Type]` only).
@@ -243,14 +261,17 @@ final readonly class YourInputType
 
 `#[Field]` attribute can be configured:
 
-| Option      | Description                                                  |
-|-------------|--------------------------------------------------------------|
-| name        | Set custom name of field (instead of based on class)         |
-| description | Set description of the field, readable in the GraphQL schema |
+| Option        | Description                                                                            |
+|---------------|----------------------------------------------------------------------------------------|
+| `name`        | Set custom name of field (instead of based on class)                                   |
+| `description` | Set description of the field, readable in the GraphQL schema                           |
+| `type`        | Set custom type; can be either a `#[Type]`, `#[InputType]` FQCN or `ScalarType` (enum) |
+| `isRequired`  | When a custom type is set, isRequired should be set as well                            |
 
 ## Arg
+
 For `#[Mutation]`, `#[Query]` and `#[Type]` methods defined with `#[Field]`, input arguments are read
-automatically from the signature. 
+automatically from the signature.
 
 However, to overwrite e.g. name, `#[Arg]` can be used.
 
@@ -299,7 +320,9 @@ final readonly class YourType
 
 `#[Arg]` attribute can be configured:
 
-| Option      | Description                                                     |
-|-------------|-----------------------------------------------------------------|
-| name        | Set custom name of argument (instead of based on class)         |
-| description | Set description of the argument, readable in the GraphQL schema |
+| Option        | Description                                                            |
+|---------------|------------------------------------------------------------------------|
+| `name`        | Set custom name of argument (instead of based on class)                |
+| `description` | Set description of the argument, readable in the GraphQL schema        |
+| `type`        | Set custom type; can be either a `#[Type]` FQCN or `ScalarType` (enum) |
+| `isRequired`  | When a custom type is set, isRequired should be set as well            |
