@@ -34,7 +34,7 @@ final readonly class InputTypeNodeParser implements NodeParser
         return new InputTypeNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
-            $attribute->description,
+            $attribute->getDescription(),
             $this->classFieldNodesParser->parse($class),
         );
     }

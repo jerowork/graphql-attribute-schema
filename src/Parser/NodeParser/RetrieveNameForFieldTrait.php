@@ -13,7 +13,7 @@ trait RetrieveNameForFieldTrait
 
     public function retrieveNameForField(ReflectionMethod $method, GraphQLAttribute $attribute): string
     {
-        return $attribute->name ?? $this->retrieveFromMethod($method);
+        return $attribute->getName() ?? $this->retrieveFromMethod($method);
     }
 
     private function retrieveFromMethod(ReflectionMethod $method): string

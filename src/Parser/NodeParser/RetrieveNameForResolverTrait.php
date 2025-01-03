@@ -18,7 +18,7 @@ trait RetrieveNameForResolverTrait
      */
     public function retrieveNameForResolver(ReflectionClass $class, GraphQLAttribute $attribute, string $suffix): string
     {
-        $name = $attribute->name ?? $this->retrieveNameFromClass($class, $suffix);
+        $name = $attribute->getName() ?? $this->retrieveNameFromClass($class, $suffix);
 
         if (preg_match(self::VALID_REGEX, $name) !== 1) {
             throw ParseException::invalidNameForResolver($name);

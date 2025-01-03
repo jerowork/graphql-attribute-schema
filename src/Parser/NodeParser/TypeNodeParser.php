@@ -34,7 +34,7 @@ final readonly class TypeNodeParser implements NodeParser
         return new TypeNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
-            $attribute->description,
+            $attribute->getDescription(),
             $this->classFieldNodesParser->parse($class),
         );
     }

@@ -39,7 +39,7 @@ final readonly class EnumNodeParser implements NodeParser
         return new EnumNode(
             $className,
             $this->retrieveNameForType($class, $attribute),
-            $attribute->description,
+            $attribute->getDescription(),
             array_map(fn($case) => (string) $case->value, $className::cases()),
         );
     }

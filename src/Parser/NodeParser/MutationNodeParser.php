@@ -52,7 +52,7 @@ final readonly class MutationNodeParser implements NodeParser
         return new MutationNode(
             $class->getName(),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
-            $attribute->description,
+            $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),
             $this->getTypeId($returnType),
             $this->getType($returnType),

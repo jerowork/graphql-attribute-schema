@@ -13,4 +13,14 @@ final readonly class Arg implements GraphQLAttribute
         public ?string $name = null,
         public ?string $description = null,
     ) {}
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 }

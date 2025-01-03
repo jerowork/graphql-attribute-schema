@@ -19,7 +19,7 @@ trait RetrieveNameForTypeTrait
      */
     public function retrieveNameForType(ReflectionClass $class, GraphQLAttribute $attribute): string
     {
-        $name = $attribute->name ?? $this->retrieveNameFromClass($class);
+        $name = $attribute->getName() ?? $this->retrieveNameFromClass($class);
 
         if (preg_match(self::VALID_REGEX, $name) !== 1) {
             throw ParseException::invalidNameForType($name);

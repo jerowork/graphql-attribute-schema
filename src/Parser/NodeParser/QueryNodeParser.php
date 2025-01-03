@@ -52,7 +52,7 @@ final readonly class QueryNodeParser implements NodeParser
         return new QueryNode(
             $class->getName(),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
-            $attribute->description,
+            $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),
             $this->getTypeId($returnType),
             $this->getType($returnType),

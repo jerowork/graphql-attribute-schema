@@ -6,10 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 
 interface GraphQLAttribute
 {
-    public ?string $name {
-        get;
-    }
-    public ?string $description {
-        get;
-    }
+    public function getName(): ?string;
+
+    public function getDescription(): ?string;
 }

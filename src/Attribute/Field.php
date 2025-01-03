@@ -14,4 +14,14 @@ final readonly class Field implements GraphQLAttribute
         public ?string $description = null,
         public ?string $type = null,
     ) {}
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
 }
