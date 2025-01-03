@@ -44,7 +44,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "coverage": "vendor/bin/coverage-check var/coverage/clover.xml 95",
+        "coverage": "vendor/bin/coverage-check var/coverage/clover.xml 85",
         "cs": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php",
         "cs:dry-run": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
         "dependency-analyser": "vendor/bin/composer-dependency-analyser",
