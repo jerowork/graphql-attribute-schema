@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use ReflectionClass;
 use Override;
@@ -32,7 +33,7 @@ final readonly class InputTypeNodeParser implements NodeParser
         $attribute = $this->getClassAttribute($class, InputType::class);
 
         return new InputTypeNode(
-            $class->getName(),
+            Type::createObject($class->getName()),
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),
             $this->classFieldNodesParser->parse($class),

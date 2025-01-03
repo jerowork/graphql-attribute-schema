@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
 final readonly class Ast
 {
@@ -21,22 +22,19 @@ final readonly class Ast
     /**
      * @template T of Node
      *
-     * @param class-string<T> $type
+     * @param class-string<T> $nodeType
      *
      * @return list<T>
      */
-    public function getNodesByType(string $type): array
+    public function getNodesByNodeType(string $nodeType): array
     {
-        return array_values(array_filter($this->nodes, fn($node) => $node instanceof $type));
+        return array_values(array_filter($this->nodes, fn($node) => $node instanceof $nodeType));
     }
 
-    /**
-     * @param class-string $typeId
-     */
-    public function getNodeByTypeId(string $typeId): ?Node
+    public function getNodeByType(Type $type): ?Node
     {
         foreach ($this->nodes as $node) {
-            if ($node->getTypeId() !== $typeId) {
+            if (!$node->getType()->equals($type)) {
                 continue;
             }
 

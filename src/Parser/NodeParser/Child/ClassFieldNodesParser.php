@@ -7,7 +7,6 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeIdTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
@@ -20,7 +19,6 @@ final readonly class ClassFieldNodesParser
 {
     use RetrieveNameForFieldTrait;
     use GetTypeTrait;
-    use GetTypeIdTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
     private const string RETURN_TYPE_VOID = 'void';
@@ -52,7 +50,6 @@ final readonly class ClassFieldNodesParser
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getTypeId($propertyType),
                 $this->getType($propertyType),
                 $fieldAttribute->name ?? $property->getName(),
                 $fieldAttribute->description,
@@ -80,7 +77,6 @@ final readonly class ClassFieldNodesParser
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getTypeId($returnType),
                 $this->getType($returnType),
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,

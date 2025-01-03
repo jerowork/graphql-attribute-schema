@@ -39,15 +39,11 @@ final readonly class FieldResolver
      */
     private function resolveChild(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
     {
-        if ($field->type !== null) {
+        if ($field->type->isScalar()) {
             return $fieldCallback();
         }
 
-        if ($field->typeId === null) {
-            throw ResolveException::logicError(sprintf('TypeId for field %s cannot be null', $field->name));
-        }
-
-        $node = $ast->getNodeByTypeId($field->typeId);
+        $node = $ast->getNodeByType($field->getType());
 
         if ($node instanceof EnumNode) {
             /** @var BackedEnum $enum */

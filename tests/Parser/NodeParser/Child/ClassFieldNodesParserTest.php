@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
@@ -49,8 +50,7 @@ final class ClassFieldNodesParserTest extends TestCase
 
         self::assertEquals([
             new FieldNode(
-                null,
-                'string',
+                Type::createScalar('string'),
                 'typeId',
                 null,
                 false,
@@ -60,8 +60,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 'id',
             ),
             new FieldNode(
-                DateTimeImmutable::class,
-                null,
+                Type::createObject(DateTimeImmutable::class),
                 'date',
                 null,
                 true,
@@ -71,8 +70,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 'date',
             ),
             new FieldNode(
-                null,
-                'string',
+                Type::createScalar('string'),
                 'flow',
                 null,
                 false,
@@ -82,8 +80,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 null,
             ),
             new FieldNode(
-                null,
-                'string',
+                Type::createScalar('string'),
                 'status',
                 null,
                 true,

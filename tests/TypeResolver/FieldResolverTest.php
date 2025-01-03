@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestResolvableType;
@@ -37,8 +38,7 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveProperty(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            null,
-            'string',
+            Type::createScalar('string'),
             'name',
             null,
             true,
@@ -55,15 +55,13 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveMethod(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            null,
-            'string',
+            Type::createScalar('string'),
             'name',
             null,
             true,
             [
                 new ArgNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'name',
                     null,
                     true,
@@ -87,15 +85,13 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveMethodWithEnumOutput(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            TestEnumType::class,
-            null,
+            Type::createObject(TestEnumType::class),
             'name',
             null,
             true,
             [
                 new ArgNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'name',
                     null,
                     true,
@@ -107,7 +103,7 @@ final class FieldResolverTest extends TestCase
             null,
         ), new Ast(
             new EnumNode(
-                TestEnumType::class,
+                Type::createObject(TestEnumType::class),
                 'TestEnum',
                 null,
                 [

@@ -25,8 +25,7 @@ trait BuildArgsTrait
             $args[] = [
                 'name' => $argNode->name,
                 'type' => $typeBuilder->build(
-                    $argNode->type,
-                    $argNode->typeId,
+                    $argNode->getType(),
                     $argNode->isRequired,
                     $ast,
                 ),

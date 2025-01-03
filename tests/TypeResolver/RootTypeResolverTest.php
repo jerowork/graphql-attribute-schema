@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
@@ -45,12 +46,11 @@ final class RootTypeResolverTest extends TestCase
 
         $this->rootTypeResolver->resolve(
             new MutationNode(
-                TestResolvableMutation::class,
+                Type::createObject(TestResolvableMutation::class),
                 'Test',
                 null,
                 [],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
@@ -64,33 +64,30 @@ final class RootTypeResolverTest extends TestCase
         $this->container->set(TestResolvableMutation::class, new TestResolvableMutation());
 
         self::expectException(ResolveException::class);
-        self::expectExceptionMessage('Node ' . TestResolvableInputType::class . ' not found for typeId');
+        self::expectExceptionMessage('Node not found for typeId ' . TestResolvableInputType::class);
 
         $type = $this->rootTypeResolver->resolve(
             new MutationNode(
-                TestResolvableMutation::class,
+                Type::createObject(TestResolvableMutation::class),
                 'Test',
                 null,
                 [
                     new ArgNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'id',
                         null,
                         true,
                         'id',
                     ),
                     new ArgNode(
-                        TestResolvableInputType::class,
-                        null,
+                        Type::createObject(TestResolvableInputType::class),
                         'input',
                         null,
                         true,
                         'input',
                     ),
                 ],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
@@ -112,41 +109,37 @@ final class RootTypeResolverTest extends TestCase
 
         $type = $this->rootTypeResolver->resolve(
             new MutationNode(
-                TestResolvableMutation::class,
+                Type::createObject(TestResolvableMutation::class),
                 'Test',
                 null,
                 [
                     new ArgNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'id',
                         null,
                         true,
                         'id',
                     ),
                     new ArgNode(
-                        TestResolvableInputType::class,
-                        null,
+                        Type::createObject(TestResolvableInputType::class),
                         'input',
                         null,
                         true,
                         'input',
                     ),
                 ],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
             new Ast(
                 new InputTypeNode(
-                    TestResolvableInputType::class,
+                    Type::createObject(TestResolvableInputType::class),
                     'TestResolvableInput',
                     null,
                     [
                         new FieldNode(
-                            null,
-                            'string',
+                            Type::createScalar('string'),
                             'name',
                             null,
                             true,

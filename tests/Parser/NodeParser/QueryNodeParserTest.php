@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
@@ -58,29 +59,26 @@ final class QueryNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestQuery::class));
 
         self::assertEquals(new QueryNode(
-            TestQuery::class,
+            Type::createObject(TestQuery::class),
             'testQuery',
             'Test query',
             [
                 new ArgNode(
-                    DateTimeImmutable::class,
-                    null,
+                    Type::createObject(DateTimeImmutable::class),
                     'date',
                     null,
                     true,
                     'date',
                 ),
                 new ArgNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'id',
                     null,
                     true,
                     'id',
                 ),
             ],
-            null,
-            'string',
+            Type::createScalar('string'),
             true,
             '__invoke',
         ), $node);

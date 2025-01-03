@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test;
 
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\SchemaBuildException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
@@ -61,12 +62,11 @@ final class SchemaBuilderTest extends TestCase
 
         $this->schemaBuilder->build(new Ast(
             new QueryNode(
-                TestQuery::class,
+                Type::createObject(TestQuery::class),
                 'testQuery',
                 null,
                 [],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
@@ -81,22 +81,20 @@ final class SchemaBuilderTest extends TestCase
 
         $schema = $this->schemaBuilder->build(new Ast(
             new QueryNode(
-                TestQuery::class,
+                Type::createObject(TestQuery::class),
                 'testQuery',
                 null,
                 [],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
             new MutationNode(
-                TestMutation::class,
+                Type::createObject(TestMutation::class),
                 'test',
                 null,
                 [],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
@@ -107,7 +105,7 @@ final class SchemaBuilderTest extends TestCase
             'fields' => [
                 [
                     'name' => 'testQuery',
-                    'type' => Type::nonNull(Type::string()),
+                    'type' => WebonyxType::nonNull(WebonyxType::string()),
                     'description' => null,
                     'args' => [],
                     'resolve' => fn() => true,
@@ -120,7 +118,7 @@ final class SchemaBuilderTest extends TestCase
             'fields' => [
                 [
                     'name' => 'test',
-                    'type' => Type::nonNull(Type::string()),
+                    'type' => WebonyxType::nonNull(WebonyxType::string()),
                     'description' => null,
                     'args' => [],
                     'resolve' => fn() => true,

@@ -24,7 +24,7 @@ final readonly class SchemaBuilder
     {
         $queries = array_map(
             fn($node) => $this->rootTypeBuilder->build($node, $ast),
-            $ast->getNodesByType(QueryNode::class),
+            $ast->getNodesByNodeType(QueryNode::class),
         );
 
         if ($queries === []) {
@@ -33,7 +33,7 @@ final readonly class SchemaBuilder
 
         $mutations = array_map(
             fn($node) => $this->rootTypeBuilder->build($node, $ast),
-            $ast->getNodesByType(MutationNode::class),
+            $ast->getNodesByNodeType(MutationNode::class),
         );
 
         if ($mutations === []) {

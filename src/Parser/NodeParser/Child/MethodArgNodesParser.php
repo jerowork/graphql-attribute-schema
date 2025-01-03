@@ -6,7 +6,6 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeIdTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use ReflectionMethod;
@@ -16,7 +15,6 @@ use ReflectionNamedType;
 final readonly class MethodArgNodesParser
 {
     use GetTypeTrait;
-    use GetTypeIdTrait;
 
     /**
      * @throws ParseException
@@ -36,7 +34,6 @@ final readonly class MethodArgNodesParser
             }
 
             $argNodes[] = new ArgNode(
-                $this->getTypeId($parameterType),
                 $this->getType($parameterType),
                 $argAttribute->name ?? $parameter->getName(),
                 $argAttribute?->description,

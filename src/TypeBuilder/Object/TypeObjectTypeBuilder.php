@@ -59,7 +59,7 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
         foreach ($node->fieldNodes as $fieldNode) {
             $fields[] = [
                 'name' => $fieldNode->name,
-                'type' => $typeBuilder->build($fieldNode->type, $fieldNode->typeId, $fieldNode->isRequired, $ast),
+                'type' => $typeBuilder->build($fieldNode->getType(), $fieldNode->isRequired, $ast),
                 'description' => $fieldNode->description,
                 'args' => $this->buildArgs($fieldNode, $typeBuilder, $ast),
                 'resolve' => $this->typeResolver->resolve($fieldNode, $ast),

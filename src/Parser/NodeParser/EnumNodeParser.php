@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use ReflectionClass;
 use BackedEnum;
 use Override;
@@ -37,7 +38,7 @@ final readonly class EnumNodeParser implements NodeParser
         $attribute = $this->getClassAttribute($class, Enum::class);
 
         return new EnumNode(
-            $className,
+            Type::createObject($className),
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),
             array_map(fn($case) => (string) $case->value, $className::cases()),

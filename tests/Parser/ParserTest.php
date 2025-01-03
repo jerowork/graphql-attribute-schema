@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
@@ -64,37 +65,34 @@ final class ParserTest extends TestCase
 
         self::assertEquals([
             new MutationNode(
-                FoobarMutation::class,
+                Type::createObject(FoobarMutation::class),
                 'foobar',
                 'Mutate a foobar',
                 [
                     new ArgNode(
-                        MutateFoobarInputType::class,
-                        null,
+                        Type::createObject(MutateFoobarInputType::class),
                         'input',
                         null,
                         true,
                         'input',
                     ),
                 ],
-                FoobarType::class,
-                null,
+                Type::createObject(FoobarType::class),
                 true,
                 '__invoke',
             ),
-        ], $ast->getNodesByType(MutationNode::class));
+        ], $ast->getNodesByNodeType(MutationNode::class));
 
-        self::assertEquals([], $ast->getNodesByType(QueryNode::class));
+        self::assertEquals([], $ast->getNodesByNodeType(QueryNode::class));
 
         self::assertEquals([
             new InputTypeNode(
-                Baz::class,
+                Type::createObject(Baz::class),
                 'Baz',
                 null,
                 [
                     new FieldNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'bazId',
                         'A baz ID',
                         true,
@@ -104,8 +102,7 @@ final class ParserTest extends TestCase
                         'id',
                     ),
                     new FieldNode(
-                        FoobarStatusType::class,
-                        null,
+                        Type::createObject(FoobarStatusType::class),
                         'status',
                         null,
                         true,
@@ -117,13 +114,12 @@ final class ParserTest extends TestCase
                 ],
             ),
             new InputTypeNode(
-                MutateFoobarInputType::class,
+                Type::createObject(MutateFoobarInputType::class),
                 'MutateFoobar',
                 null,
                 [
                     new FieldNode(
-                        null,
-                        'int',
+                        Type::createScalar('int'),
                         'id',
                         null,
                         true,
@@ -133,8 +129,7 @@ final class ParserTest extends TestCase
                         'id',
                     ),
                     new FieldNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'value',
                         null,
                         false,
@@ -144,8 +139,7 @@ final class ParserTest extends TestCase
                         'value',
                     ),
                     new FieldNode(
-                        Baz::class,
-                        null,
+                        Type::createObject(Baz::class),
                         'baz',
                         null,
                         true,
@@ -155,8 +149,7 @@ final class ParserTest extends TestCase
                         'baz',
                     ),
                     new FieldNode(
-                        DateTimeImmutable::class,
-                        null,
+                        Type::createObject(DateTimeImmutable::class),
                         'date',
                         null,
                         false,
@@ -167,17 +160,16 @@ final class ParserTest extends TestCase
                     ),
                 ],
             ),
-        ], $ast->getNodesByType(InputTypeNode::class));
+        ], $ast->getNodesByNodeType(InputTypeNode::class));
 
         self::assertEquals([
             new TypeNode(
-                FoobarType::class,
+                Type::createObject(FoobarType::class),
                 'Foobar',
                 'A foobar',
                 [
                     new FieldNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'foobarId',
                         'A foobar ID',
                         true,
@@ -187,8 +179,7 @@ final class ParserTest extends TestCase
                         'id',
                     ),
                     new FieldNode(
-                        FoobarStatusType::class,
-                        null,
+                        Type::createObject(FoobarStatusType::class),
                         'status',
                         null,
                         false,
@@ -198,23 +189,20 @@ final class ParserTest extends TestCase
                         'status',
                     ),
                     new FieldNode(
-                        DateTimeImmutable::class,
-                        null,
+                        Type::createObject(DateTimeImmutable::class),
                         'date',
                         'A foobar date',
                         false,
                         [
                             new ArgNode(
-                                null,
-                                'string',
+                                Type::createScalar('string'),
                                 'limiting',
                                 null,
                                 true,
                                 'limit',
                             ),
                             new ArgNode(
-                                null,
-                                'int',
+                                Type::createScalar('int'),
                                 'value',
                                 'The value',
                                 false,
@@ -227,11 +215,11 @@ final class ParserTest extends TestCase
                     ),
                 ],
             ),
-        ], $ast->getNodesByType(TypeNode::class));
+        ], $ast->getNodesByNodeType(TypeNode::class));
 
         self::assertEquals([
             new EnumNode(
-                FoobarStatusType::class,
+                Type::createObject(FoobarStatusType::class),
                 'FoobarStatus',
                 'Foobar status',
                 [
@@ -239,6 +227,6 @@ final class ParserTest extends TestCase
                     'closed',
                 ],
             ),
-        ], $ast->getNodesByType(EnumNode::class));
+        ], $ast->getNodesByNodeType(EnumNode::class));
     }
 }

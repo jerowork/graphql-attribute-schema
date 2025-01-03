@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\InputObjectType;
-use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\InputTypeObjectTypeBuilder;
@@ -39,14 +40,14 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
     public function itShouldSupportInputTypeNodeOnly(): void
     {
         self::assertTrue($this->builder->supports(new InputTypeNode(
-            TestType::class,
+            Type::createObject(TestType::class),
             'type',
             null,
             [],
         )));
 
         self::assertFalse($this->builder->supports(new EnumNode(
-            TestEnumType::class,
+            Type::createObject(TestEnumType::class),
             'enum',
             null,
             [],
@@ -58,20 +59,18 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
     {
         $type = $this->builder->build(
             new InputTypeNode(
-                TestType::class,
+                Type::createObject(TestType::class),
                 'type',
                 'A description',
                 [
                     new FieldNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'field',
                         'A field description',
                         true,
                         [
                             new ArgNode(
-                                null,
-                                'int',
+                                Type::createScalar('int'),
                                 'arg',
                                 'An argument',
                                 false,
@@ -94,13 +93,13 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
             'fields' => [
                 [
                     'name' => 'field',
-                    'type' => Type::nonNull(Type::string()),
+                    'type' => WebonyxType::nonNull(WebonyxType::string()),
                     'description' => 'A field description',
                     'args' => [
                         [
                             'name' => 'arg',
                             'description' => 'An argument',
-                            'type' => Type::int(),
+                            'type' => WebonyxType::int(),
                         ],
                     ],
                 ],

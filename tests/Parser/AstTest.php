@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestAnotherEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
@@ -33,25 +34,25 @@ final class AstTest extends TestCase
 
         $this->ast = new Ast(
             $this->enumNode1 = new EnumNode(
-                TestEnumType::class,
+                Type::createObject(TestEnumType::class),
                 'enum1',
                 null,
                 ['case1', 'case2'],
             ),
             $this->typeNode = new TypeNode(
-                TestType::class,
+                Type::createObject(TestType::class),
                 'type',
                 null,
                 [],
             ),
             $this->enumNode2 =new EnumNode(
-                TestAnotherEnumType::class,
+                Type::createObject(TestAnotherEnumType::class),
                 'enum2',
                 null,
                 ['case3', 'case4'],
             ),
             new InputTypeNode(
-                TestInputType::class,
+                Type::createObject(TestInputType::class),
                 'inputType',
                 null,
                 [],
@@ -62,14 +63,14 @@ final class AstTest extends TestCase
     #[Test]
     public function itShouldGetNodesByType(): void
     {
-        self::assertSame([$this->enumNode1, $this->enumNode2], $this->ast->getNodesByType(EnumNode::class));
-        self::assertSame([$this->typeNode], $this->ast->getNodesByType(TypeNode::class));
+        self::assertSame([$this->enumNode1, $this->enumNode2], $this->ast->getNodesByNodeType(EnumNode::class));
+        self::assertSame([$this->typeNode], $this->ast->getNodesByNodeType(TypeNode::class));
     }
 
     #[Test]
     public function itShouldGetNodeByTypeId(): void
     {
-        self::assertSame($this->typeNode, $this->ast->getNodeByTypeId(TestType::class));
-        self::assertSame($this->enumNode2, $this->ast->getNodeByTypeId(TestAnotherEnumType::class));
+        self::assertSame($this->typeNode, $this->ast->getNodeByType(Type::createObject(TestType::class)));
+        self::assertSame($this->enumNode2, $this->ast->getNodeByType(Type::createObject(TestAnotherEnumType::class)));
     }
 }

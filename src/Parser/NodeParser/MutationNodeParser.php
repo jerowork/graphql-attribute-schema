@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use ReflectionClass;
 use Override;
@@ -17,7 +18,6 @@ final readonly class MutationNodeParser implements NodeParser
     use RetrieveNameForResolverTrait;
     use GetMethodFromClassTrait;
     use GetTypeTrait;
-    use GetTypeIdTrait;
     use GetClassAttributeTrait;
 
     private const string RESOLVER_SUFFIX = 'Mutation';
@@ -50,11 +50,10 @@ final readonly class MutationNodeParser implements NodeParser
         $attribute = $this->getClassAttribute($class, Mutation::class);
 
         return new MutationNode(
-            $class->getName(),
+            Type::createObject($class->getName()),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
             $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),
-            $this->getTypeId($returnType),
             $this->getType($returnType),
             !$returnType->allowsNull(),
             $method->getName(),

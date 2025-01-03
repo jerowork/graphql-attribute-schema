@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TesInvalidMutationWithInvalidMethodArgument;
@@ -49,16 +50,14 @@ final class MethodArgNodesParserTest extends TestCase
 
         self::assertEquals([
             new ArgNode(
-                DateTimeImmutable::class,
-                null,
+                Type::createObject(DateTimeImmutable::class),
                 'date',
                 null,
                 true,
                 'date',
             ),
             new ArgNode(
-                null,
-                'string',
+                Type::createScalar('string'),
                 'mutationId',
                 'Mutation ID',
                 false,

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
-interface Node
+enum TypeType: string
 {
-    public function getType(): Type;
+    case Scalar = 'scalar';
+    case Object = 'object';
 }

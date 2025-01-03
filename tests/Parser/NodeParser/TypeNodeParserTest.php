@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
@@ -41,7 +42,7 @@ final class TypeNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportTypeOnly(): void
     {
-        self::assertTrue($this->parser->supports(Type::class));
+        self::assertTrue($this->parser->supports(AttributeType::class));
         self::assertFalse($this->parser->supports(Mutation::class));
     }
 
@@ -51,13 +52,12 @@ final class TypeNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestType::class));
 
         self::assertEquals(new TypeNode(
-            TestType::class,
+            Type::createObject(TestType::class),
             'Test',
             'Test Type',
             [
                 new FieldNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'typeId',
                     null,
                     false,
@@ -67,8 +67,7 @@ final class TypeNodeParserTest extends TestCase
                     'id',
                 ),
                 new FieldNode(
-                    DateTimeImmutable::class,
-                    null,
+                    Type::createObject(DateTimeImmutable::class),
                     'date',
                     null,
                     true,
@@ -78,8 +77,7 @@ final class TypeNodeParserTest extends TestCase
                     'date',
                 ),
                 new FieldNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'flow',
                     null,
                     false,
@@ -89,8 +87,7 @@ final class TypeNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    null,
-                    'string',
+                    Type::createScalar('string'),
                     'status',
                     null,
                     true,

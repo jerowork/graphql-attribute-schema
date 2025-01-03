@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder;
 
-use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
@@ -45,21 +46,19 @@ final class RootTypeBuilderTest extends TestCase
 
         $type = $this->builder->build(
             new MutationNode(
-                TestMutation::class,
+                Type::createObject(TestMutation::class),
                 'mutation',
                 'A mutation',
                 [
                     new ArgNode(
-                        null,
-                        'int',
+                        Type::createScalar('int'),
                         'arg',
                         'An argument',
                         false,
                         'arg',
                     ),
                 ],
-                null,
-                'string',
+                Type::createScalar('string'),
                 true,
                 '__invoke',
             ),
@@ -68,12 +67,12 @@ final class RootTypeBuilderTest extends TestCase
 
         self::assertEquals([
             'name' => 'mutation',
-            'type' => Type::nonNull(Type::string()),
+            'type' => WebonyxType::nonNull(WebonyxType::string()),
             'description' => 'A mutation',
             'args' => [
                 [
                     'name' => 'arg',
-                    'type' => Type::int(),
+                    'type' => WebonyxType::int(),
                     'description' => 'An argument',
                 ],
             ],

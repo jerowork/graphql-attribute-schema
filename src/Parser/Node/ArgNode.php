@@ -6,20 +6,16 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
 final readonly class ArgNode implements Node
 {
-    /**
-     * @param class-string|null $typeId
-     */
     public function __construct(
-        public ?string $typeId,
-        public ?string $type,
+        public Type $type,
         public string $name,
         public ?string $description,
         public bool $isRequired,
         public string $propertyName,
     ) {}
 
-    public function getTypeId(): ?string
+    public function getType(): Type
     {
-        return $this->typeId;
+        return $this->type;
     }
 }

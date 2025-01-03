@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 
-use GraphQL\Type\Definition\Type;
+use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\BuildArgsTrait;
@@ -28,23 +29,20 @@ final class BuildArgsTraitTest extends TestCase
 
         $args = $trait->buildArgs(
             new FieldNode(
-                null,
-                'string',
+                Type::createScalar('string'),
                 'name',
                 null,
                 true,
                 [
                     new ArgNode(
-                        null,
-                        'string',
+                        Type::createScalar('string'),
                         'arg1',
                         'Arg 1 description',
                         true,
                         'arg1',
                     ),
                     new ArgNode(
-                        null,
-                        'bool',
+                        Type::createScalar('bool'),
                         'arg2',
                         'Arg 2 description',
                         false,
@@ -62,12 +60,12 @@ final class BuildArgsTraitTest extends TestCase
         self::assertEquals([
             [
                 'name' => 'arg1',
-                'type' => Type::nonNull(Type::string()),
+                'type' => WebonyxType::nonNull(WebonyxType::string()),
                 'description' => 'Arg 1 description',
             ],
             [
                 'name' => 'arg2',
-                'type' => Type::boolean(),
+                'type' => WebonyxType::boolean(),
                 'description' => 'Arg 2 description',
             ],
         ], $args);
