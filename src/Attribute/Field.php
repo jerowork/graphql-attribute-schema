@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PROPERTY|Attribute::TARGET_METHOD)]
-final readonly class Field implements BaseAttribute
+final readonly class Field implements BaseAttribute, TypedAttribute
 {
     public function __construct(
         public ?string $name = null,
@@ -23,5 +23,10 @@ final readonly class Field implements BaseAttribute
     public function getDescription(): ?string
     {
         return $this->description;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
     }
 }

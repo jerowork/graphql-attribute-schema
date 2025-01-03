@@ -34,7 +34,7 @@ final readonly class MethodArgNodesParser
             }
 
             $argNodes[] = new ArgNode(
-                $this->getType($parameterType),
+                $this->getType($parameterType, $argAttribute),
                 $argAttribute->name ?? $parameter->getName(),
                 $argAttribute?->description,
                 !$parameterType->allowsNull(),

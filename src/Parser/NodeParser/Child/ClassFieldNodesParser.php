@@ -50,7 +50,7 @@ final readonly class ClassFieldNodesParser
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getType($propertyType),
+                $this->getType($propertyType, $fieldAttribute),
                 $fieldAttribute->name ?? $property->getName(),
                 $fieldAttribute->description,
                 !$propertyType->allowsNull(),
@@ -77,7 +77,7 @@ final readonly class ClassFieldNodesParser
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getType($returnType),
+                $this->getType($returnType, $fieldAttribute),
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
                 !$returnType->allowsNull(),
