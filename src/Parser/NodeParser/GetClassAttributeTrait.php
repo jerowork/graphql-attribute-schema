@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\GraphQLAttribute;
+use Jerowork\GraphqlAttributeSchema\Attribute\BaseAttribute;
 use ReflectionClass;
 
 trait GetClassAttributeTrait
 {
     /**
-     * @template T of GraphQLAttribute
+     * @template T of BaseAttribute
      *
      * @param ReflectionClass<object> $class
      * @param class-string<T> $attributeName
@@ -19,7 +19,7 @@ trait GetClassAttributeTrait
      *
      * @return T
      */
-    public function getClassAttribute(ReflectionClass $class, string $attributeName): GraphQLAttribute
+    public function getClassAttribute(ReflectionClass $class, string $attributeName): BaseAttribute
     {
         $attributes = $class->getAttributes($attributeName);
 

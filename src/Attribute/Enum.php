@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final readonly class Enum implements GraphQLAttribute
+final readonly class Enum implements BaseAttribute
 {
     public function __construct(
         public ?string $name = null,

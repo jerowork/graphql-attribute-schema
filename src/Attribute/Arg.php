@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_PARAMETER)]
-final readonly class Arg implements GraphQLAttribute
+final readonly class Arg implements BaseAttribute
 {
     public function __construct(
         public ?string $name = null,

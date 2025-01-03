@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\GraphQLAttribute;
+use Jerowork\GraphqlAttributeSchema\Attribute\BaseAttribute;
 use ReflectionMethod;
 
 trait RetrieveNameForFieldTrait
 {
     private const string PREFIX = 'get';
 
-    public function retrieveNameForField(ReflectionMethod $method, GraphQLAttribute $attribute): string
+    public function retrieveNameForField(ReflectionMethod $method, BaseAttribute $attribute): string
     {
         return $attribute->getName() ?? $this->retrieveFromMethod($method);
     }

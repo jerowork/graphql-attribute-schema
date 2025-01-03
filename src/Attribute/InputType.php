@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final readonly class InputType implements GraphQLAttribute
+final readonly class InputType implements BaseAttribute
 {
     public function __construct(
         public ?string $name = null,

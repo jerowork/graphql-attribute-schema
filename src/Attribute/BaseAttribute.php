@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Attribute;
 
-interface GraphQLAttribute
+interface BaseAttribute
 {
     public function getName(): ?string;
 

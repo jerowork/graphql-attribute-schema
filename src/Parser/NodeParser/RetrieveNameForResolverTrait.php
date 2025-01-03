@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\GraphQLAttribute;
+use Jerowork\GraphqlAttributeSchema\Attribute\BaseAttribute;
 use ReflectionClass;
 
 trait RetrieveNameForResolverTrait
@@ -16,7 +16,7 @@ trait RetrieveNameForResolverTrait
      *
      * @throws ParseException
      */
-    public function retrieveNameForResolver(ReflectionClass $class, GraphQLAttribute $attribute, string $suffix): string
+    public function retrieveNameForResolver(ReflectionClass $class, BaseAttribute $attribute, string $suffix): string
     {
         $name = $attribute->getName() ?? $this->retrieveNameFromClass($class, $suffix);
 
