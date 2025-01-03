@@ -9,11 +9,16 @@ use Psr\Container\ContainerInterface;
 final class TestContainer implements ContainerInterface
 {
     /**
-     * @var array<string, mixed>
+     * @var array<string, object>
      */
     public array $services = [];
 
-    public function get(string $id): mixed
+    public function set(string $id, object $service): void
+    {
+        $this->services[$id] = $service;
+    }
+
+    public function get(string $id): ?object
     {
         return $this->services[$id] ?? null;
     }

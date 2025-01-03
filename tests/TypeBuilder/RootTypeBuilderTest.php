@@ -22,6 +22,7 @@ use Override;
  */
 final class RootTypeBuilderTest extends TestCase
 {
+    private TestContainer $container;
     private RootTypeBuilder $builder;
 
     #[Override]
@@ -31,13 +32,17 @@ final class RootTypeBuilderTest extends TestCase
 
         $this->builder = new RootTypeBuilder(
             new TypeBuilder([]),
-            new RootTypeResolver(new TestContainer()),
+            new RootTypeResolver(
+                $this->container = new TestContainer(),
+            ),
         );
     }
 
     #[Test]
     public function itShouldBuildRootNode(): void
     {
+        $this->container->set(TestMutation::class, new TestMutation());
+
         $type = $this->builder->build(
             new MutationNode(
                 TestMutation::class,

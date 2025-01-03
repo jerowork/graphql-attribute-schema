@@ -19,8 +19,15 @@ final readonly class RootTypeResolver
         private ContainerInterface $container,
     ) {}
 
+    /**
+     * @throws ResolveException
+     */
     public function resolve(MutationNode|QueryNode $node, Ast $ast): callable
     {
+        if (!$this->container->has($node->typeId)) {
+            throw ResolveException::nodeTypeIdNotInContainer($node->typeId);
+        }
+
         return function ($rootValue, array $args) use ($node, $ast) {
             /** @var array<string, mixed> $args */
             return $this->container->get($node->typeId)->{$node->methodName}(

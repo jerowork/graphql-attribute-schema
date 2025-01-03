@@ -1,0 +1,173 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
+
+use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+use Override;
+
+/**
+ * @internal
+ */
+final class RootTypeResolverTest extends TestCase
+{
+    private TestContainer $container;
+    private RootTypeResolver $rootTypeResolver;
+
+    #[Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->rootTypeResolver = new RootTypeResolver(
+            $this->container = new TestContainer(),
+        );
+    }
+
+    #[Test]
+    public function itShouldGuardIfNodeTypeIdIsInContainer(): void
+    {
+        self::expectException(ResolveException::class);
+        self::expectExceptionMessage('Node type ID ' . TestResolvableMutation::class . ' is not in a container');
+
+        $this->rootTypeResolver->resolve(
+            new MutationNode(
+                TestResolvableMutation::class,
+                'Test',
+                null,
+                [],
+                null,
+                'string',
+                true,
+                '__invoke',
+            ),
+            new Ast(),
+        );
+    }
+
+    #[Test]
+    public function itShouldGuardIfNodeIsInAst(): void
+    {
+        $this->container->set(TestResolvableMutation::class, new TestResolvableMutation());
+
+        self::expectException(ResolveException::class);
+        self::expectExceptionMessage('Node ' . TestResolvableInputType::class . ' not found for typeId');
+
+        $type = $this->rootTypeResolver->resolve(
+            new MutationNode(
+                TestResolvableMutation::class,
+                'Test',
+                null,
+                [
+                    new ArgNode(
+                        null,
+                        'string',
+                        'id',
+                        null,
+                        true,
+                        'id',
+                    ),
+                    new ArgNode(
+                        TestResolvableInputType::class,
+                        null,
+                        'input',
+                        null,
+                        true,
+                        'input',
+                    ),
+                ],
+                null,
+                'string',
+                true,
+                '__invoke',
+            ),
+            new Ast(),
+        );
+
+        $type('rootValue', [
+            'id' => '45963d07-796c-44d5-8f1b-5e92ae6225a9',
+            'input' => [
+                'name' => 'Foobar',
+            ],
+        ]);
+    }
+
+    #[Test]
+    public function itShouldResolve(): void
+    {
+        $this->container->set(TestResolvableMutation::class, new TestResolvableMutation());
+
+        $type = $this->rootTypeResolver->resolve(
+            new MutationNode(
+                TestResolvableMutation::class,
+                'Test',
+                null,
+                [
+                    new ArgNode(
+                        null,
+                        'string',
+                        'id',
+                        null,
+                        true,
+                        'id',
+                    ),
+                    new ArgNode(
+                        TestResolvableInputType::class,
+                        null,
+                        'input',
+                        null,
+                        true,
+                        'input',
+                    ),
+                ],
+                null,
+                'string',
+                true,
+                '__invoke',
+            ),
+            new Ast(
+                new InputTypeNode(
+                    TestResolvableInputType::class,
+                    'TestResolvableInput',
+                    null,
+                    [
+                        new FieldNode(
+                            null,
+                            'string',
+                            'name',
+                            null,
+                            true,
+                            [],
+                            FieldNodeType::Property,
+                            null,
+                            'name',
+                        ),
+                    ],
+                ),
+            ),
+        );
+
+        self::assertSame(
+            'Mutation has been called with id 45963d07-796c-44d5-8f1b-5e92ae6225a9 and input with name Foobar',
+            $type('rootValue', [
+                'id' => '45963d07-796c-44d5-8f1b-5e92ae6225a9',
+                'input' => [
+                    'name' => 'Foobar',
+                ],
+            ]),
+        );
+    }
+}

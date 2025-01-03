@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
+use DateTimeInterface;
 
 #[Mutation(description: 'Test mutation')]
 final readonly class TestMutation
@@ -18,6 +19,10 @@ final readonly class TestMutation
         #[Arg(name: 'mutationId', description: 'Mutation ID')]
         ?string $id,
     ): string {
-        return '';
+        return sprintf(
+            'Mutation has been called with date %s and id %s',
+            $date->format(DateTimeInterface::RFC3339_EXTENDED),
+            $id,
+        );
     }
 }
