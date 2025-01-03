@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
@@ -66,10 +67,10 @@ final class EnumNodeParserTest extends TestCase
             'TestEnum',
             'Test Enum',
             [
-                TestEnumType::A->value,
-                TestEnumType::B->value,
-                TestEnumType::C->value,
-                TestEnumType::D->value,
+                new EnumValueNode(TestEnumType::A->value, null),
+                new EnumValueNode(TestEnumType::B->value, null),
+                new EnumValueNode(TestEnumType::C->value, 'Case C'),
+                new EnumValueNode(TestEnumType::D->value, null),
             ],
         ), $node);
     }

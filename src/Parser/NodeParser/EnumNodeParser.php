@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
+use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use ReflectionClass;
 use BackedEnum;
 use Override;
+use ReflectionEnum;
+use ReflectionException;
+use UnitEnum;
 
 final readonly class EnumNodeParser implements NodeParser
 {
@@ -22,6 +27,10 @@ final readonly class EnumNodeParser implements NodeParser
         return $attribute === Enum::class;
     }
 
+    /**
+     * @throws ParseException
+     * @throws ReflectionException
+     */
     #[Override]
     public function parse(ReflectionClass $class): Node
     {
@@ -37,11 +46,40 @@ final readonly class EnumNodeParser implements NodeParser
 
         $attribute = $this->getClassAttribute($class, Enum::class);
 
+        /** @var ReflectionClass<UnitEnum> $class */
         return new EnumNode(
             Type::createObject($className),
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),
-            array_map(fn($case) => (string) $case->value, $className::cases()),
+            $this->getValues($class),
         );
+    }
+
+    /**
+     * @param ReflectionClass<UnitEnum> $class
+     *
+     * @throws ReflectionException
+     *
+     * @return list<EnumValueNode>
+     */
+    private function getValues(ReflectionClass $class): array
+    {
+        $cases = [];
+        foreach ((new ReflectionEnum($class->getName()))->getCases() as $case) {
+            $enumAttributes = $case->getAttributes(EnumValue::class);
+
+            /** @var EnumValue|null $enumAttribute */
+            $enumAttribute = $enumAttributes !== [] ? array_pop($enumAttributes)->newInstance() : null;
+
+            /** @var BackedEnum $value */
+            $value = $case->getValue();
+
+            $cases[] = new EnumValueNode(
+                (string) $value->value,
+                $enumAttribute?->description,
+            );
+        }
+
+        return $cases;
     }
 }

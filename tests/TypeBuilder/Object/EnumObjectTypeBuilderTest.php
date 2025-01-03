@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 use GraphQL\Type\Definition\EnumType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
@@ -59,8 +60,8 @@ final class EnumObjectTypeBuilderTest extends TestCase
                 'enum',
                 'An enum',
                 [
-                    'open',
-                    'closed',
+                    new EnumValueNode('open', null),
+                    new EnumValueNode('closed', 'Case Closed'),
                 ],
             ),
             new TypeBuilder([]),
@@ -71,8 +72,14 @@ final class EnumObjectTypeBuilderTest extends TestCase
             'name' => 'enum',
             'description' => 'An enum',
             'values' => [
-                'open',
-                'closed',
+                'open' => [
+                    'value' => 'open',
+                    'description' => null,
+                ],
+                'closed' => [
+                    'value' => 'closed',
+                    'description' => 'Case Closed',
+                ],
             ],
         ]), $type);
     }

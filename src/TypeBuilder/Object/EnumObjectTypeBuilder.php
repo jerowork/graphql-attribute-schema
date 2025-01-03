@@ -26,10 +26,18 @@ final readonly class EnumObjectTypeBuilder implements ObjectTypeBuilder
     #[Override]
     public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
     {
+        $values = [];
+        foreach ($node->cases as $case) {
+            $values[$case->value] = [
+                'value' => $case->value,
+                'description' => $case->description,
+            ];
+        }
+
         return new EnumType([
             'name' => $node->name,
             'description' => $node->description,
-            'values' => $node->cases,
+            'values' => $values,
         ]);
     }
 }

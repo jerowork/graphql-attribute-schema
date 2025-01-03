@@ -8,6 +8,7 @@ use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
@@ -85,8 +86,8 @@ final class TypeBuilderTest extends TestCase
                     'TestEnum',
                     'A description',
                     [
-                        'open',
-                        'closed',
+                        new EnumValueNode('open', null),
+                        new EnumValueNode('closed', null),
                     ],
                 ),
             ),
@@ -96,8 +97,14 @@ final class TypeBuilderTest extends TestCase
             'name' => 'TestEnum',
             'description' => 'A description',
             'values' => [
-                'open',
-                'closed',
+                'open' => [
+                    'value' => 'open',
+                    'description' => null,
+                ],
+                'closed' => [
+                    'value' => 'closed',
+                    'description' => null,
+                ],
             ],
         ]), $type);
     }
@@ -114,8 +121,8 @@ final class TypeBuilderTest extends TestCase
                     'TestEnum',
                     'A description',
                     [
-                        'open',
-                        'closed',
+                        new EnumValueNode('open', null),
+                        new EnumValueNode('closed', null),
                     ],
                 ),
             ),
@@ -125,8 +132,14 @@ final class TypeBuilderTest extends TestCase
             'name' => 'TestEnum',
             'description' => 'A description',
             'values' => [
-                'open',
-                'closed',
+                'open' => [
+                    'value' => 'open',
+                    'description' => null,
+                ],
+                'closed' => [
+                    'value' => 'closed',
+                    'description' => null,
+                ],
             ],
         ])), $type);
     }

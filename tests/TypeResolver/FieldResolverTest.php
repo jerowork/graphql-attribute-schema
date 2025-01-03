@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
@@ -107,10 +108,10 @@ final class FieldResolverTest extends TestCase
                 'TestEnum',
                 null,
                 [
-                    'a',
-                    'b',
-                    'c',
-                    'd',
+                    new EnumValueNode('a', null),
+                    new EnumValueNode('b', null),
+                    new EnumValueNode('c', null),
+                    new EnumValueNode('d', null),
                 ],
             ),
         ));

@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
@@ -37,7 +38,10 @@ final class AstTest extends TestCase
                 Type::createObject(TestEnumType::class),
                 'enum1',
                 null,
-                ['case1', 'case2'],
+                [
+                    new EnumValueNode('case1', null),
+                    new EnumValueNode('case2', null),
+                ],
             ),
             $this->typeNode = new TypeNode(
                 Type::createObject(TestType::class),
@@ -49,7 +53,10 @@ final class AstTest extends TestCase
                 Type::createObject(TestAnotherEnumType::class),
                 'enum2',
                 null,
-                ['case3', 'case4'],
+                [
+                    new EnumValueNode('case3', null),
+                    new EnumValueNode('case4', null),
+                ],
             ),
             new InputTypeNode(
                 Type::createObject(TestInputType::class),

@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
@@ -223,8 +224,8 @@ final class ParserTest extends TestCase
                 'FoobarStatus',
                 'Foobar status',
                 [
-                    'open',
-                    'closed',
+                    new EnumValueNode('open', null),
+                    new EnumValueNode('closed', null),
                 ],
             ),
         ], $ast->getNodesByNodeType(EnumNode::class));
