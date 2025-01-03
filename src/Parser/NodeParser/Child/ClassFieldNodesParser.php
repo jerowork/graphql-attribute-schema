@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use ReflectionClass;
@@ -19,6 +20,7 @@ final readonly class ClassFieldNodesParser
 {
     use RetrieveNameForFieldTrait;
     use GetTypeTrait;
+    use IsRequiredTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
     private const string RETURN_TYPE_VOID = 'void';
@@ -53,7 +55,7 @@ final readonly class ClassFieldNodesParser
                 $this->getType($propertyType, $fieldAttribute),
                 $fieldAttribute->name ?? $property->getName(),
                 $fieldAttribute->description,
-                !$propertyType->allowsNull(),
+                $this->isRequired($propertyType, $fieldAttribute),
                 [],
                 FieldNodeType::Property,
                 null,
@@ -80,7 +82,7 @@ final readonly class ClassFieldNodesParser
                 $this->getType($returnType, $fieldAttribute),
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
-                !$returnType->allowsNull(),
+                $this->isRequired($returnType, $fieldAttribute),
                 $this->methodArgNodesParser->parse($method),
                 FieldNodeType::Method,
                 $method->getName(),

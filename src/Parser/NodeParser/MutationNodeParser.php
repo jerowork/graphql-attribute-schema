@@ -18,6 +18,7 @@ final readonly class MutationNodeParser implements NodeParser
     use RetrieveNameForResolverTrait;
     use GetMethodFromClassTrait;
     use GetTypeTrait;
+    use IsRequiredTrait;
     use GetClassAttributeTrait;
 
     private const string RESOLVER_SUFFIX = 'Mutation';
@@ -55,7 +56,7 @@ final readonly class MutationNodeParser implements NodeParser
             $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),
             $this->getType($returnType, $attribute),
-            !$returnType->allowsNull(),
+            $this->isRequired($returnType, $attribute),
             $method->getName(),
         );
     }

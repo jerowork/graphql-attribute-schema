@@ -13,6 +13,7 @@ final readonly class Arg implements BaseAttribute, TypedAttribute
         public ?string $name = null,
         public ?string $description = null,
         public ?string $type = null,
+        public bool $isRequired = true,
     ) {}
 
     public function getName(): ?string
@@ -28,5 +29,10 @@ final readonly class Arg implements BaseAttribute, TypedAttribute
     public function getType(): ?string
     {
         return $this->type;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->isRequired;
     }
 }

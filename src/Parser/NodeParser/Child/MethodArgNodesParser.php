@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use ReflectionMethod;
 use ReflectionParameter;
@@ -15,6 +16,7 @@ use ReflectionNamedType;
 final readonly class MethodArgNodesParser
 {
     use GetTypeTrait;
+    use IsRequiredTrait;
 
     /**
      * @throws ParseException
@@ -37,7 +39,7 @@ final readonly class MethodArgNodesParser
                 $this->getType($parameterType, $argAttribute),
                 $argAttribute->name ?? $parameter->getName(),
                 $argAttribute?->description,
-                !$parameterType->allowsNull(),
+                $this->isRequired($parameterType, $argAttribute),
                 $parameter->getName(),
             );
         }
