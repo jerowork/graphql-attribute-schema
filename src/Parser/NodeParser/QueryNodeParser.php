@@ -11,7 +11,6 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use ReflectionClass;
 use Override;
-use ReflectionNamedType;
 
 final readonly class QueryNodeParser implements NodeParser
 {
@@ -38,25 +37,25 @@ final readonly class QueryNodeParser implements NodeParser
     public function parse(ReflectionClass $class): Node
     {
         $method = $this->getMethodFromClass($class);
-        $returnType = $method->getReturnType();
+        $attribute = $this->getClassAttribute($class, Query::class);
 
-        if (!$returnType instanceof ReflectionNamedType) {
+        $type = $this->getType($method->getReturnType(), $attribute);
+
+        if ($type === null) {
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
-        if ($returnType->isBuiltin() && $returnType->getName() === self::RETURN_TYPE_VOID) {
+        if ($type->equals(Type::createScalar('void'))) {
             throw ParseException::voidReturnType($class->getName(), $method->getName());
         }
-
-        $attribute = $this->getClassAttribute($class, Query::class);
 
         return new QueryNode(
             Type::createObject($class->getName()),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
             $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),
-            $this->getType($returnType, $attribute),
-            $this->isRequired($returnType, $attribute),
+            $type,
+            $this->isRequired($method->getReturnType(), $attribute),
             $method->getName(),
         );
     }

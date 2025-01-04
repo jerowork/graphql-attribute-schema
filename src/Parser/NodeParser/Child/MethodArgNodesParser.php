@@ -29,17 +29,18 @@ final readonly class MethodArgNodesParser
 
         foreach ($method->getParameters() as $parameter) {
             $argAttribute = $this->getArgAttribute($parameter);
-            $parameterType = $parameter->getType();
 
-            if (!$parameterType instanceof ReflectionNamedType) {
+            $type = $this->getType($parameter->getType(), $argAttribute);
+
+            if ($type === null) {
                 throw ParseException::invalidParameterType($method->getName(), $parameter->getName());
             }
 
             $argNodes[] = new ArgNode(
-                $this->getType($parameterType, $argAttribute),
+                $type,
                 $argAttribute->name ?? $parameter->getName(),
                 $argAttribute?->description,
-                $this->isRequired($parameterType, $argAttribute),
+                $this->isRequired($parameter->getType(), $argAttribute),
                 $parameter->getName(),
             );
         }

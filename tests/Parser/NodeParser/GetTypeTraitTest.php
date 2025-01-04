@@ -34,7 +34,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation())->equals(Type::createScalar('string')));
+        self::assertTrue($trait->getType($type, new Mutation())?->equals(Type::createScalar('string')));
     }
 
     #[Test]
@@ -50,7 +50,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[0]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation())->equals(Type::createObject(DateTimeImmutable::class)));
+        self::assertTrue($trait->getType($type, new Mutation())?->equals(Type::createObject(DateTimeImmutable::class)));
     }
 
     #[Test]
@@ -66,7 +66,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation(type: ScalarType::Int))->equals(Type::createScalar('int')));
+        self::assertTrue($trait->getType($type, new Mutation(type: ScalarType::Int))?->equals(Type::createScalar('int')));
     }
 
     #[Test]
@@ -82,6 +82,16 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[0]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation(type: DateTime::class))->equals(Type::createObject(DateTime::class)));
+        self::assertTrue($trait->getType($type, new Mutation(type: DateTime::class))?->equals(Type::createObject(DateTime::class)));
+    }
+
+    #[Test]
+    public function itShouldReturnNulWhenObjectIsNull(): void
+    {
+        $trait = new class {
+            use GetTypeTrait;
+        };
+
+        self::assertNull($trait->getType(null, new Mutation()));
     }
 }

@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
@@ -45,17 +46,17 @@ final readonly class ClassFieldNodesParser
          * @var Field $fieldAttribute
          */
         foreach ($this->parseProperties($class) as [$property, $fieldAttribute]) {
-            $propertyType = $property->getType();
+            $type = $this->getType($property->getType(), $fieldAttribute);
 
-            if (!$propertyType instanceof ReflectionNamedType) {
+            if ($type === null) {
                 throw ParseException::invalidPropertyType($class->getName(), $property->getName());
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getType($propertyType, $fieldAttribute),
+                $type,
                 $fieldAttribute->name ?? $property->getName(),
                 $fieldAttribute->description,
-                $this->isRequired($propertyType, $fieldAttribute),
+                $this->isRequired($property->getType(), $fieldAttribute),
                 [],
                 FieldNodeType::Property,
                 null,
@@ -70,16 +71,18 @@ final readonly class ClassFieldNodesParser
         foreach ($this->parseMethods($class) as [$method, $fieldAttribute]) {
             $returnType = $method->getReturnType();
 
-            if (!$returnType instanceof ReflectionNamedType) {
+            $type = $this->getType($returnType, $fieldAttribute);
+
+            if ($type === null) {
                 throw ParseException::invalidReturnType($class->getName(), $method->getName());
             }
 
-            if ($returnType->isBuiltin() && $returnType->getName() === self::RETURN_TYPE_VOID) {
+            if ($type->equals(Type::createScalar('void'))) {
                 throw ParseException::voidReturnType($class->getName(), $method->getName());
             }
 
             $fieldNodes[] = new FieldNode(
-                $this->getType($returnType, $fieldAttribute),
+                $type,
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
                 $this->isRequired($returnType, $fieldAttribute),

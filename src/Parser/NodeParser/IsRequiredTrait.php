@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
-use ReflectionNamedType;
+use ReflectionType;
 
 trait IsRequiredTrait
 {
-    public function isRequired(ReflectionNamedType $type, ?TypedAttribute $attribute): bool
+    public function isRequired(?ReflectionType $type, ?TypedAttribute $attribute): bool
     {
         // Retrieve from attribute if set
         if ($attribute?->getType() !== null) {
@@ -17,6 +17,6 @@ trait IsRequiredTrait
         }
 
         // Retrieve from class
-        return !$type->allowsNull();
+        return $type !== null && !$type->allowsNull();
     }
 }

@@ -8,10 +8,11 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use ReflectionNamedType;
+use ReflectionType;
 
 trait GetTypeTrait
 {
-    public function getType(ReflectionNamedType $type, ?TypedAttribute $attribute): Type
+    public function getType(?ReflectionType $type, ?TypedAttribute $attribute): ?Type
     {
         // Retrieve from attribute if set
         if ($attribute?->getType() !== null) {
@@ -25,6 +26,10 @@ trait GetTypeTrait
         }
 
         // Retrieve from class
+        if (!$type instanceof ReflectionNamedType) {
+            return null;
+        }
+
         return $type->isBuiltin() ? Type::createScalar($type->getName()) : Type::createObject($type->getName());
     }
 }

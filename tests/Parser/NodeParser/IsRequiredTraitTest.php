@@ -74,4 +74,14 @@ final class IsRequiredTraitTest extends TestCase
         self::assertInstanceOf(ReflectionNamedType::class, $type2);
         self::assertFalse($trait->isRequired($type2, new Mutation(isRequired: true)));
     }
+
+    #[Test]
+    public function itShouldReturnFalseWhenTypeIsNull(): void
+    {
+        $trait = new class {
+            use IsRequiredTrait;
+        };
+
+        self::assertFalse($trait->isRequired(null, new Mutation()));
+    }
 }
