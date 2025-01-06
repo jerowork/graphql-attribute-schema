@@ -46,7 +46,7 @@ final class RootTypeResolverTest extends TestCase
 
         $this->rootTypeResolver->resolve(
             new MutationNode(
-                Type::createObject(TestResolvableMutation::class),
+                TestResolvableMutation::class,
                 'Test',
                 null,
                 [],
@@ -68,7 +68,7 @@ final class RootTypeResolverTest extends TestCase
 
         $type = $this->rootTypeResolver->resolve(
             new MutationNode(
-                Type::createObject(TestResolvableMutation::class),
+                TestResolvableMutation::class,
                 'Test',
                 null,
                 [
@@ -109,7 +109,7 @@ final class RootTypeResolverTest extends TestCase
 
         $type = $this->rootTypeResolver->resolve(
             new MutationNode(
-                Type::createObject(TestResolvableMutation::class),
+                TestResolvableMutation::class,
                 'Test',
                 null,
                 [
@@ -134,7 +134,7 @@ final class RootTypeResolverTest extends TestCase
             ),
             new Ast(
                 new InputTypeNode(
-                    Type::createObject(TestResolvableInputType::class),
+                    TestResolvableInputType::class,
                     'TestResolvableInput',
                     null,
                     [

@@ -40,14 +40,14 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
     public function itShouldSupportInputTypeNodeOnly(): void
     {
         self::assertTrue($this->builder->supports(new InputTypeNode(
-            Type::createObject(TestType::class),
+            TestType::class,
             'type',
             null,
             [],
         )));
 
         self::assertFalse($this->builder->supports(new EnumNode(
-            Type::createObject(TestEnumType::class),
+            TestEnumType::class,
             'enum',
             null,
             [],
@@ -59,7 +59,7 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
     {
         $type = $this->builder->build(
             new InputTypeNode(
-                Type::createObject(TestType::class),
+                TestType::class,
                 'type',
                 'A description',
                 [

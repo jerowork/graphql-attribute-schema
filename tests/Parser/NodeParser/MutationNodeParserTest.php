@@ -59,7 +59,7 @@ final class MutationNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestMutation::class));
 
         self::assertEquals(new MutationNode(
-            Type::createObject(TestMutation::class),
+            TestMutation::class,
             'test',
             'Test mutation',
             [

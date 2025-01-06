@@ -7,7 +7,6 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
@@ -49,7 +48,7 @@ final class InputTypeNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestInputType::class));
 
         self::assertEquals(new InputTypeNode(
-            Type::createObject(TestInputType::class),
+            TestInputType::class,
             'TestInput',
             'Test Input',
             [],

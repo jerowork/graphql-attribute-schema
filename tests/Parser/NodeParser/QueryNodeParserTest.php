@@ -59,7 +59,7 @@ final class QueryNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestQuery::class));
 
         self::assertEquals(new QueryNode(
-            Type::createObject(TestQuery::class),
+            TestQuery::class,
             'testQuery',
             'Test query',
             [

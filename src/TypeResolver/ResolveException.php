@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Exception;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
 final class ResolveException extends Exception
 {
@@ -14,8 +13,8 @@ final class ResolveException extends Exception
         return new self(sprintf('Logic error: %s', $error));
     }
 
-    public static function nodeTypeNotInContainer(Type $type): self
+    public static function nodeClassNameNotInContainer(string $className): self
     {
-        return new self(sprintf('Node type ID %s is not in a container (or not publicly accessible)', $type->id));
+        return new self(sprintf('Node type ID %s is not in a container (or not publicly accessible)', $className));
     }
 }

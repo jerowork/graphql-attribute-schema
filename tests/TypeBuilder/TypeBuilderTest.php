@@ -65,7 +65,7 @@ final class TypeBuilderTest extends TestCase
     public function itShouldGuardMissingNode(): void
     {
         self::expectException(BuildException::class);
-        self::expectExceptionMessage('No node found for type');
+        self::expectExceptionMessage('No node found for class');
 
         $this->builder->build(
             Type::createObject(TestEnumType::class),
@@ -82,7 +82,7 @@ final class TypeBuilderTest extends TestCase
             false,
             new Ast(
                 new EnumNode(
-                    Type::createObject(TestEnumType::class),
+                    TestEnumType::class,
                     'TestEnum',
                     'A description',
                     [
@@ -117,7 +117,7 @@ final class TypeBuilderTest extends TestCase
             true,
             new Ast(
                 new EnumNode(
-                    Type::createObject(TestEnumType::class),
+                    TestEnumType::class,
                     'TestEnum',
                     'A description',
                     [

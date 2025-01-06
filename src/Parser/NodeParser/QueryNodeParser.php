@@ -49,7 +49,7 @@ final readonly class QueryNodeParser implements NodeParser
         }
 
         return new QueryNode(
-            Type::createObject($class->getName()),
+            $class->getName(),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
             $attribute->getDescription(),
             $this->methodArgNodesParser->parse($method),

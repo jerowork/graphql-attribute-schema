@@ -8,7 +8,6 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestInvalidEnumType;
@@ -63,7 +62,7 @@ final class EnumNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestEnumType::class));
 
         self::assertEquals(new EnumNode(
-            Type::createObject(TestEnumType::class),
+            TestEnumType::class,
             'TestEnum',
             'Test Enum',
             [

@@ -52,7 +52,7 @@ final class TypeNodeParserTest extends TestCase
         $node = $this->parser->parse(new ReflectionClass(TestType::class));
 
         self::assertEquals(new TypeNode(
-            Type::createObject(TestType::class),
+            TestType::class,
             'Test',
             'Test Type',
             [

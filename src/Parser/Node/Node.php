@@ -6,5 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
 interface Node
 {
-    public function getType(): Type;
+    /**
+     * @return class-string
+     */
+    public function getClassName(): string;
 }

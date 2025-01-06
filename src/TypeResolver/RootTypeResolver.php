@@ -25,13 +25,13 @@ final readonly class RootTypeResolver
      */
     public function resolve(MutationNode|QueryNode $node, Ast $ast): callable
     {
-        if (!$this->container->has($node->getType()->id)) {
-            throw ResolveException::nodeTypeNotInContainer($node->getType());
+        if (!$this->container->has($node->getClassName())) {
+            throw ResolveException::nodeClassNameNotInContainer($node->getClassName());
         }
 
         return function ($rootValue, array $args) use ($node, $ast) {
             /** @var array<string, mixed> $args */
-            return $this->container->get($node->getType()->id)->{$node->methodName}(
+            return $this->container->get($node->getClassName())->{$node->methodName}(
                 ...array_map(
                     fn($arg) => $this->resolveChild($arg, $args, $ast),
                     $node->argNodes,
@@ -51,32 +51,32 @@ final readonly class RootTypeResolver
             return $args[$child->name];
         }
 
-        $node = $ast->getNodeByType($child->type);
+        $node = $ast->getNodeByClassName($child->type->id);
 
         if ($node === null) {
             throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->type->id));
         }
 
         if ($node instanceof EnumNode) {
-            /** @var class-string<BackedEnum> $type */
-            $type = $node->getType()->id;
+            /** @var class-string<BackedEnum> $className */
+            $className = $node->getClassName();
             /** @var string $value */
             $value = $args[$child->name];
 
-            return $type::from($value);
+            return $className::from($value);
         }
 
         if ($node instanceof InputTypeNode) {
             /** @var array<string, mixed> $childArgs */
             $childArgs = $args[$child->name];
-            $type = $child->type->id;
+            $className = $child->type->id;
 
-            return new $type(...array_map(
+            return new $className(...array_map(
                 fn($fieldNode) => $this->resolveChild($fieldNode, $childArgs, $ast),
                 $node->fieldNodes,
             ));
         }
 
-        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $node->getType()->id));
+        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $node->getClassName()));
     }
 }

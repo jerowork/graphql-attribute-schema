@@ -9,7 +9,6 @@ use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use ReflectionClass;
 use BackedEnum;
 use Override;
@@ -48,7 +47,7 @@ final readonly class EnumNodeParser implements NodeParser
 
         /** @var ReflectionClass<UnitEnum> $class */
         return new EnumNode(
-            Type::createObject($className),
+            $className,
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),
             $this->getValues($class),

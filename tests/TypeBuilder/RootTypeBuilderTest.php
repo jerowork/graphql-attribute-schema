@@ -46,7 +46,7 @@ final class RootTypeBuilderTest extends TestCase
 
         $type = $this->builder->build(
             new MutationNode(
-                Type::createObject(TestMutation::class),
+                TestMutation::class,
                 'mutation',
                 'A mutation',
                 [

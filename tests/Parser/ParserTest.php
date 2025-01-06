@@ -66,7 +66,7 @@ final class ParserTest extends TestCase
 
         self::assertEquals([
             new MutationNode(
-                Type::createObject(FoobarMutation::class),
+                FoobarMutation::class,
                 'foobar',
                 'Mutate a foobar',
                 [
@@ -88,7 +88,7 @@ final class ParserTest extends TestCase
 
         self::assertEquals([
             new InputTypeNode(
-                Type::createObject(Baz::class),
+                Baz::class,
                 'Baz',
                 null,
                 [
@@ -115,7 +115,7 @@ final class ParserTest extends TestCase
                 ],
             ),
             new InputTypeNode(
-                Type::createObject(MutateFoobarInputType::class),
+                MutateFoobarInputType::class,
                 'MutateFoobar',
                 null,
                 [
@@ -165,7 +165,7 @@ final class ParserTest extends TestCase
 
         self::assertEquals([
             new TypeNode(
-                Type::createObject(FoobarType::class),
+                FoobarType::class,
                 'Foobar',
                 'A foobar',
                 [
@@ -220,7 +220,7 @@ final class ParserTest extends TestCase
 
         self::assertEquals([
             new EnumNode(
-                Type::createObject(FoobarStatusType::class),
+                FoobarStatusType::class,
                 'FoobarStatus',
                 'Foobar status',
                 [

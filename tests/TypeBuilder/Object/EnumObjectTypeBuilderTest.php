@@ -8,7 +8,6 @@ use GraphQL\Type\Definition\EnumType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -37,14 +36,14 @@ final class EnumObjectTypeBuilderTest extends TestCase
     public function itShouldSupportEnumNodeOnly(): void
     {
         self::assertTrue($this->builder->supports(new EnumNode(
-            Type::createObject(TestEnumType::class),
+            TestEnumType::class,
             'enum',
             null,
             [],
         )));
 
         self::assertFalse($this->builder->supports(new TypeNode(
-            Type::createObject(TestType::class),
+            TestType::class,
             'type',
             null,
             [],
@@ -56,7 +55,7 @@ final class EnumObjectTypeBuilderTest extends TestCase
     {
         $type = $this->builder->build(
             new EnumNode(
-                Type::createObject(TestEnumType::class),
+                TestEnumType::class,
                 'enum',
                 'An enum',
                 [

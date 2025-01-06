@@ -104,7 +104,7 @@ final class FieldResolverTest extends TestCase
             null,
         ), new Ast(
             new EnumNode(
-                Type::createObject(TestEnumType::class),
+                TestEnumType::class,
                 'TestEnum',
                 null,
                 [

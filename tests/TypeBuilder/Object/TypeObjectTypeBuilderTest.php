@@ -43,14 +43,14 @@ final class TypeObjectTypeBuilderTest extends TestCase
     public function itShouldSupportTypeNodeOnly(): void
     {
         self::assertTrue($this->builder->supports(new TypeNode(
-            Type::createObject(TestType::class),
+            TestType::class,
             'type',
             null,
             [],
         )));
 
         self::assertFalse($this->builder->supports(new EnumNode(
-            Type::createObject(TestEnumType::class),
+            TestEnumType::class,
             'enum',
             null,
             [],
@@ -62,7 +62,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
     {
         $type = $this->builder->build(
             new TypeNode(
-                Type::createObject(TestType::class),
+                TestType::class,
                 'type',
                 'A description',
                 [

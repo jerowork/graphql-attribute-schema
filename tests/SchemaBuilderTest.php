@@ -62,7 +62,7 @@ final class SchemaBuilderTest extends TestCase
 
         $this->schemaBuilder->build(new Ast(
             new QueryNode(
-                Type::createObject(TestQuery::class),
+                TestQuery::class,
                 'testQuery',
                 null,
                 [],
@@ -81,7 +81,7 @@ final class SchemaBuilderTest extends TestCase
 
         $schema = $this->schemaBuilder->build(new Ast(
             new QueryNode(
-                Type::createObject(TestQuery::class),
+                TestQuery::class,
                 'testQuery',
                 null,
                 [],
@@ -90,7 +90,7 @@ final class SchemaBuilderTest extends TestCase
                 '__invoke',
             ),
             new MutationNode(
-                Type::createObject(TestMutation::class),
+                TestMutation::class,
                 'test',
                 null,
                 [],

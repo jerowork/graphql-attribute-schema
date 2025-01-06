@@ -71,17 +71,17 @@ final class TypeBuilder
      */
     private function buildObject(Type $type, Ast $ast): WebonyxType
     {
-        /** @var class-string $typeName */
-        $typeName = $type->id;
+        /** @var class-string $className */
+        $className = $type->id;
 
-        if (array_key_exists($typeName, $this->builtTypes)) {
-            return $this->builtTypes[$typeName];
+        if (array_key_exists($className, $this->builtTypes)) {
+            return $this->builtTypes[$className];
         }
 
-        $node = $ast->getNodeByType($type);
+        $node = $ast->getNodeByClassName($className);
 
         if ($node === null) {
-            throw BuildException::logicError(sprintf('No node found for type: %s', $typeName));
+            throw BuildException::logicError(sprintf('No node found for class: %s', $className));
         }
 
         foreach ($this->objectTypeBuilders as $objectTypeBuilder) {
@@ -89,11 +89,11 @@ final class TypeBuilder
                 continue;
             }
 
-            $this->builtTypes[$typeName] = $objectTypeBuilder->build($node, $this, $ast);
+            $this->builtTypes[$className] = $objectTypeBuilder->build($node, $this, $ast);
 
-            return $this->builtTypes[$typeName];
+            return $this->builtTypes[$className];
         }
 
-        throw BuildException::logicError(sprintf('Invalid object type: %s', $typeName));
+        throw BuildException::logicError(sprintf('Invalid object class %s', $className));
     }
 }

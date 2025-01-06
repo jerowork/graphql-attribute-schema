@@ -7,17 +7,18 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 final readonly class EnumNode implements Node
 {
     /**
+     * @param class-string $className
      * @param list<EnumValueNode> $cases
      */
     public function __construct(
-        public Type $type,
+        public string $className,
         public string $name,
         public ?string $description,
         public array $cases,
     ) {}
 
-    public function getType(): Type
+    public function getClassName(): string
     {
-        return $this->type;
+        return $this->className;
     }
 }

@@ -9,17 +9,18 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 final readonly class TypeNode implements Node
 {
     /**
+     * @param class-string $className
      * @param list<FieldNode> $fieldNodes
      */
     public function __construct(
-        public Type $type,
+        public string $className,
         public string $name,
         public ?string $description,
         public array $fieldNodes,
     ) {}
 
-    public function getType(): Type
+    public function getClassName(): string
     {
-        return $this->type;
+        return $this->className;
     }
 }
