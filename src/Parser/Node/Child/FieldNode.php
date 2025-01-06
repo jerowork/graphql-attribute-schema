@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
-final readonly class FieldNode implements Node
+final readonly class FieldNode
 {
     /**
      * @param list<ArgNode> $argNodes
@@ -22,9 +21,4 @@ final readonly class FieldNode implements Node
         public ?string $methodName,
         public ?string $propertyName,
     ) {}
-
-    public function getType(): Type
-    {
-        return $this->type;
-    }
 }

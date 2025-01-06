@@ -58,7 +58,7 @@ final readonly class InputTypeObjectTypeBuilder implements ObjectTypeBuilder
         $fields = [];
 
         foreach ($node->fieldNodes as $fieldNode) {
-            $type = $typeBuilder->build($fieldNode->getType(), $fieldNode->isRequired, $ast);
+            $type = $typeBuilder->build($fieldNode->type, $fieldNode->isRequired, $ast);
 
             if (!$type instanceof InputType) {
                 throw BuildException::invalidTypeForField($fieldNode->name, $type::class);

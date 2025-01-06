@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
-final readonly class ArgNode implements Node
+final readonly class ArgNode
 {
     public function __construct(
         public Type $type,
@@ -16,9 +15,4 @@ final readonly class ArgNode implements Node
         public bool $isRequired,
         public string $propertyName,
     ) {}
-
-    public function getType(): Type
-    {
-        return $this->type;
-    }
 }

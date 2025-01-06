@@ -51,10 +51,10 @@ final readonly class RootTypeResolver
             return $args[$child->name];
         }
 
-        $node = $ast->getNodeByType($child->getType());
+        $node = $ast->getNodeByType($child->type);
 
         if ($node === null) {
-            throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->getType()->id));
+            throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->type->id));
         }
 
         if ($node instanceof EnumNode) {
@@ -69,7 +69,7 @@ final readonly class RootTypeResolver
         if ($node instanceof InputTypeNode) {
             /** @var array<string, mixed> $childArgs */
             $childArgs = $args[$child->name];
-            $type = $child->getType()->id;
+            $type = $child->type->id;
 
             return new $type(...array_map(
                 fn($fieldNode) => $this->resolveChild($fieldNode, $childArgs, $ast),

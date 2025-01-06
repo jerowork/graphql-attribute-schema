@@ -43,7 +43,7 @@ final readonly class FieldResolver
             return $fieldCallback();
         }
 
-        $node = $ast->getNodeByType($field->getType());
+        $node = $ast->getNodeByType($field->type);
 
         if ($node instanceof EnumNode) {
             /** @var BackedEnum $enum */
