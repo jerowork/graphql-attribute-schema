@@ -23,7 +23,6 @@ final readonly class ClassFieldNodesParser
     use IsRequiredTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
-    private const string RETURN_TYPE_VOID = 'void';
 
     public function __construct(
         private MethodArgNodesParser $methodArgNodesParser,

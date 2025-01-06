@@ -21,7 +21,6 @@ final readonly class QueryNodeParser implements NodeParser
     use GetClassAttributeTrait;
 
     private const string RESOLVER_SUFFIX = 'Query';
-    private const string RETURN_TYPE_VOID = 'void';
 
     public function __construct(
         private MethodArgNodesParser $methodArgNodesParser,
