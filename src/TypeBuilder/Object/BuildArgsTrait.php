@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 
 trait BuildArgsTrait

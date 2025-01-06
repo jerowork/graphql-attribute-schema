@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;

@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use ReflectionMethod;
 use ReflectionParameter;
-use ReflectionNamedType;
 
 final readonly class MethodArgNodesParser
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;

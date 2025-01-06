@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;

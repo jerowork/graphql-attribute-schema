@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;

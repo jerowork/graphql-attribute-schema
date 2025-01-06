@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Child;
+
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
 final readonly class ArgNode implements Node
 {

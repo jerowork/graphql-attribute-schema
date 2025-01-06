@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+
 final readonly class MutationNode implements Node
 {
     /**

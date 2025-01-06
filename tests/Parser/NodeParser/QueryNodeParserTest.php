@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;

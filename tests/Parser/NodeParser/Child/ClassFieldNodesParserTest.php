@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;

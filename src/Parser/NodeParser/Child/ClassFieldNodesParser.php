@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\IsRequiredTrait;
@@ -15,7 +15,6 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionMethod;
-use ReflectionNamedType;
 
 final readonly class ClassFieldNodesParser
 {

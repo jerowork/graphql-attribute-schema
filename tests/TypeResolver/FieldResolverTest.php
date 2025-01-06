@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;

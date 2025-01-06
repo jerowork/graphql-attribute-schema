@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use BackedEnum;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 
 final readonly class FieldResolver
 {

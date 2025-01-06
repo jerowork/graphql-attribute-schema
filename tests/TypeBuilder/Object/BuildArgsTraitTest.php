@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
