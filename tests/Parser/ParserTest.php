@@ -24,6 +24,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\Parser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\FoobarQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\Baz;
@@ -83,7 +84,36 @@ final class ParserTest extends TestCase
             ),
         ], $ast->getNodesByNodeType(MutationNode::class));
 
-        self::assertEquals([], $ast->getNodesByNodeType(QueryNode::class));
+        self::assertEquals([
+            new QueryNode(
+                FoobarQuery::class,
+                'getFoobar',
+                null,
+                [
+                    new ArgNode(
+                        Type::createScalar('int'),
+                        'id',
+                        null,
+                        'id',
+                    ),
+                    new ArgNode(
+                        Type::createObject(DateTimeImmutable::class),
+                        'date',
+                        null,
+                        'date',
+                    ),
+                    new ArgNode(
+                        Type::createScalar('bool')->setList(),
+                        'values',
+                        null,
+                        'values',
+                    ),
+                ],
+                Type::createScalar('string')->setList(),
+                '__invoke',
+                null,
+            ),
+        ], $ast->getNodesByNodeType(QueryNode::class));
 
         self::assertEquals([
             new InputTypeNode(

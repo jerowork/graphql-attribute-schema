@@ -38,6 +38,7 @@ final class NativeFinderTest extends TestCase
 
         self::assertSame([
             'Doubles/FullFeatured/Mutation/FoobarMutation.php',
+            'Doubles/FullFeatured/Query/FoobarQuery.php',
             'Doubles/FullFeatured/Type/FoobarStatusType.php',
             'Doubles/FullFeatured/Type/FoobarType.php',
             'Doubles/FullFeatured/Type/Input/Baz.php',
