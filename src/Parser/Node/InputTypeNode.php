@@ -6,6 +6,16 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 
+/**
+ * @phpstan-import-type FieldNodePayload from FieldNode
+ *
+ * @phpstan-type InputTypeNodePayload array{
+ *     className: class-string,
+ *     name: string,
+ *     description: null|string,
+ *     fieldNodes: list<FieldNodePayload>
+ * }
+ */
 final readonly class InputTypeNode implements Node
 {
     /**
@@ -22,5 +32,31 @@ final readonly class InputTypeNode implements Node
     public function getClassName(): string
     {
         return $this->className;
+    }
+
+    /**
+     * @return InputTypeNodePayload
+     */
+    public function toArray(): array
+    {
+        return [
+            'className' => $this->className,
+            'name' => $this->name,
+            'description' => $this->description,
+            'fieldNodes' => array_map(fn($fieldNode) => $fieldNode->toArray(), $this->fieldNodes),
+        ];
+    }
+
+    /**
+     * @param InputTypeNodePayload $payload
+     */
+    public static function fromArray(array $payload): InputTypeNode
+    {
+        return new self(
+            $payload['className'],
+            $payload['name'],
+            $payload['description'],
+            array_map(fn($fieldNodePayload) => FieldNode::fromArray($fieldNodePayload), $payload['fieldNodes']),
+        );
     }
 }

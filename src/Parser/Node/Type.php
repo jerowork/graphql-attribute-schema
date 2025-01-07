@@ -4,7 +4,18 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
-final class Type
+/**
+ * @phpstan-type TypePayload array{
+ *     value: string,
+ *     type: string,
+ *     isValueNullable: bool,
+ *     isList: bool,
+ *     isListNullable: bool
+ * }
+ *
+ * @implements ArraySerializable<TypePayload>
+ */
+final class Type implements ArraySerializable
 {
     private const string SCALAR = 'scalar';
     private const string OBJECT = 'object';
@@ -86,5 +97,27 @@ final class Type
             && $this->isValueNullable === $type->isValueNullable
             && $this->isList === $type->isList
             && $this->isListNullable === $type->isListNullable;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'value' => $this->value,
+            'type' => $this->type,
+            'isValueNullable' => $this->isValueNullable,
+            'isList' => $this->isList,
+            'isListNullable' => $this->isListNullable,
+        ];
+    }
+
+    public static function fromArray(array $payload): Type
+    {
+        return new self(
+            $payload['value'],
+            $payload['type'],
+            $payload['isValueNullable'],
+            $payload['isList'],
+            $payload['isListNullable'],
+        );
     }
 }

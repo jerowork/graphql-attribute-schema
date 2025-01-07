@@ -32,6 +32,8 @@ $container = new YourPsr11Container();
 // 1. Create an AST based on your classes
 $ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
 
+// with $ast->toArray(), the AST is cacheable (see Cache section)
+
 // 2. Create the schema configuration
 $schema = SchemaBuilderFactory::create($container)->build($ast);
 
@@ -96,4 +98,29 @@ final readonly class GraphQLServerController
         return new JsonResponse($result->toArray());
     }
 }
+```
+
+## Caching
+To save parsing time (involving reflection of all classes and attributes),
+the AST is serializable. This makes the AST cacheable.
+
+```php
+use GraphQL\Server\StandardServer;
+use GraphQL\Server\ServerConfig;
+use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
+use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
+
+// 1. Create an AST based on your classes
+$ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
+
+// Add to cache
+$someCache->set('graphql-attribute-schema.ast', json_encode($ast->toArray(), JSON_THROW_ON_ERROR));
+
+// ...
+
+// Get from cache
+$ast = Ast::fromArray(json_decode($someCache->get('graphql-attribute-schema.ast'), true, flags: JSON_THROW_ON_ERROR));
+
+// 2. Create the schema configuration
+$schema = SchemaBuilderFactory::create($container)->build($ast);
 ```

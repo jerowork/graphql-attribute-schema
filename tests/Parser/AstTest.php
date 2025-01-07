@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestAnotherEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -78,5 +84,58 @@ final class AstTest extends TestCase
     {
         self::assertSame($this->typeNode, $this->ast->getNodeByClassName(TestType::class));
         self::assertSame($this->enumNode2, $this->ast->getNodeByClassName(TestAnotherEnumType::class));
+    }
+
+    #[Test]
+    public function itShouldSerializeAndDeserialize(): void
+    {
+        $ast = new Ast(
+            new MutationNode(
+                TestMutation::class,
+                'name',
+                'description',
+                [
+                    new ArgNode(
+                        Type::createScalar('int'),
+                        'name',
+                        'a description',
+                        'aPropertyName',
+                    ),
+                    new ArgNode(
+                        Type::createScalar('string'),
+                        'name 2',
+                        'b description',
+                        'bPropertyName',
+                    ),
+                ],
+                Type::createObject(TestType::class),
+                'method',
+                'deprecated',
+            ),
+            new QueryNode(
+                TestQuery::class,
+                'name',
+                'description',
+                [
+                    new ArgNode(
+                        Type::createScalar('int'),
+                        'name',
+                        'a description',
+                        'aPropertyName',
+                    ),
+                    new ArgNode(
+                        Type::createScalar('string'),
+                        'name 2',
+                        'b description',
+                        'bPropertyName',
+                    ),
+                ],
+                Type::createObject(TestType::class),
+                'method',
+                'deprecated',
+            ),
+        );
+
+        self::assertEquals(Ast::fromArray($ast->toArray()), $ast);
     }
 }

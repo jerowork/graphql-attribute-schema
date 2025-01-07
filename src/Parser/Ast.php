@@ -4,9 +4,18 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser;
 
+use Jerowork\GraphqlAttributeSchema\Parser\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 
-final readonly class Ast
+/**
+ * @implements ArraySerializable<array{
+ *     nodes: list<array{
+ *          node: class-string,
+ *          payload: array<string, mixed>
+ *     }>
+ * }>
+ */
+final readonly class Ast implements ArraySerializable
 {
     /**
      * @var list<Node>
@@ -41,5 +50,33 @@ final readonly class Ast
         }
 
         return null;
+    }
+
+    public function toArray(): array
+    {
+        $nodes = [];
+        foreach ($this->nodes as $node) {
+            $nodes[] = [
+                'node' => $node::class,
+                'payload' => $node->toArray(),
+            ];
+        }
+
+        return [
+            'nodes' => $nodes,
+        ];
+    }
+
+    public static function fromArray(array $payload): Ast
+    {
+        $nodes = [];
+        foreach ($payload['nodes'] as $nodePayload) {
+            /** @var Node $nodeClassName */
+            $nodeClassName = $nodePayload['node'];
+            $nodes[] = $nodeClassName::fromArray($nodePayload['payload']);
+        }
+
+        /** @var list<Node> $nodes */
+        return new self(...$nodes);
     }
 }

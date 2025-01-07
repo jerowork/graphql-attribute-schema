@@ -87,4 +87,14 @@ final class TypeTest extends TestCase
 
         self::assertFalse($type->equals($type2));
     }
+
+    #[Test]
+    public function itShouldSerializeAndDeserialize(): void
+    {
+        $typeNode = Type::createObject(stdClass::class)
+            ->setList()
+            ->setNullableList();
+
+        self::assertEquals(Type::fromArray($typeNode->toArray()), $typeNode);
+    }
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
-interface Node
+/**
+ * @extends ArraySerializable<array<string, mixed>>
+ */
+interface Node extends ArraySerializable
 {
     /**
      * @return class-string
