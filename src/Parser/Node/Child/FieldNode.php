@@ -19,5 +19,6 @@ final readonly class FieldNode
         public FieldNodeType $fieldType,
         public ?string $methodName,
         public ?string $propertyName,
+        public ?string $deprecationReason,
     ) {}
 }

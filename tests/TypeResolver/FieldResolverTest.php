@@ -46,6 +46,7 @@ final class FieldResolverTest extends TestCase
             FieldNodeType::Property,
             null,
             'name',
+            null,
         ), new Ast());
 
         self::assertSame('a name', $type(new TestResolvableInputType('a name', []), []));
@@ -68,6 +69,7 @@ final class FieldResolverTest extends TestCase
             ],
             FieldNodeType::Method,
             'getName',
+            null,
             null,
         ), new Ast());
 
@@ -97,16 +99,17 @@ final class FieldResolverTest extends TestCase
             FieldNodeType::Method,
             'getName',
             null,
+            null,
         ), new Ast(
             new EnumNode(
                 TestEnumType::class,
                 'TestEnum',
                 null,
                 [
-                    new EnumValueNode('a', null),
-                    new EnumValueNode('b', null),
-                    new EnumValueNode('c', null),
-                    new EnumValueNode('d', null),
+                    new EnumValueNode('a', null, null),
+                    new EnumValueNode('b', null, null),
+                    new EnumValueNode('c', null, null),
+                    new EnumValueNode('d', null, null),
                 ],
             ),
         ));

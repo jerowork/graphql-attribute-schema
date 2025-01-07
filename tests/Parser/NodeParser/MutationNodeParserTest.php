@@ -78,6 +78,7 @@ final class MutationNodeParserTest extends TestCase
             ],
             Type::createScalar('string'),
             '__invoke',
+            null,
         ), $node);
     }
 }

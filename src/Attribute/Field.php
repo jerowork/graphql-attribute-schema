@@ -18,6 +18,7 @@ final readonly class Field implements BaseAttribute, TypedAttribute
         public ?string $name = null,
         public ?string $description = null,
         public string|Type|ScalarType|null $type = null,
+        public ?string $deprecationReason = null,
     ) {}
 
     public function getName(): ?string

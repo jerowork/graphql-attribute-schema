@@ -49,6 +49,7 @@ final readonly class QueryNodeParser implements NodeParser
             $this->methodArgNodesParser->parse($method),
             $type,
             $method->getName(),
+            $attribute->deprecationReason,
         );
     }
 }

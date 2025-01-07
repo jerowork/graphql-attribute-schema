@@ -57,13 +57,19 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
         $fields = [];
 
         foreach ($node->fieldNodes as $fieldNode) {
-            $fields[] = [
+            $field = [
                 'name' => $fieldNode->name,
                 'type' => $typeBuilder->build($fieldNode->type, $ast),
                 'description' => $fieldNode->description,
                 'args' => $this->buildArgs($fieldNode, $typeBuilder, $ast),
                 'resolve' => $this->typeResolver->resolve($fieldNode, $ast),
             ];
+
+            if ($fieldNode->deprecationReason !== null) {
+                $field['deprecationReason'] = $fieldNode->deprecationReason;
+            }
+
+            $fields[] = $field;
         }
 
         return $fields;

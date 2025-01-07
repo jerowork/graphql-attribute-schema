@@ -53,6 +53,7 @@ final class RootTypeResolverTest extends TestCase
                 [],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
             new Ast(),
         );
@@ -87,6 +88,7 @@ final class RootTypeResolverTest extends TestCase
                 ],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
             new Ast(),
         );
@@ -137,6 +139,7 @@ final class RootTypeResolverTest extends TestCase
                 ],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
             new Ast(
                 new InputTypeNode(
@@ -152,6 +155,7 @@ final class RootTypeResolverTest extends TestCase
                             FieldNodeType::Property,
                             null,
                             'name',
+                            null,
                         ),
                         new FieldNode(
                             Type::createScalar('string')->setList(),
@@ -161,6 +165,7 @@ final class RootTypeResolverTest extends TestCase
                             FieldNodeType::Property,
                             null,
                             'parentNames',
+                            null,
                         ),
                     ],
                 ),
@@ -177,6 +182,7 @@ final class RootTypeResolverTest extends TestCase
                             FieldNodeType::Property,
                             null,
                             'id',
+                            null,
                         ),
                     ],
                 ),

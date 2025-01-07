@@ -64,6 +64,7 @@ final class TypeNodeParserTest extends TestCase
                     FieldNodeType::Property,
                     null,
                     'id',
+                    null,
                 ),
                 new FieldNode(
                     Type::createObject(DateTimeImmutable::class),
@@ -73,6 +74,7 @@ final class TypeNodeParserTest extends TestCase
                     FieldNodeType::Property,
                     null,
                     'date',
+                    null,
                 ),
                 new FieldNode(
                     Type::createScalar('string')->setNullableValue(),
@@ -82,6 +84,7 @@ final class TypeNodeParserTest extends TestCase
                     FieldNodeType::Method,
                     'flow',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     Type::createScalar('string'),
@@ -90,6 +93,7 @@ final class TypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getStatus',
+                    null,
                     null,
                 ),
             ],

@@ -59,6 +59,7 @@ final class RootTypeBuilderTest extends TestCase
                 ],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
             new Ast(),
         );

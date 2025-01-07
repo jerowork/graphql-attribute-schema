@@ -79,6 +79,7 @@ final class ParserTest extends TestCase
                 ],
                 Type::createObject(FoobarType::class),
                 '__invoke',
+                null,
             ),
         ], $ast->getNodesByNodeType(MutationNode::class));
 
@@ -98,6 +99,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'id',
+                        null,
                     ),
                     new FieldNode(
                         Type::createObject(FoobarStatusType::class),
@@ -107,6 +109,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'status',
+                        null,
                     ),
                 ],
             ),
@@ -123,6 +126,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'id',
+                        null,
                     ),
                     new FieldNode(
                         Type::createScalar('string')->setNullableValue(),
@@ -132,6 +136,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'value',
+                        null,
                     ),
                     new FieldNode(
                         Type::createObject(Baz::class),
@@ -141,6 +146,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'baz',
+                        null,
                     ),
                     new FieldNode(
                         Type::createObject(DateTimeImmutable::class)->setNullableValue(),
@@ -150,6 +156,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'date',
+                        null,
                     ),
                 ],
             ),
@@ -169,6 +176,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'id',
+                        null,
                     ),
                     new FieldNode(
                         Type::createObject(FoobarStatusType::class)->setNullableValue(),
@@ -178,6 +186,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'status',
+                        null,
                     ),
                     new FieldNode(
                         Type::createObject(DateTimeImmutable::class)->setNullableValue(),
@@ -200,6 +209,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Method,
                         'getDate',
                         null,
+                        null,
                     ),
                 ],
             ),
@@ -211,8 +221,8 @@ final class ParserTest extends TestCase
                 'FoobarStatus',
                 'Foobar status',
                 [
-                    new EnumValueNode('open', null),
-                    new EnumValueNode('closed', null),
+                    new EnumValueNode('open', null, null),
+                    new EnumValueNode('closed', null, null),
                 ],
             ),
         ], $ast->getNodesByNodeType(EnumNode::class));

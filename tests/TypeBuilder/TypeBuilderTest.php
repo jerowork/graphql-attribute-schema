@@ -84,8 +84,8 @@ final class TypeBuilderTest extends TestCase
                     'TestEnum',
                     'A description',
                     [
-                        new EnumValueNode('open', null),
-                        new EnumValueNode('closed', null),
+                        new EnumValueNode('open', null, null),
+                        new EnumValueNode('closed', null, null),
                     ],
                 ),
             ),
@@ -118,8 +118,8 @@ final class TypeBuilderTest extends TestCase
                     'TestEnum',
                     'A description',
                     [
-                        new EnumValueNode('open', null),
-                        new EnumValueNode('closed', null),
+                        new EnumValueNode('open', null, null),
+                        new EnumValueNode('closed', null, null),
                     ],
                 ),
             ),

@@ -11,5 +11,6 @@ final readonly class EnumValue
 {
     public function __construct(
         public ?string $description = null,
+        public ?string $deprecationReason = null,
     ) {}
 }

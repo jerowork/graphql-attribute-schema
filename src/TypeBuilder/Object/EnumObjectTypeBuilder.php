@@ -28,10 +28,16 @@ final readonly class EnumObjectTypeBuilder implements ObjectTypeBuilder
     {
         $values = [];
         foreach ($node->cases as $case) {
-            $values[$case->value] = [
+            $value = [
                 'value' => $case->value,
                 'description' => $case->description,
             ];
+
+            if ($case->deprecationReason !== null) {
+                $value['deprecationReason'] = $case->deprecationReason;
+            }
+
+            $values[$case->value] = $value;
         }
 
         return new EnumType([

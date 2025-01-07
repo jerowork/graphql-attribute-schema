@@ -68,6 +68,7 @@ final class SchemaBuilderTest extends TestCase
                 [],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
         ));
     }
@@ -86,6 +87,7 @@ final class SchemaBuilderTest extends TestCase
                 [],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
             new MutationNode(
                 TestMutation::class,
@@ -94,6 +96,7 @@ final class SchemaBuilderTest extends TestCase
                 [],
                 Type::createScalar('string'),
                 '__invoke',
+                null,
             ),
         ));
 

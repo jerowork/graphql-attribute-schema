@@ -55,6 +55,7 @@ final readonly class ClassFieldNodesParser
                 FieldNodeType::Property,
                 null,
                 $property->getName(),
+                $fieldAttribute->deprecationReason,
             );
         }
 
@@ -79,6 +80,7 @@ final readonly class ClassFieldNodesParser
                 FieldNodeType::Method,
                 $method->getName(),
                 null,
+                $fieldAttribute->deprecationReason,
             );
         }
 

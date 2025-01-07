@@ -49,6 +49,7 @@ final readonly class MutationNodeParser implements NodeParser
             $this->methodArgNodesParser->parse($method),
             $type,
             $method->getName(),
+            $attribute->deprecationReason,
         );
     }
 }

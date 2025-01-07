@@ -19,6 +19,7 @@ final readonly class MutationNode implements Node
         public array $argNodes,
         public Type $outputType,
         public string $methodName,
+        public ?string $deprecationReason,
     ) {}
 
     public function getClassName(): string

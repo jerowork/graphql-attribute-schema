@@ -9,5 +9,6 @@ final readonly class EnumValueNode
     public function __construct(
         public string $value,
         public ?string $description,
+        public ?string $deprecationReason,
     ) {}
 }

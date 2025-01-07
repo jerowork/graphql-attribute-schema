@@ -76,6 +76,7 @@ final readonly class EnumNodeParser implements NodeParser
             $cases[] = new EnumValueNode(
                 (string) $value->value,
                 $enumAttribute?->description,
+                $enumAttribute?->deprecationReason,
             );
         }
 

@@ -59,8 +59,8 @@ final class EnumObjectTypeBuilderTest extends TestCase
                 'enum',
                 'An enum',
                 [
-                    new EnumValueNode('open', null),
-                    new EnumValueNode('closed', 'Case Closed'),
+                    new EnumValueNode('open', null, null),
+                    new EnumValueNode('closed', 'Case Closed', null),
                 ],
             ),
             new TypeBuilder([]),

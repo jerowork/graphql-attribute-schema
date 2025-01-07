@@ -78,6 +78,7 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
                         FieldNodeType::Method,
                         'getField',
                         null,
+                        null,
                     ),
                 ],
             ),

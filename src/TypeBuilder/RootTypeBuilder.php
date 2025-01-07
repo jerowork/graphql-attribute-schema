@@ -40,12 +40,18 @@ final readonly class RootTypeBuilder
             ];
         }
 
-        return [
+        $root = [
             'name' => $node->name,
             'type' => $this->typeBuilder->build($node->outputType, $ast),
             'description' => $node->description,
             'args' => $args,
             'resolve' => $this->rootTypeResolver->resolve($node, $ast),
         ];
+
+        if ($node->deprecationReason !== null) {
+            $root['deprecationReason'] = $node->deprecationReason;
+        }
+
+        return $root;
     }
 }

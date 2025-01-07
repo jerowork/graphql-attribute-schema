@@ -78,6 +78,7 @@ final class QueryNodeParserTest extends TestCase
             ],
             Type::createScalar('string'),
             '__invoke',
+            null,
         ), $node);
     }
 }

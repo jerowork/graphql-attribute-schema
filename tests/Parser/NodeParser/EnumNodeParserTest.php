@@ -66,10 +66,10 @@ final class EnumNodeParserTest extends TestCase
             'TestEnum',
             'Test Enum',
             [
-                new EnumValueNode(TestEnumType::A->value, null),
-                new EnumValueNode(TestEnumType::B->value, null),
-                new EnumValueNode(TestEnumType::C->value, 'Case C'),
-                new EnumValueNode(TestEnumType::D->value, null),
+                new EnumValueNode(TestEnumType::A->value, null, null),
+                new EnumValueNode(TestEnumType::B->value, null, null),
+                new EnumValueNode(TestEnumType::C->value, 'Case C', null),
+                new EnumValueNode(TestEnumType::D->value, null, null),
             ],
         ), $node);
     }

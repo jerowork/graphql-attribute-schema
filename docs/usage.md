@@ -1,7 +1,9 @@
 # Usage
+
 At minimum, a query and mutation needs to be defined to build a valid schema.
 
 ## Attributes
+
 The following attributes can be used:
 
 - `#[Mutation]`
@@ -9,7 +11,7 @@ The following attributes can be used:
 - `#[InputType]`
 - `#[Type]`
 - `#[Enum]`
-  - `#[EnumValue]`
+    - `#[EnumValue]`
 - `#[Field]`
 - `#[Arg]`
 
@@ -63,11 +65,12 @@ Mutations and queries:
 
 Both `#[Mutation]` and `#[Query]` attribute can be configured:
 
-| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`        | Set custom name of mutation or query (instead of based on class)                                                                                                                                                                                                                                                                                                                       |
-| `description` | Set description of the mutation or query, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                               |
-| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`              | Set custom name of mutation or query (instead of based on class)                                                                                                                                                                                                                                                                                                                       |
+| `description`       | Set description of the mutation or query, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                               |
+| `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+| `deprecationReason` | If set, deprecates the mutation or query                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                          |
 
 ### InputType
 
@@ -220,9 +223,10 @@ Each case in the `enum` type can be configured as well, with the `#[EnumValue]` 
 
 `#[EnumValue]` attribute can be configured:
 
-| Option        | Description                                                      |
-|---------------|------------------------------------------------------------------|
-| `description` | Set description of the enum case, readable in the GraphQL schema |
+| Option              | Description                                                      |
+|---------------------|------------------------------------------------------------------|
+| `description`       | Set description of the enum case, readable in the GraphQL schema |
+| `deprecationReason` | If set, deprecates the case                                      |                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Field
 
@@ -273,11 +277,12 @@ final readonly class YourInputType
 
 `#[Field]` attribute can be configured:
 
-| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`        | Set custom name of field (instead of based on class)                                                                                                                                                                                                                                                                                                                                   |
-| `description` | Set description of the field, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                           |
-| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`              | Set custom name of field (instead of based on class)                                                                                                                                                                                                                                                                                                                                   |
+| `description`       | Set description of the field, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                           |
+| `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+| `deprecationReason` | If set, deprecates the field (`#[Type]` only)                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Arg
 

@@ -38,8 +38,8 @@ final class AstTest extends TestCase
                 'enum1',
                 null,
                 [
-                    new EnumValueNode('case1', null),
-                    new EnumValueNode('case2', null),
+                    new EnumValueNode('case1', null, null),
+                    new EnumValueNode('case2', null, null),
                 ],
             ),
             $this->typeNode = new TypeNode(
@@ -53,8 +53,8 @@ final class AstTest extends TestCase
                 'enum2',
                 null,
                 [
-                    new EnumValueNode('case3', null),
-                    new EnumValueNode('case4', null),
+                    new EnumValueNode('case3', null, null),
+                    new EnumValueNode('case4', null, null),
                 ],
             ),
             new InputTypeNode(

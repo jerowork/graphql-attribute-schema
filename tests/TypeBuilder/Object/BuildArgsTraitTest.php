@@ -49,6 +49,7 @@ final class BuildArgsTraitTest extends TestCase
                 FieldNodeType::Property,
                 null,
                 'name',
+                null,
             ),
             new TypeBuilder([]),
             new Ast(),

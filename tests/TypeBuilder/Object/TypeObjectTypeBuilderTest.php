@@ -81,6 +81,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
                         FieldNodeType::Method,
                         'getField',
                         null,
+                        null,
                     ),
                 ],
             ),
