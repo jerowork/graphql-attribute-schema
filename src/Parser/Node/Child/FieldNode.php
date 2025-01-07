@@ -15,7 +15,6 @@ final readonly class FieldNode
         public Type $type,
         public string $name,
         public ?string $description,
-        public bool $isRequired,
         public array $argNodes,
         public FieldNodeType $fieldType,
         public ?string $methodName,

@@ -43,9 +43,16 @@ final readonly class FieldResolver
             return $fieldCallback();
         }
 
-        $node = $ast->getNodeByClassName($field->type->id);
+        $node = $ast->getNodeByClassName($field->type->value);
 
         if ($node instanceof EnumNode) {
+            if ($field->type->isList()) {
+                /** @var list<BackedEnum> $enums */
+                $enums = $fieldCallback();
+
+                return array_map(fn($enum) => $enum->value, $enums);
+            }
+
             /** @var BackedEnum $enum */
             $enum = $fieldCallback();
 

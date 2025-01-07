@@ -53,14 +53,12 @@ final class MethodArgNodesParserTest extends TestCase
                 Type::createObject(DateTimeImmutable::class),
                 'date',
                 null,
-                true,
                 'date',
             ),
             new ArgNode(
-                Type::createScalar('string'),
+                Type::createScalar('string')->setNullableValue(),
                 'mutationId',
                 'Mutation ID',
-                false,
                 'id',
             ),
         ], $argNodes);

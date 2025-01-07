@@ -51,15 +51,13 @@ final class RootTypeBuilderTest extends TestCase
                 'A mutation',
                 [
                     new ArgNode(
-                        Type::createScalar('int'),
+                        Type::createScalar('int')->setNullableValue(),
                         'arg',
                         'An argument',
-                        false,
                         'arg',
                     ),
                 ],
                 Type::createScalar('string'),
-                true,
                 '__invoke',
             ),
             new Ast(),

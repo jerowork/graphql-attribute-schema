@@ -32,20 +32,17 @@ final class BuildArgsTraitTest extends TestCase
                 Type::createScalar('string'),
                 'name',
                 null,
-                true,
                 [
                     new ArgNode(
                         Type::createScalar('string'),
                         'arg1',
                         'Arg 1 description',
-                        true,
                         'arg1',
                     ),
                     new ArgNode(
-                        Type::createScalar('bool'),
+                        Type::createScalar('bool')->setNullableValue(),
                         'arg2',
                         'Arg 2 description',
-                        false,
                         'arg2',
                     ),
                 ],

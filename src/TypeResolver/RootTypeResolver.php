@@ -51,15 +51,23 @@ final readonly class RootTypeResolver
             return $args[$child->name];
         }
 
-        $node = $ast->getNodeByClassName($child->type->id);
+        $node = $ast->getNodeByClassName($child->type->value);
 
         if ($node === null) {
-            throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->type->id));
+            throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->type->value));
         }
 
         if ($node instanceof EnumNode) {
             /** @var class-string<BackedEnum> $className */
             $className = $node->getClassName();
+
+            if ($child->type->isList()) {
+                /** @var list<string> $value */
+                $value = $args[$child->name];
+
+                return array_map(fn($item) => $className::from($item), $value);
+            }
+
             /** @var string $value */
             $value = $args[$child->name];
 
@@ -67,9 +75,23 @@ final readonly class RootTypeResolver
         }
 
         if ($node instanceof InputTypeNode) {
+            $className = $child->type->value;
+
+            if ($child->type->isList()) {
+                /** @var list<array<string, mixed>> $childArgs */
+                $childArgs = $args[$child->name];
+
+                return array_map(
+                    fn($item) => new $className(...array_map(
+                        fn($fieldNode) => $this->resolveChild($fieldNode, $item, $ast),
+                        $node->fieldNodes,
+                    )),
+                    $childArgs,
+                );
+            }
+
             /** @var array<string, mixed> $childArgs */
             $childArgs = $args[$child->name];
-            $className = $child->type->id;
 
             return new $className(...array_map(
                 fn($fieldNode) => $this->resolveChild($fieldNode, $childArgs, $ast),

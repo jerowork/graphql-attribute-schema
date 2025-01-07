@@ -24,11 +24,7 @@ trait BuildArgsTrait
         foreach ($fieldNode->argNodes as $argNode) {
             $args[] = [
                 'name' => $argNode->name,
-                'type' => $typeBuilder->build(
-                    $argNode->type,
-                    $argNode->isRequired,
-                    $ast,
-                ),
+                'type' => $typeBuilder->build($argNode->type, $ast),
                 'description' => $argNode->description,
             ];
         }

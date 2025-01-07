@@ -67,19 +67,16 @@ final class QueryNodeParserTest extends TestCase
                     Type::createObject(DateTimeImmutable::class),
                     'date',
                     null,
-                    true,
                     'date',
                 ),
                 new ArgNode(
                     Type::createScalar('string'),
                     'id',
                     null,
-                    true,
                     'id',
                 ),
             ],
             Type::createScalar('string'),
-            true,
             '__invoke',
         ), $node);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
-use GraphQL\Type\Definition\NullableType;
+use GraphQL\Type\Definition\NullableType as WebonyxNullableType;
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
@@ -28,25 +28,34 @@ final class TypeBuilder
     /**
      * @throws BuildException
      */
-    public function build(Type $type, bool $isRequired, Ast $ast): WebonyxType
+    public function build(Type $type, Ast $ast): WebonyxType
     {
         $builtType = null;
 
         if ($type->isScalar()) {
-            $builtType = $this->buildScalar($type);
+            $builtType = $this->buildScalar($type->value);
         }
 
         if ($type->isObject()) {
-            $builtType = $this->buildObject($type, $ast);
+            /** @var class-string $value */
+            $value = $type->value;
+            $builtType = $this->buildObject($value, $ast);
         }
 
         if ($builtType === null) {
-            throw BuildException::logicError('Missing type and typeId');
+            throw BuildException::logicError('Cannot build type');
         }
 
-        if ($isRequired) {
-            /** @var WebonyxType&NullableType $builtType */
-            return WebonyxType::nonNull($builtType);
+        if (!$type->isValueNullable()) {
+            $builtType = WebonyxType::nonNull($builtType); // @phpstan-ignore-line
+        }
+
+        if ($type->isList()) {
+            $builtType = WebonyxType::listOf($builtType);
+
+            if (!$type->isListNullable()) {
+                $builtType = WebonyxType::nonNull($builtType);
+            }
         }
 
         return $builtType;
@@ -55,25 +64,24 @@ final class TypeBuilder
     /**
      * @throws BuildException
      */
-    private function buildScalar(Type $type): WebonyxType
+    private function buildScalar(string $type): WebonyxType&WebonyxNullableType
     {
-        return match ($type->id) {
+        return match ($type) {
             'string' => WebonyxType::string(),
             'int' => WebonyxType::int(),
             'float' => WebonyxType::float(),
             'bool' => WebonyxType::boolean(),
-            default => throw BuildException::logicError(sprintf('Invalid type: %s', $type->id)),
+            default => throw BuildException::logicError(sprintf('Invalid type: %s', $type)),
         };
     }
 
     /**
+     * @param class-string $className
+     *
      * @throws BuildException
      */
-    private function buildObject(Type $type, Ast $ast): WebonyxType
+    private function buildObject(string $className, Ast $ast): WebonyxType
     {
-        /** @var class-string $className */
-        $className = $type->id;
-
         if (array_key_exists($className, $this->builtTypes)) {
             return $this->builtTypes[$className];
         }

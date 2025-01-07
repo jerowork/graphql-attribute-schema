@@ -18,7 +18,6 @@ final readonly class QueryNode implements Node
         public ?string $description,
         public array $argNodes,
         public Type $outputType,
-        public bool $isRequired,
         public string $methodName,
     ) {}
 

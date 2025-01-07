@@ -13,11 +13,6 @@ final class ParseException extends Exception
         return new self(sprintf('Invalid return type for Mutation %s:%s', $class, $method));
     }
 
-    public static function voidReturnType(string $class, string $method): self
-    {
-        return new self(sprintf('Void return type for Mutation %s:%s', $class, $method));
-    }
-
     public static function invalidParameterType(string $method, string $parameter): self
     {
         return new self(sprintf('Invalid parameter type for method %s:%s', $method, $parameter));

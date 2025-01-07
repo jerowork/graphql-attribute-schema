@@ -6,12 +6,19 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 
 #[InputType]
 final readonly class TestResolvableInputType
 {
+    /**
+     * @param list<string> $parentNames
+     */
     public function __construct(
         #[Field]
         public string $name,
+        #[Field(type: new ListType(ScalarType::String))]
+        public array $parentNames,
     ) {}
 }

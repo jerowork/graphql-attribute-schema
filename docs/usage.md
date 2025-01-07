@@ -1,5 +1,7 @@
 # Usage
+At minimum, a query and mutation needs to be defined to build a valid schema.
 
+## Attributes
 The following attributes can be used:
 
 - `#[Mutation]`
@@ -7,13 +9,13 @@ The following attributes can be used:
 - `#[InputType]`
 - `#[Type]`
 - `#[Enum]`
-- `#[EnumValue]`
+  - `#[EnumValue]`
 - `#[Field]`
 - `#[Arg]`
 
 See below for more information about each attribute:
 
-## Mutation and query
+### Mutation and query
 
 Mutations and queries can be defined with `#[Mutation]` and `#[Query]`. In order to configure your class as mutation or
 query, just add these attributes on class level:
@@ -35,7 +37,7 @@ final readonly YourQuery
 }
 ```
 
-### Automatic schema creation
+#### Automatic schema creation
 
 *GraphQL Attribute Schema* will read the available public method's signature: input arguments and output type. These
 will be automatically configured in the schema (this can be overwritten by using `#[Arg]`, see [Arg](#arg) section).
@@ -47,7 +49,7 @@ When using objects, make sure these are defined as well with `#[InputType]` for 
 Also, the name of the mutation or query will be automatically read from the class name (this can be overwritten, see
 options).
 
-### Requirements
+#### Requirements
 
 Mutations and queries:
 
@@ -57,18 +59,17 @@ Mutations and queries:
   with `#[Autoconfigure(public: true)]`),
 - must have only one *public* method (apart from `__construct`), which will be called on resolve.
 
-### Options
+#### Options
 
 Both `#[Mutation]` and `#[Query]` attribute can be configured:
 
-| Option        | Description                                                                   |
-|---------------|-------------------------------------------------------------------------------|
-| `name`        | Set custom name of mutation or query (instead of based on class)              |
-| `description` | Set description of the mutation or query, readable in the GraphQL schema      |
-| `type`        | Set custom return type; can be either a `#[Type]` FQCN or `ScalarType` (enum) |
-| `isRequired`  | When a custom type is set, isRequired should be set as well                   |
+| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`        | Set custom name of mutation or query (instead of based on class)                                                                                                                                                                                                                                                                                                                       |
+| `description` | Set description of the mutation or query, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                               |
+| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 
-## InputType
+### InputType
 
 Input types can be defined with `#[InputType]`.
 In order to configure your class as input type, just add this attribute on class level:
@@ -93,7 +94,7 @@ final readonly class YourInputType
 }
 ```
 
-### Automatic schema creation
+#### Automatic schema creation
 
 *GraphQL Attribute Schema* will read the `__construct` signature: input arguments.
 Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
@@ -105,7 +106,7 @@ When using objects, make sure these are defined as well with `#[InputType]` or `
 Also, the name of the input type will be automatically read from the class name (this can be overwritten, see
 options).
 
-### Options
+#### Options
 
 `#[InputType]` attribute can be configured:
 
@@ -114,7 +115,7 @@ options).
 | `name`        | Set custom name of input type (instead of based on class)         |
 | `description` | Set description of the input type, readable in the GraphQL schema |
 
-## Type
+### Type
 
 Types can be defined with `#[Type]`.
 In order to configure your class as type, just add this attribute on class level:
@@ -145,7 +146,7 @@ final readonly class YourType
 }
 ```
 
-### Automatic schema creation
+#### Automatic schema creation
 
 *GraphQL Attribute Schema* will both read the `__construct` signature: input arguments, as well as read all methods.
 
@@ -163,7 +164,7 @@ When using objects, make sure these are defined as well with `#[InputType]` or `
 Also, the name of the type will be automatically read from the class name (this can be overwritten, see
 options).
 
-### Options
+#### Options
 
 `#[Type]` attribute can be configured:
 
@@ -172,7 +173,7 @@ options).
 | `name`        | Set custom name of type (instead of based on class)         |
 | `description` | Set description of the type, readable in the GraphQL schema |
 
-## Enum
+### Enum
 
 Enums can be defined with `#[Enum]`.
 In order to configure your enum class as enum, just add this attribute on class level:
@@ -191,7 +192,7 @@ enum YourEnumType: string
 }
 ```
 
-### Automatic schema creation
+#### Automatic schema creation
 
 *GraphQL Attribute Schema* will read the enum signature.
 
@@ -199,14 +200,14 @@ The values for the enum will be automatically read from the PHP `enum`; it uses 
 
 The name of the enum will be automatically read from the class name (this can be overwritten, see options).
 
-### Requirements
+#### Requirements
 
 Enums:
 
 - must be of the PHP native `enum` type (no classes with public constants)
 - The PHP `enum` type must be a `BackedEnum`
 
-### Options
+#### Options
 
 `#[Enum]` attribute can be configured:
 
@@ -223,7 +224,7 @@ Each case in the `enum` type can be configured as well, with the `#[EnumValue]` 
 |---------------|------------------------------------------------------------------|
 | `description` | Set description of the enum case, readable in the GraphQL schema |
 
-## Field
+### Field
 
 In `#[Type]` and `#[InputType]`, to define fields, the `#[Field]` attribute can be used.
 In order to configure any fields this can be set on constructor property (for `#[InputType]` or `#[Type]`) or
@@ -268,18 +269,17 @@ final readonly class YourInputType
 }
 ```
 
-### Options
+#### Options
 
 `#[Field]` attribute can be configured:
 
-| Option        | Description                                                                            |
-|---------------|----------------------------------------------------------------------------------------|
-| `name`        | Set custom name of field (instead of based on class)                                   |
-| `description` | Set description of the field, readable in the GraphQL schema                           |
-| `type`        | Set custom type; can be either a `#[Type]`, `#[InputType]` FQCN or `ScalarType` (enum) |
-| `isRequired`  | When a custom type is set, isRequired should be set as well                            |
+| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`        | Set custom name of field (instead of based on class)                                                                                                                                                                                                                                                                                                                                   |
+| `description` | Set description of the field, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                           |
+| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 
-## Arg
+### Arg
 
 For `#[Mutation]`, `#[Query]` and `#[Type]` methods defined with `#[Field]`, input arguments are read
 automatically from the signature.
@@ -327,13 +327,12 @@ final readonly class YourType
 }
 ```
 
-### Options
+#### Options
 
 `#[Arg]` attribute can be configured:
 
-| Option        | Description                                                            |
-|---------------|------------------------------------------------------------------------|
-| `name`        | Set custom name of argument (instead of based on class)                |
-| `description` | Set description of the argument, readable in the GraphQL schema        |
-| `type`        | Set custom type; can be either a `#[Type]` FQCN or `ScalarType` (enum) |
-| `isRequired`  | When a custom type is set, isRequired should be set as well            |
+| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
+|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`        | Set custom name of argument (instead of based on class)                                                                                                                                                                                                                                                                                                                                |
+| `description` | Set description of the argument, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                        |
+| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |

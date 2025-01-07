@@ -67,13 +67,11 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
                         Type::createScalar('string'),
                         'field',
                         'A field description',
-                        true,
                         [
                             new ArgNode(
-                                Type::createScalar('int'),
+                                Type::createScalar('int')->setNullableValue(),
                                 'arg',
                                 'An argument',
-                                false,
                                 'arg',
                             ),
                         ],

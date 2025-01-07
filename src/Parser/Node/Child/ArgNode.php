@@ -12,7 +12,6 @@ final readonly class ArgNode
         public Type $type,
         public string $name,
         public ?string $description,
-        public bool $isRequired,
         public string $propertyName,
     ) {}
 }

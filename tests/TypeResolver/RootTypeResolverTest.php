@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
@@ -51,7 +52,6 @@ final class RootTypeResolverTest extends TestCase
                 null,
                 [],
                 Type::createScalar('string'),
-                true,
                 '__invoke',
             ),
             new Ast(),
@@ -76,19 +76,16 @@ final class RootTypeResolverTest extends TestCase
                         Type::createScalar('string'),
                         'id',
                         null,
-                        true,
                         'id',
                     ),
                     new ArgNode(
                         Type::createObject(TestResolvableInputType::class),
                         'input',
                         null,
-                        true,
                         'input',
                     ),
                 ],
                 Type::createScalar('string'),
-                true,
                 '__invoke',
             ),
             new Ast(),
@@ -117,19 +114,28 @@ final class RootTypeResolverTest extends TestCase
                         Type::createScalar('string'),
                         'id',
                         null,
-                        true,
                         'id',
                     ),
                     new ArgNode(
                         Type::createObject(TestResolvableInputType::class),
                         'input',
                         null,
-                        true,
                         'input',
+                    ),
+                    new ArgNode(
+                        Type::createScalar('string')->setList(),
+                        'userIds',
+                        null,
+                        'userIds',
+                    ),
+                    new ArgNode(
+                        Type::createObject(TestSmallInputType::class)->setList(),
+                        'smallInputs',
+                        null,
+                        'smallInputs',
                     ),
                 ],
                 Type::createScalar('string'),
-                true,
                 '__invoke',
             ),
             new Ast(
@@ -142,11 +148,35 @@ final class RootTypeResolverTest extends TestCase
                             Type::createScalar('string'),
                             'name',
                             null,
-                            true,
                             [],
                             FieldNodeType::Property,
                             null,
                             'name',
+                        ),
+                        new FieldNode(
+                            Type::createScalar('string')->setList(),
+                            'parentNames',
+                            null,
+                            [],
+                            FieldNodeType::Property,
+                            null,
+                            'parentNames',
+                        ),
+                    ],
+                ),
+                new InputTypeNode(
+                    TestSmallInputType::class,
+                    'TestSmallInput',
+                    null,
+                    [
+                        new FieldNode(
+                            Type::createScalar('string'),
+                            'id',
+                            null,
+                            [],
+                            FieldNodeType::Property,
+                            null,
+                            'id',
                         ),
                     ],
                 ),
@@ -154,11 +184,18 @@ final class RootTypeResolverTest extends TestCase
         );
 
         self::assertSame(
-            'Mutation has been called with id 45963d07-796c-44d5-8f1b-5e92ae6225a9 and input with name Foobar',
+            'Mutation has been called with id 45963d07-796c-44d5-8f1b-5e92ae6225a9 and input with name Foobar, userIds: 1, 2, 3, parentNames: John, Jane, smallInputs: 4, 5, 6',
             $type('rootValue', [
                 'id' => '45963d07-796c-44d5-8f1b-5e92ae6225a9',
                 'input' => [
                     'name' => 'Foobar',
+                    'parentNames' => ['John', 'Jane'],
+                ],
+                'userIds' => ['1', '2', '3'],
+                'smallInputs' => [
+                    ['id' => '4'],
+                    ['id' => '5'],
+                    ['id' => '6'],
                 ],
             ]),
         );

@@ -6,18 +6,18 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 
 use Attribute;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 
 #[Attribute(Attribute::TARGET_CLASS)]
 final readonly class Mutation implements BaseAttribute, TypedAttribute
 {
     /**
-     * @param class-string|ScalarType|null $type
+     * @param class-string|Type|ScalarType|null $type
      */
     public function __construct(
         public ?string $name = null,
         public ?string $description = null,
-        public string|ScalarType|null $type = null,
-        public bool $isRequired = true,
+        public string|Type|ScalarType|null $type = null,
     ) {}
 
     public function getName(): ?string
@@ -30,13 +30,8 @@ final readonly class Mutation implements BaseAttribute, TypedAttribute
         return $this->description;
     }
 
-    public function getType(): string|ScalarType|null
+    public function getType(): string|Type|ScalarType|null
     {
         return $this->type;
-    }
-
-    public function isRequired(): bool
-    {
-        return $this->isRequired;
     }
 }

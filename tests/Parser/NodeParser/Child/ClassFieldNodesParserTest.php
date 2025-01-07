@@ -50,10 +50,9 @@ final class ClassFieldNodesParserTest extends TestCase
 
         self::assertEquals([
             new FieldNode(
-                Type::createScalar('string'),
+                Type::createScalar('string')->setNullableValue(),
                 'typeId',
                 null,
-                false,
                 [],
                 FieldNodeType::Property,
                 null,
@@ -63,17 +62,15 @@ final class ClassFieldNodesParserTest extends TestCase
                 Type::createObject(DateTimeImmutable::class),
                 'date',
                 null,
-                true,
                 [],
                 FieldNodeType::Property,
                 null,
                 'date',
             ),
             new FieldNode(
-                Type::createScalar('string'),
+                Type::createScalar('string')->setNullableValue(),
                 'flow',
                 null,
-                false,
                 [],
                 FieldNodeType::Method,
                 'flow',
@@ -83,7 +80,6 @@ final class ClassFieldNodesParserTest extends TestCase
                 Type::createScalar('string'),
                 'status',
                 null,
-                true,
                 [],
                 FieldNodeType::Method,
                 'getStatus',

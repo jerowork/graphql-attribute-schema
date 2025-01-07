@@ -48,7 +48,7 @@ final class TypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildNullableScalarType(): void
     {
-        $type = $this->builder->build(Type::createScalar('string'), false, new Ast());
+        $type = $this->builder->build(Type::createScalar('string')->setNullableValue(), new Ast());
 
         self::assertEquals(WebonyxType::string(), $type);
     }
@@ -56,7 +56,7 @@ final class TypeBuilderTest extends TestCase
     #[Test]
     public function it_should_build_non_nullable_scalar_type(): void
     {
-        $type = $this->builder->build(Type::createScalar('float'), true, new Ast());
+        $type = $this->builder->build(Type::createScalar('float'), new Ast());
 
         self::assertEquals(WebonyxType::nonNull(WebonyxType::float()), $type);
     }
@@ -69,7 +69,6 @@ final class TypeBuilderTest extends TestCase
 
         $this->builder->build(
             Type::createObject(TestEnumType::class),
-            false,
             new Ast(),
         );
     }
@@ -78,8 +77,7 @@ final class TypeBuilderTest extends TestCase
     public function itShouldBuildNullableObjectType(): void
     {
         $type = $this->builder->build(
-            Type::createObject(TestEnumType::class),
-            false,
+            Type::createObject(TestEnumType::class)->setNullableValue(),
             new Ast(
                 new EnumNode(
                     TestEnumType::class,
@@ -114,7 +112,6 @@ final class TypeBuilderTest extends TestCase
     {
         $type = $this->builder->build(
             Type::createObject(TestEnumType::class),
-            true,
             new Ast(
                 new EnumNode(
                     TestEnumType::class,

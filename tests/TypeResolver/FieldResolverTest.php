@@ -42,14 +42,13 @@ final class FieldResolverTest extends TestCase
             Type::createScalar('string'),
             'name',
             null,
-            true,
             [],
             FieldNodeType::Property,
             null,
             'name',
         ), new Ast());
 
-        self::assertSame('a name', $type(new TestResolvableInputType('a name'), []));
+        self::assertSame('a name', $type(new TestResolvableInputType('a name', []), []));
     }
 
     #[Test]
@@ -59,13 +58,11 @@ final class FieldResolverTest extends TestCase
             Type::createScalar('string'),
             'name',
             null,
-            true,
             [
                 new ArgNode(
                     Type::createScalar('string'),
                     'name',
                     null,
-                    true,
                     'name',
                 ),
             ],
@@ -89,13 +86,11 @@ final class FieldResolverTest extends TestCase
             Type::createObject(TestEnumType::class),
             'name',
             null,
-            true,
             [
                 new ArgNode(
                     Type::createScalar('string'),
                     'name',
                     null,
-                    true,
                     'name',
                 ),
             ],

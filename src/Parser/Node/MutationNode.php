@@ -18,7 +18,6 @@ final readonly class MutationNode implements Node
         public ?string $description,
         public array $argNodes,
         public Type $outputType,
-        public bool $isRequired,
         public string $methodName,
     ) {}
 
