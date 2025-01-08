@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Finder;
@@ -28,11 +29,13 @@ final readonly class Parser
 
     /**
      * @param iterable<NodeParser> $nodeParsers
+     * @param iterable<class-string> $customTypes
      */
     public function __construct(
         private Finder $finder,
         private Reflector $reflector,
         private iterable $nodeParsers,
+        private iterable $customTypes,
     ) {}
 
     /**
@@ -43,22 +46,47 @@ final readonly class Parser
         $nodes = [];
 
         foreach ($this->getClasses(...$dirs) as $class) {
-            $attribute = $this->getSupportedAttribute($class);
+            $node = $this->parseClass($class);
 
-            if ($attribute === null) {
-                continue;
+            if ($node !== null) {
+                $nodes[] = $node;
             }
+        }
 
-            foreach ($this->nodeParsers as $nodeParser) {
-                if (!$nodeParser->supports($attribute)) {
-                    continue;
-                }
+        foreach ($this->customTypes as $customType) {
+            $class = new ReflectionClass($customType);
+            $node = $this->parseClass($class);
 
-                $nodes[] = $nodeParser->parse($class);
+            if ($node !== null) {
+                $nodes[] = $node;
             }
         }
 
         return new Ast(...$nodes);
+    }
+
+    /**
+     * @param ReflectionClass<object> $class
+     *
+     * @throws ParseException
+     */
+    private function parseClass(ReflectionClass $class): ?Node
+    {
+        $attribute = $this->getSupportedAttribute($class);
+
+        if ($attribute === null) {
+            return null;
+        }
+
+        foreach ($this->nodeParsers as $nodeParser) {
+            if (!$nodeParser->supports($attribute)) {
+                continue;
+            }
+
+            return $nodeParser->parse($class);
+        }
+
+        return null;
     }
 
     /**

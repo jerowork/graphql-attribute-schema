@@ -57,6 +57,8 @@ final class ParserTest extends TestCase
                 new InputTypeNodeParser($classFieldNodesParser = new ClassFieldNodesParser($methodArgsNodeParser)),
                 new TypeNodeParser($classFieldNodesParser),
             ],
+            [
+            ],
         );
     }
 

@@ -16,7 +16,10 @@ use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
 
 final readonly class ParserFactory
 {
-    public static function create(): Parser
+    /**
+     * @param class-string ...$customTypes
+     */
+    public static function create(string ...$customTypes): Parser
     {
         $methodArgNodesParser = new MethodArgNodesParser();
         $classFieldNodesParser = new ClassFieldNodesParser($methodArgNodesParser);
@@ -31,6 +34,7 @@ final readonly class ParserFactory
                 new MutationNodeParser($methodArgNodesParser),
                 new QueryNodeParser($methodArgNodesParser),
             ],
+            $customTypes,
         );
     }
 }
