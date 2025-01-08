@@ -6,18 +6,18 @@ At minimum, a query and mutation needs to be defined to build a valid schema.
 
 The following attributes can be used:
 
-- `#[Mutation]`
-- `#[Query]`
-- `#[InputType]`
-- `#[Type]`
-- `#[Enum]`
-    - `#[EnumValue]`
-- `#[Field]`
-- `#[Arg]`
+- [#[Mutation]](#mutation-and-query)
+- [#[Query]](#mutation-and-query)
+- [#[Type]](#type)
+- [#[InputType]](#inputtype)
+- [#[Enum]](#enum)
+    - [#[EnumValue]](#enum)
+- [#[Field]](#field)
+- [#[Arg]](#arg)
 
 See below for more information about each attribute:
 
-### Mutation and query
+### #[Mutation] and #[Query]
 
 Mutations and queries can be defined with `#[Mutation]` and `#[Query]`. In order to configure your class as mutation or
 query, just add these attributes on class level:
@@ -72,7 +72,7 @@ Both `#[Mutation]` and `#[Query]` attribute can be configured:
 | `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 | `deprecationReason` | If set, deprecates the mutation or query                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                          |
 
-### InputType
+### #[InputType]
 
 Input types can be defined with `#[InputType]`.
 In order to configure your class as input type, just add this attribute on class level:
@@ -118,7 +118,7 @@ options).
 | `name`        | Set custom name of input type (instead of based on class)         |
 | `description` | Set description of the input type, readable in the GraphQL schema |
 
-### Type
+### #[Type]
 
 Types can be defined with `#[Type]`.
 In order to configure your class as type, just add this attribute on class level:
@@ -176,7 +176,7 @@ options).
 | `name`        | Set custom name of type (instead of based on class)         |
 | `description` | Set description of the type, readable in the GraphQL schema |
 
-### Enum
+### #[Enum]
 
 Enums can be defined with `#[Enum]`.
 In order to configure your enum class as enum, just add this attribute on class level:
@@ -228,7 +228,7 @@ Each case in the `enum` type can be configured as well, with the `#[EnumValue]` 
 | `description`       | Set description of the enum case, readable in the GraphQL schema |
 | `deprecationReason` | If set, deprecates the case                                      |                                                                                                                                                                                                                                                                                                                                                          |
 
-### Field
+### #[Field]
 
 In `#[Type]` and `#[InputType]`, to define fields, the `#[Field]` attribute can be used.
 In order to configure any fields this can be set on constructor property (for `#[InputType]` or `#[Type]`) or
@@ -284,7 +284,7 @@ final readonly class YourInputType
 | `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 | `deprecationReason` | If set, deprecates the field (`#[Type]` only)                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                                                                                                          |
 
-### Arg
+### #[Arg]
 
 For `#[Mutation]`, `#[Query]` and `#[Type]` methods defined with `#[Field]`, input arguments are read
 automatically from the signature.
