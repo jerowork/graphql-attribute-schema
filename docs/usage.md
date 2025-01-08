@@ -14,6 +14,7 @@ The following attributes can be used:
     - [#[EnumValue]](#enum)
 - [#[Field]](#field)
 - [#[Arg]](#arg)
+- [#[Scalar]](#scalar)
 
 See below for more information about each attribute:
 
@@ -341,3 +342,55 @@ final readonly class YourType
 | `name`        | Set custom name of argument (instead of based on class)                                                                                                                                                                                                                                                                                                                                |
 | `description` | Set description of the argument, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                        |
 | `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+
+### #[Scalar]
+Webonyx/graphql-php supports 4 native scalar types:
+- string
+- integer
+- boolean
+- float
+
+Note: Scalar types can be used for input and output.
+
+You can create your own custom scalar types with the attribute `#[Scalar]`.
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
+use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
+
+#[Scalar]
+final readonly class CustomScalar implements ScalarType
+{
+    public static function serialize(mixed $value): string
+    {
+        // ...
+    }
+
+    public static function deserialize(string $value): mixed
+    {
+        // ...
+    }
+}
+```
+
+This custom scalar type can then be defined as type with option `type` within other attributes (e.g. `#[Field]`, `#[Mutation]`). 
+The `type` option can be omitted when using `alias` in `#[Scalar]`, see options section below.
+
+#### Requirements
+Custom scalar types:
+- must implement `ScalarType`.
+
+#### Options
+| Option        | Description                                                                       |
+|---------------|-----------------------------------------------------------------------------------|
+| `name`        | Set custom name of scalar type (instead of based on class)                        |
+| `description` | Set description of the scalar type, readable in the GraphQL schema                |
+| `alias`       | Map scalar type to another class, which removes the need to use the `type` option |
+
+#### Custom ScalarType: DateTimeImmutable
+*GraphQL Attribute Schema* already has a custom scalar type built-in: [DateTimeType](../src/Type/DateTimeType.php).
+
+With this custom type, `DateTimeImmutable` can be used out-of-the-box (without any `type` option definition).
+
+When building the `Parser` with the `ParserFactory`, this custom scalar type is already registered.
+If not, add `DateTimeType` as a `$customTypes` in the `Parser` construct. 
