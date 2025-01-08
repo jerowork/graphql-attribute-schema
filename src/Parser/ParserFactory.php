@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser;
 
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ScalarNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
@@ -33,6 +34,7 @@ final readonly class ParserFactory
                 new TypeNodeParser($classFieldNodesParser),
                 new MutationNodeParser($methodArgNodesParser),
                 new QueryNodeParser($methodArgNodesParser),
+                new ScalarNodeParser(),
             ],
             $customTypes,
         );

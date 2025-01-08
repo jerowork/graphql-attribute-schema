@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 
+use DateTime;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
@@ -13,6 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
@@ -21,6 +23,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ScalarNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\Parser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
@@ -29,6 +32,8 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusT
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\Baz;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateFoobarInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
+use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
 use PHPUnit\Framework\Attributes\Test;
@@ -56,8 +61,10 @@ final class ParserTest extends TestCase
                 new EnumNodeParser(),
                 new InputTypeNodeParser($classFieldNodesParser = new ClassFieldNodesParser($methodArgsNodeParser)),
                 new TypeNodeParser($classFieldNodesParser),
+                new ScalarNodeParser(),
             ],
             [
+                DateTimeType::class,
             ],
         );
     }
@@ -258,5 +265,20 @@ final class ParserTest extends TestCase
                 ],
             ),
         ], $ast->getNodesByNodeType(EnumNode::class));
+
+        self::assertEquals([
+            new ScalarNode(
+                TestScalarType::class,
+                'TestScalar',
+                null,
+                DateTime::class,
+            ),
+            new ScalarNode(
+                DateTimeType::class,
+                'DateTime',
+                'Date and time (ISO-8601)',
+                DateTimeImmutable::class,
+            ),
+        ], $ast->getNodesByNodeType(ScalarNode::class));
     }
 }

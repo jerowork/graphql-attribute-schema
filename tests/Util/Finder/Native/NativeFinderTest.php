@@ -43,6 +43,7 @@ final class NativeFinderTest extends TestCase
             'Doubles/FullFeatured/Type/FoobarType.php',
             'Doubles/FullFeatured/Type/Input/Baz.php',
             'Doubles/FullFeatured/Type/Input/MutateFoobarInputType.php',
+            'Doubles/FullFeatured/Type/Scalar/TestScalarType.php',
         ], $files);
     }
 }

@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\NodeParser;
@@ -25,6 +26,7 @@ final readonly class Parser
         Type::class,
         InputType::class,
         Enum::class,
+        Scalar::class,
     ];
 
     /**

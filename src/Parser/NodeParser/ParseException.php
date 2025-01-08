@@ -57,4 +57,9 @@ final class ParseException extends Exception
     {
         return new self(sprintf('Missing attribute %s on class %s', $attribute, $class));
     }
+
+    public static function missingImplements(string $class, string $implements): self
+    {
+        return new self(sprintf('Class %s does not implement %s', $class, $implements));
+    }
 }
