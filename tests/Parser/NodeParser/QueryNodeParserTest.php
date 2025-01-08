@@ -10,7 +10,9 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithNoMethods;
@@ -33,7 +35,10 @@ final class QueryNodeParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new QueryNodeParser(
-            new MethodArgNodesParser(),
+            new MethodArgumentNodesParser(
+                new AutowireNodeParser(),
+                new ArgNodeParser(),
+            ),
         );
     }
 

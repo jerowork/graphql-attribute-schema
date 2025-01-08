@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
@@ -36,6 +37,10 @@ final class FieldNodeTest extends TestCase
                     'name 2',
                     'b description',
                     'bPropertyName',
+                ),
+                new AutowireNode(
+                    stdClass::class,
+                    'service',
                 ),
             ],
             FieldNodeType::Method,

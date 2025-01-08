@@ -32,10 +32,13 @@ final readonly class SchemaBuilderFactory
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
             new TypeObjectTypeBuilder(
-                new FieldResolver([
-                    new ScalarTypeOutputChildResolver(),
-                    new EnumNodeOutputChildResolver(),
-                ]),
+                new FieldResolver(
+                    $container,
+                    [
+                        new ScalarTypeOutputChildResolver(),
+                        new EnumNodeOutputChildResolver(),
+                    ],
+                ),
             ),
             new CustomScalarObjectTypeBuilder(),
         ];

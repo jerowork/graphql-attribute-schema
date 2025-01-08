@@ -7,8 +7,10 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -31,7 +33,10 @@ final class ClassFieldNodesParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new ClassFieldNodesParser(
-            new MethodArgNodesParser(),
+            new MethodArgumentNodesParser(
+                new AutowireNodeParser(),
+                new ArgNodeParser(),
+            ),
         );
     }
 

@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\EnumObjectTypeBuilder;
@@ -41,10 +42,13 @@ final class TypeBuilderTest extends TestCase
         $objectTypeBuilders = [
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder(new FieldResolver([
-                new ScalarTypeOutputChildResolver(),
-                new EnumNodeOutputChildResolver(),
-            ])),
+            new TypeObjectTypeBuilder(new FieldResolver(
+                new TestContainer(),
+                [
+                    new ScalarTypeOutputChildResolver(),
+                    new EnumNodeOutputChildResolver(),
+                ],
+            )),
         ];
 
         $this->builder = new TypeBuilder($objectTypeBuilders);

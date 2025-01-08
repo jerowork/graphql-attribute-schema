@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use ReflectionClass;
 use Override;
 
@@ -21,7 +22,7 @@ final readonly class MutationNodeParser implements NodeParser
     private const string RESOLVER_SUFFIX = 'Mutation';
 
     public function __construct(
-        private MethodArgNodesParser $methodArgNodesParser,
+        private MethodArgumentNodesParser $methodArgumentNodesParser,
     ) {}
 
     #[Override]
@@ -42,11 +43,14 @@ final readonly class MutationNodeParser implements NodeParser
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
+        /** @var list<ArgNode> $argumentNodes */
+        $argumentNodes = $this->methodArgumentNodesParser->parse($method, false);
+
         return new MutationNode(
             $class->getName(),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
             $attribute->getDescription(),
-            $this->methodArgNodesParser->parse($method),
+            $argumentNodes,
             $type,
             $method->getName(),
             $attribute->deprecationReason,

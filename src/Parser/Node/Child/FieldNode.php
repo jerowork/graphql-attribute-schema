@@ -9,13 +9,17 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
+ * @phpstan-import-type AutowireNodePayload from AutowireNode
  * @phpstan-import-type TypePayload from Type
  *
  * @phpstan-type FieldNodePayload array{
  *     type: TypePayload,
  *     name: string,
  *     description: null|string,
- *     argNodes: list<ArgNodePayload>,
+ *     argumentNodes: list<array{
+ *          node: class-string<ArgNode|AutowireNode>,
+ *          payload: ArgNodePayload|AutowireNodePayload
+ *     }>,
  *     fieldType: string,
  *     methodName: null|string,
  *     propertyName: null|string,
@@ -27,13 +31,13 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 final readonly class FieldNode implements ArraySerializable
 {
     /**
-     * @param list<ArgNode> $argNodes
+     * @param list<ArgNode|AutowireNode> $argumentNodes
      */
     public function __construct(
         public Type $type,
         public string $name,
         public ?string $description,
-        public array $argNodes,
+        public array $argumentNodes,
         public FieldNodeType $fieldType,
         public ?string $methodName,
         public ?string $propertyName,
@@ -42,11 +46,19 @@ final readonly class FieldNode implements ArraySerializable
 
     public function toArray(): array
     {
+        $argumentNodes = [];
+        foreach ($this->argumentNodes as $argumentNode) {
+            $argumentNodes[] = [
+                'node' => $argumentNode::class,
+                'payload' => $argumentNode->toArray(),
+            ];
+        }
+
         return [
             'type' => $this->type->toArray(),
             'name' => $this->name,
             'description' => $this->description,
-            'argNodes' => array_map(fn($argNode) => $argNode->toArray(), $this->argNodes),
+            'argumentNodes' => $argumentNodes,
             'fieldType' => $this->fieldType->value,
             'methodName' => $this->methodName,
             'propertyName' => $this->propertyName,
@@ -56,11 +68,23 @@ final readonly class FieldNode implements ArraySerializable
 
     public static function fromArray(array $payload): FieldNode
     {
+        $argumentNodes = [];
+        foreach ($payload['argumentNodes'] as $argumentNode) {
+            $argumentPayload = $argumentNode['payload'];
+            if ($argumentNode['node'] === ArgNode::class) {
+                /** @var ArgNodePayload $argumentPayload */
+                $argumentNodes[] = ArgNode::fromArray($argumentPayload);
+            } else {
+                /** @var AutowireNodePayload $argumentPayload */
+                $argumentNodes[] = AutowireNode::fromArray($argumentPayload);
+            }
+        }
+
         return new self(
             Type::fromArray($payload['type']),
             $payload['name'],
             $payload['description'],
-            array_map(fn($argNodePayload) => ArgNode::fromArray($argNodePayload), $payload['argNodes']),
+            $argumentNodes,
             FieldNodeType::from($payload['fieldType']),
             $payload['methodName'],
             $payload['propertyName'],

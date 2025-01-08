@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
@@ -37,10 +38,13 @@ final class TypeObjectTypeBuilderTest extends TestCase
         parent::setUp();
 
         $this->builder = new TypeObjectTypeBuilder(
-            new FieldResolver([
-                new ScalarTypeOutputChildResolver(),
-                new EnumNodeOutputChildResolver(),
-            ]),
+            new FieldResolver(
+                new TestContainer(),
+                [
+                    new ScalarTypeOutputChildResolver(),
+                    new EnumNodeOutputChildResolver(),
+                ],
+            ),
         );
     }
 

@@ -9,7 +9,9 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithNoMethods;
@@ -33,7 +35,10 @@ final class MutationNodeParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new MutationNodeParser(
-            new MethodArgNodesParser(),
+            new MethodArgumentNodesParser(
+                new AutowireNodeParser(),
+                new ArgNodeParser(),
+            ),
         );
     }
 

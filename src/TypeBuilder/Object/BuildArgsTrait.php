@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 
@@ -21,11 +22,15 @@ trait BuildArgsTrait
     public function buildArgs(FieldNode $fieldNode, TypeBuilder $typeBuilder, Ast $ast): array
     {
         $args = [];
-        foreach ($fieldNode->argNodes as $argNode) {
+        foreach ($fieldNode->argumentNodes as $argumentNode) {
+            if (!$argumentNode instanceof ArgNode) {
+                continue;
+            }
+
             $args[] = [
-                'name' => $argNode->name,
-                'type' => $typeBuilder->build($argNode->type, $ast),
-                'description' => $argNode->description,
+                'name' => $argumentNode->name,
+                'type' => $typeBuilder->build($argumentNode->type, $ast),
+                'description' => $argumentNode->description,
             ];
         }
 

@@ -11,6 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestResolvableType;
@@ -35,10 +36,13 @@ final class FieldResolverTest extends TestCase
     {
         parent::setUp();
 
-        $this->fieldResolver = new FieldResolver([
-            new ScalarTypeOutputChildResolver(),
-            new EnumNodeOutputChildResolver(),
-        ]);
+        $this->fieldResolver = new FieldResolver(
+            new TestContainer(),
+            [
+                new ScalarTypeOutputChildResolver(),
+                new EnumNodeOutputChildResolver(),
+            ],
+        );
     }
 
     #[Test]

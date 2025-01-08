@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\OutputChildResolver;
+use Psr\Container\ContainerInterface;
 
 final readonly class FieldResolver
 {
@@ -15,6 +17,7 @@ final readonly class FieldResolver
      * @param iterable<OutputChildResolver> $outputResolvers
      */
     public function __construct(
+        private ContainerInterface $container,
         private iterable $outputResolvers,
     ) {}
 
@@ -29,12 +32,20 @@ final readonly class FieldResolver
                 );
             }
 
+            $arguments = [];
+            foreach ($fieldNode->argumentNodes as $argumentNode) {
+                if ($argumentNode instanceof AutowireNode) {
+                    $arguments[] = $this->container->get($argumentNode->service);
+
+                    continue;
+                }
+
+                $arguments[] = $args[$argumentNode->name];
+            }
+
             return $this->resolveChild(
                 $fieldNode,
-                fn() => $object->{$fieldNode->methodName}(...array_map(
-                    fn($argNode) => $args[$argNode->name],
-                    $fieldNode->argNodes,
-                )),
+                fn() => $object->{$fieldNode->methodName}(...$arguments),
                 $ast,
             );
         };

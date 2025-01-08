@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use ReflectionClass;
 use Override;
 
@@ -21,7 +22,7 @@ final readonly class QueryNodeParser implements NodeParser
     private const string RESOLVER_SUFFIX = 'Query';
 
     public function __construct(
-        private MethodArgNodesParser $methodArgNodesParser,
+        private MethodArgumentNodesParser $methodArgumentNodesParser,
     ) {}
 
     #[Override]
@@ -42,11 +43,14 @@ final readonly class QueryNodeParser implements NodeParser
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
+        /** @var list<ArgNode> $argumentNodes */
+        $argumentNodes = $this->methodArgumentNodesParser->parse($method, false);
+
         return new QueryNode(
             $class->getName(),
             $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
             $attribute->getDescription(),
-            $this->methodArgNodesParser->parse($method),
+            $argumentNodes,
             $type,
             $method->getName(),
             $attribute->deprecationReason,

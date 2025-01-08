@@ -14,6 +14,7 @@ The following attributes can be used:
     - [#[EnumValue]](#enum)
 - [#[Field]](#field)
 - [#[Arg]](#arg)
+- [#[Autowire]](#autowire)
 - [#[Scalar]](#scalar)
 
 See below for more information about each attribute:
@@ -235,7 +236,8 @@ In `#[Type]` and `#[InputType]`, to define fields, the `#[Field]` attribute can 
 In order to configure any fields this can be set on constructor property (for `#[InputType]` or `#[Type]`) or
 on method (for `#[Type]` only).
 
-The advantage to set on methods for `#[Type]` is that the method can have input arguments as well (e.g. filtering).
+The advantage to set on methods for `#[Type]` is that the method can have input arguments as well (e.g. filtering,
+injected services).
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
@@ -343,8 +345,57 @@ final readonly class YourType
 | `description` | Set description of the argument, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                        |
 | `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 
+### #[Autowire]
+
+`#[Type]` objects are typically modeled like DTO's. They are often not defined in any DI container.
+Using other services inside a `#[Type]` is therefore not so easy.
+
+This is where `#[Autowire]` comes into play. `#[Type]` methods defined with `#[Field]` can inject services by parameter
+by autowiring, with `#[Autowire]`.
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+final readonly class YourType
+{
+    public function __construct(
+        ...
+    ) {}
+    
+    public function getFoobar(
+        int $filter,
+        #[Autowire]
+        SomeService $service,
+    ) {
+        // .. use injected $service
+    }
+}
+```
+
+#### Automatic schema creation
+
+Which service to inject, is automatically defined by the type of the parameter.
+This can be overwritten by the option `service`, see options section below.
+
+#### Requirements
+
+Autowired services:
+
+- must be retrievable from the container (`get()`); especially for Symfony users, these should be set to public (e.g.
+  with `#[Autoconfigure(public: true)]`),
+
+#### Options
+
+| Option    | Description                                                                     |
+|-----------|---------------------------------------------------------------------------------|
+| `service` | (optional) Set custom service identifier to retrieve from DI Container (PSR-11) |
+
 ### #[Scalar]
+
 Webonyx/graphql-php supports 4 native scalar types:
+
 - string
 - integer
 - boolean
@@ -373,14 +424,18 @@ final readonly class CustomScalar implements ScalarType
 }
 ```
 
-This custom scalar type can then be defined as type with option `type` within other attributes (e.g. `#[Field]`, `#[Mutation]`). 
+This custom scalar type can then be defined as type with option `type` within other attributes (e.g. `#[Field]`,
+`#[Mutation]`).
 The `type` option can be omitted when using `alias` in `#[Scalar]`, see options section below.
 
 #### Requirements
+
 Custom scalar types:
+
 - must implement `ScalarType`.
 
 #### Options
+
 | Option        | Description                                                                       |
 |---------------|-----------------------------------------------------------------------------------|
 | `name`        | Set custom name of scalar type (instead of based on class)                        |
@@ -388,6 +443,7 @@ Custom scalar types:
 | `alias`       | Map scalar type to another class, which removes the need to use the `type` option |
 
 #### Custom ScalarType: DateTimeImmutable
+
 *GraphQL Attribute Schema* already has a custom scalar type built-in: [DateTimeType](../src/Type/DateTimeType.php).
 
 With this custom type, `DateTimeImmutable` can be used out-of-the-box (without any `type` option definition).

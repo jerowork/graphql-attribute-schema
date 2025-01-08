@@ -22,7 +22,7 @@ final readonly class ClassFieldNodesParser
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
     public function __construct(
-        private MethodArgNodesParser $methodArgNodesParser,
+        private MethodArgumentNodesParser $methodArgNodesParser,
     ) {}
 
     /**

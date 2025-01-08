@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser;
 
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\CustomScalarNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
@@ -22,7 +24,10 @@ final readonly class ParserFactory
      */
     public static function create(string ...$customTypes): Parser
     {
-        $methodArgNodesParser = new MethodArgNodesParser();
+        $methodArgNodesParser = new MethodArgumentNodesParser(
+            new AutowireNodeParser(),
+            new ArgNodeParser(),
+        );
         $classFieldNodesParser = new ClassFieldNodesParser($methodArgNodesParser);
 
         return new Parser(

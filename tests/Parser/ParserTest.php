@@ -17,8 +17,10 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
@@ -56,7 +58,10 @@ final class ParserTest extends TestCase
             new NativeFinder(),
             new RoaveReflector(),
             [
-                new MutationNodeParser($methodArgsNodeParser = new MethodArgNodesParser()),
+                new MutationNodeParser($methodArgsNodeParser = new MethodArgumentNodesParser(
+                    new AutowireNodeParser(),
+                    new ArgNodeParser(),
+                )),
                 new QueryNodeParser($methodArgsNodeParser),
                 new EnumNodeParser(),
                 new InputTypeNodeParser($classFieldNodesParser = new ClassFieldNodesParser($methodArgsNodeParser)),
