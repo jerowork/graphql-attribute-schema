@@ -8,19 +8,19 @@ use GraphQL\Language\AST\StringValueNode;
 use GraphQL\Type\Definition\CustomScalarType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 
 /**
- * @implements ObjectTypeBuilder<ScalarNode>
+ * @implements ObjectTypeBuilder<CustomScalarNode>
  */
 final readonly class CustomScalarObjectTypeBuilder implements ObjectTypeBuilder
 {
     public function supports(Node $node): bool
     {
-        return $node instanceof ScalarNode;
+        return $node instanceof CustomScalarNode;
     }
 
     public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type

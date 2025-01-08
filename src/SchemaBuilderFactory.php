@@ -12,6 +12,10 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\TypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\EnumNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputTypeNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\ScalarTypeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use Psr\Container\ContainerInterface;
@@ -34,7 +38,15 @@ final readonly class SchemaBuilderFactory
         return new SchemaBuilder(
             new RootTypeBuilder(
                 new TypeBuilder($objectTypeBuilders),
-                new RootTypeResolver($container),
+                new RootTypeResolver(
+                    $container,
+                    [
+                        new ScalarTypeInputChildResolver(),
+                        new CustomScalarNodeInputChildResolver(),
+                        new EnumNodeInputChildResolver(),
+                        new InputTypeNodeInputChildResolver(),
+                    ],
+                ),
             ),
         );
     }

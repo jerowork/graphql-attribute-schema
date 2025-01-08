@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\CustomScalarType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -35,7 +35,7 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldSupportScalarNodeOnly(): void
     {
-        self::assertTrue($this->builder->supports(new ScalarNode(
+        self::assertTrue($this->builder->supports(new CustomScalarNode(
             TestScalarType::class,
             'enum',
             null,
@@ -54,7 +54,7 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
     public function itShouldBuildCustomScalarType(): void
     {
         $type = $this->builder->build(
-            new ScalarNode(
+            new CustomScalarNode(
                 TestScalarType::class,
                 'TestScalar',
                 null,

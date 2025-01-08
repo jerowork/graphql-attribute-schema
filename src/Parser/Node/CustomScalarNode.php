@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
 
 /**
- * @phpstan-type ScalarNodePayload array{
+ * @phpstan-type CustomScalarNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
  *     alias: null|class-string
  * }
  */
-final readonly class ScalarNode implements Node, AliasedNode
+final readonly class CustomScalarNode implements Node, AliasedNode
 {
     /**
      * @param class-string $className
@@ -36,7 +36,7 @@ final readonly class ScalarNode implements Node, AliasedNode
     }
 
     /**
-     * @return ScalarNodePayload
+     * @return CustomScalarNodePayload
      */
     public function toArray(): array
     {
@@ -49,9 +49,9 @@ final readonly class ScalarNode implements Node, AliasedNode
     }
 
     /**
-     * @param ScalarNodePayload $payload
+     * @param CustomScalarNodePayload $payload
      */
-    public static function fromArray(array $payload): ScalarNode
+    public static function fromArray(array $payload): CustomScalarNode
     {
         return new self(
             $payload['className'],

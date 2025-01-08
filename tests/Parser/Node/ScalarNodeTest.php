@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -18,13 +18,13 @@ final class ScalarNodeTest extends TestCase
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $scalarNode = new ScalarNode(
+        $scalarNode = new CustomScalarNode(
             TestScalarType::class,
             'name',
             'description',
             DateTimeImmutable::class,
         );
 
-        self::assertEquals(ScalarNode::fromArray($scalarNode->toArray()), $scalarNode);
+        self::assertEquals(CustomScalarNode::fromArray($scalarNode->toArray()), $scalarNode);
     }
 }

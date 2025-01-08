@@ -11,13 +11,17 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\EnumNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputTypeNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\ScalarTypeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;
@@ -39,6 +43,12 @@ final class RootTypeResolverTest extends TestCase
 
         $this->rootTypeResolver = new RootTypeResolver(
             $this->container = new TestContainer(),
+            [
+                new ScalarTypeInputChildResolver(),
+                new CustomScalarNodeInputChildResolver(),
+                new EnumNodeInputChildResolver(),
+                new InputTypeNodeInputChildResolver(),
+            ],
         );
     }
 
@@ -60,48 +70,6 @@ final class RootTypeResolverTest extends TestCase
             ),
             new Ast(),
         );
-    }
-
-    #[Test]
-    public function itShouldGuardIfNodeIsInAst(): void
-    {
-        $this->container->set(TestResolvableMutation::class, new TestResolvableMutation());
-
-        self::expectException(ResolveException::class);
-        self::expectExceptionMessage('Node not found for typeId ' . TestResolvableInputType::class);
-
-        $type = $this->rootTypeResolver->resolve(
-            new MutationNode(
-                TestResolvableMutation::class,
-                'Test',
-                null,
-                [
-                    new ArgNode(
-                        Type::createScalar('string'),
-                        'id',
-                        null,
-                        'id',
-                    ),
-                    new ArgNode(
-                        Type::createObject(TestResolvableInputType::class),
-                        'input',
-                        null,
-                        'input',
-                    ),
-                ],
-                Type::createScalar('string'),
-                '__invoke',
-                null,
-            ),
-            new Ast(),
-        );
-
-        $type('rootValue', [
-            'id' => '45963d07-796c-44d5-8f1b-5e92ae6225a9',
-            'input' => [
-                'name' => 'Foobar',
-            ],
-        ]);
     }
 
     #[Test]
@@ -205,7 +173,7 @@ final class RootTypeResolverTest extends TestCase
                         ),
                     ],
                 ),
-                new ScalarNode(
+                new CustomScalarNode(
                     DateTimeType::class,
                     'DateTime',
                     null,

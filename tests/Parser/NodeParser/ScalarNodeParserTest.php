@@ -6,13 +6,13 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestInvalidScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ScalarNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\CustomScalarNodeParser;
 use Override;
 use ReflectionClass;
 use DateTime;
@@ -22,14 +22,14 @@ use DateTime;
  */
 final class ScalarNodeParserTest extends TestCase
 {
-    private ScalarNodeParser $parser;
+    private CustomScalarNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new ScalarNodeParser();
+        $this->parser = new CustomScalarNodeParser();
     }
 
     #[Test]
@@ -52,7 +52,7 @@ final class ScalarNodeParserTest extends TestCase
     {
         $node = $this->parser->parse(new ReflectionClass(TestScalarType::class));
 
-        self::assertEquals(new ScalarNode(
+        self::assertEquals(new CustomScalarNode(
             TestScalarType::class,
             'TestScalar',
             null,

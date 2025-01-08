@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;
 
-final readonly class ScalarNodeParser implements NodeParser
+final readonly class CustomScalarNodeParser implements NodeParser
 {
     use GetClassAttributeTrait;
     use RetrieveNameForTypeTrait;
@@ -31,7 +31,7 @@ final readonly class ScalarNodeParser implements NodeParser
 
         $attribute = $this->getClassAttribute($class, Scalar::class);
 
-        return new ScalarNode(
+        return new CustomScalarNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),

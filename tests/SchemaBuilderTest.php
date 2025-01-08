@@ -16,6 +16,10 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\EnumNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputTypeNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\ScalarTypeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +42,15 @@ final class SchemaBuilderTest extends TestCase
         $this->schemaBuilder = new SchemaBuilder(
             new RootTypeBuilder(
                 new TypeBuilder([]),
-                new RootTypeResolver($this->container = new TestContainer()),
+                new RootTypeResolver(
+                    $this->container = new TestContainer(),
+                    [
+                        new ScalarTypeInputChildResolver(),
+                        new CustomScalarNodeInputChildResolver(),
+                        new EnumNodeInputChildResolver(),
+                        new InputTypeNodeInputChildResolver(),
+                    ],
+                ),
             ),
         );
     }
