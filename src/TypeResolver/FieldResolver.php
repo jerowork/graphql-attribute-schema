@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\OutputChildResolver;
 
 final readonly class FieldResolver
 {
+    /**
+     * @param iterable<OutputChildResolver> $outputResolvers
+     */
+    public function __construct(
+        private iterable $outputResolvers,
+    ) {}
+
     public function resolve(FieldNode $fieldNode, Ast $ast): callable
     {
         return function (object $object, array $args) use ($fieldNode, $ast) {
@@ -39,26 +45,15 @@ final readonly class FieldResolver
      */
     private function resolveChild(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
     {
-        if ($field->type->isScalar()) {
-            return $fieldCallback();
-        }
-
-        $node = $ast->getNodeByClassName($field->type->value);
-
-        if ($node instanceof EnumNode) {
-            if ($field->type->isList()) {
-                /** @var list<BackedEnum> $enums */
-                $enums = $fieldCallback();
-
-                return array_map(fn($enum) => $enum->value, $enums);
+        foreach ($this->outputResolvers as $outputResolver) {
+            if (!$outputResolver->supports($field, $ast)) {
+                continue;
             }
 
-            /** @var BackedEnum $enum */
-            $enum = $fieldCallback();
-
-            return $enum->value;
+            return $outputResolver->resolve($field, $fieldCallback, $ast);
         }
 
+        // Fallback
         return $fieldCallback();
     }
 }

@@ -16,6 +16,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\EnumNodeOutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\ScalarTypeOutputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -35,7 +37,10 @@ final class TypeObjectTypeBuilderTest extends TestCase
         parent::setUp();
 
         $this->builder = new TypeObjectTypeBuilder(
-            new FieldResolver(),
+            new FieldResolver([
+                new ScalarTypeOutputChildResolver(),
+                new EnumNodeOutputChildResolver(),
+            ]),
         );
     }
 

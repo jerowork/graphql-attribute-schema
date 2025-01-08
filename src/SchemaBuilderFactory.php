@@ -16,6 +16,8 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInp
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\EnumNodeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputTypeNodeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\ScalarTypeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\EnumNodeOutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\ScalarTypeOutputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use Psr\Container\ContainerInterface;
@@ -30,7 +32,10 @@ final readonly class SchemaBuilderFactory
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
             new TypeObjectTypeBuilder(
-                new FieldResolver(),
+                new FieldResolver([
+                    new ScalarTypeOutputChildResolver(),
+                    new EnumNodeOutputChildResolver(),
+                ]),
             ),
             new CustomScalarObjectTypeBuilder(),
         ];
