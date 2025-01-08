@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\CustomScalarObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\EnumObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\InputTypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
@@ -27,6 +28,7 @@ final readonly class SchemaBuilderFactory
             new TypeObjectTypeBuilder(
                 new FieldResolver(),
             ),
+            new CustomScalarObjectTypeBuilder(),
         ];
 
         return new SchemaBuilder(

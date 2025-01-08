@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
+use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;
@@ -136,6 +139,12 @@ final class RootTypeResolverTest extends TestCase
                         null,
                         'smallInputs',
                     ),
+                    new ArgNode(
+                        Type::createObject(DateTimeImmutable::class),
+                        'dateTime',
+                        null,
+                        'dateTime',
+                    ),
                 ],
                 Type::createScalar('string'),
                 '__invoke',
@@ -167,6 +176,16 @@ final class RootTypeResolverTest extends TestCase
                             'parentNames',
                             null,
                         ),
+                        new FieldNode(
+                            Type::createObject(DateTimeImmutable::class),
+                            'date',
+                            null,
+                            [],
+                            FieldNodeType::Property,
+                            null,
+                            'date',
+                            null,
+                        ),
                     ],
                 ),
                 new InputTypeNode(
@@ -186,6 +205,12 @@ final class RootTypeResolverTest extends TestCase
                         ),
                     ],
                 ),
+                new ScalarNode(
+                    DateTimeType::class,
+                    'DateTime',
+                    null,
+                    DateTimeImmutable::class,
+                ),
             ),
         );
 
@@ -196,6 +221,7 @@ final class RootTypeResolverTest extends TestCase
                 'input' => [
                     'name' => 'Foobar',
                     'parentNames' => ['John', 'Jane'],
+                    'date' => new DateTimeImmutable('2025-01-05 12:23:00'),
                 ],
                 'userIds' => ['1', '2', '3'],
                 'smallInputs' => [
@@ -203,6 +229,7 @@ final class RootTypeResolverTest extends TestCase
                     ['id' => '5'],
                     ['id' => '6'],
                 ],
+                'dateTime' => new DateTimeImmutable('2024-12-31 12:00:12'),
             ]),
         );
     }

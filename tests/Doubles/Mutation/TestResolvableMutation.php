@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
@@ -25,6 +26,7 @@ final readonly class TestResolvableMutation
         array $userIds,
         #[Arg(type: new ListType(TestSmallInputType::class))]
         array $smallInputs,
+        DateTimeImmutable $dateTime,
     ): string {
         return sprintf(
             'Mutation has been called with id %s and input with name %s, userIds: %s, parentNames: %s, smallInputs: %s',

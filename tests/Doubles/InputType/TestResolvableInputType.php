@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
+use DateTimeImmutable;
 
 #[InputType]
 final readonly class TestResolvableInputType
@@ -20,5 +21,7 @@ final readonly class TestResolvableInputType
         public string $name,
         #[Field(type: new ListType(ScalarType::String))]
         public array $parentNames,
+        #[Field]
+        public DateTimeImmutable $date,
     ) {}
 }

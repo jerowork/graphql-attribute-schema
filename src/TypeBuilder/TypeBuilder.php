@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 use GraphQL\Type\Definition\NullableType as WebonyxNullableType;
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
@@ -82,14 +83,20 @@ final class TypeBuilder
      */
     private function buildObject(string $className, Ast $ast): WebonyxType
     {
-        if (array_key_exists($className, $this->builtTypes)) {
-            return $this->builtTypes[$className];
-        }
-
         $node = $ast->getNodeByClassName($className);
 
         if ($node === null) {
             throw BuildException::logicError(sprintf('No node found for class: %s', $className));
+        }
+
+        if ($node instanceof AliasedNode && $node->getAlias() !== null) {
+            $nodeClassName = $node->getAlias();
+        } else {
+            $nodeClassName = $node->getClassName();
+        }
+
+        if (array_key_exists($nodeClassName, $this->builtTypes)) {
+            return $this->builtTypes[$nodeClassName];
         }
 
         foreach ($this->objectTypeBuilders as $objectTypeBuilder) {
@@ -97,11 +104,11 @@ final class TypeBuilder
                 continue;
             }
 
-            $this->builtTypes[$className] = $objectTypeBuilder->build($node, $this, $ast);
+            $this->builtTypes[$nodeClassName] = $objectTypeBuilder->build($node, $this, $ast);
 
-            return $this->builtTypes[$className];
+            return $this->builtTypes[$nodeClassName];
         }
 
-        throw BuildException::logicError(sprintf('Invalid object class %s', $className));
+        throw BuildException::logicError(sprintf('Invalid object class %s', $nodeClassName));
     }
 }

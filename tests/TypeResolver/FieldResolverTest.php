@@ -19,6 +19,7 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Override;
+use DateTimeImmutable;
 
 /**
  * @internal
@@ -49,7 +50,7 @@ final class FieldResolverTest extends TestCase
             null,
         ), new Ast());
 
-        self::assertSame('a name', $type(new TestResolvableInputType('a name', []), []));
+        self::assertSame('a name', $type(new TestResolvableInputType('a name', [], new DateTimeImmutable()), []));
     }
 
     #[Test]

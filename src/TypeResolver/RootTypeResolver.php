@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
@@ -55,6 +56,10 @@ final readonly class RootTypeResolver
 
         if ($node === null) {
             throw ResolveException::logicError(sprintf('Node not found for typeId %s', $child->type->value));
+        }
+
+        if ($node instanceof ScalarNode) {
+            return $args[$child->name];
         }
 
         if ($node instanceof EnumNode) {

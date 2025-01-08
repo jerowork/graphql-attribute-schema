@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser;
 
+use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 
@@ -43,6 +44,19 @@ final readonly class Ast implements ArraySerializable
     {
         foreach ($this->nodes as $node) {
             if ($node->getClassName() !== $className) {
+                continue;
+            }
+
+            return $node;
+        }
+
+        // Try to retrieve node by alias
+        foreach ($this->nodes as $node) {
+            if (!$node instanceof AliasedNode) {
+                continue;
+            }
+
+            if ($node->getAlias() !== $className) {
                 continue;
             }
 
