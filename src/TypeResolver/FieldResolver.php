@@ -40,7 +40,7 @@ final readonly class FieldResolver
                     continue;
                 }
 
-                $arguments[] = $args[$argumentNode->name];
+                $arguments[] = $args[$argumentNode->name] ?? null;
             }
 
             return $this->resolveField(
