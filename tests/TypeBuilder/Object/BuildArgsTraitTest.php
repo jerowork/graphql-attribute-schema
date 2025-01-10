@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\BuildArgsTrait;
@@ -29,18 +29,18 @@ final class BuildArgsTraitTest extends TestCase
 
         $args = $trait->buildArgs(
             new FieldNode(
-                Type::createScalar('string'),
+                ScalarNodeType::create('string'),
                 'name',
                 null,
                 [
                     new ArgNode(
-                        Type::createScalar('string'),
+                        ScalarNodeType::create('string'),
                         'arg1',
                         'Arg 1 description',
                         'arg1',
                     ),
                     new ArgNode(
-                        Type::createScalar('bool')->setNullableValue(),
+                        ScalarNodeType::create('bool')->setNullableValue(),
                         'arg2',
                         'Arg 2 description',
                         'arg2',

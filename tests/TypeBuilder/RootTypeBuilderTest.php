@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
@@ -61,13 +61,13 @@ final class RootTypeBuilderTest extends TestCase
                 'A mutation',
                 [
                     new ArgNode(
-                        Type::createScalar('int')->setNullableValue(),
+                        ScalarNodeType::create('int')->setNullableValue(),
                         'arg',
                         'An argument',
                         'arg',
                     ),
                 ],
-                Type::createScalar('string'),
+                ScalarNodeType::create('string'),
                 '__invoke',
                 null,
             ),

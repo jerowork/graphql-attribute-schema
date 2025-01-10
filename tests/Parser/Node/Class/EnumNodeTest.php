@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Class;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;

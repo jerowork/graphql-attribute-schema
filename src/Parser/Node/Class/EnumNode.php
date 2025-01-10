@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Class;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use BackedEnum;
 
 /**
  * @phpstan-import-type EnumValueNodePayload from EnumValueNode
  *
  * @phpstan-type EnumNodePayload array{
- *     className: class-string,
+ *     className: class-string<BackedEnum>,
  *     name: string,
  *     description: null|string,
  *     cases: list<EnumValueNodePayload>
@@ -19,7 +20,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 final readonly class EnumNode implements Node
 {
     /**
-     * @param class-string $className
+     * @param class-string<BackedEnum> $className
      * @param list<EnumValueNode> $cases
      */
     public function __construct(
@@ -29,6 +30,9 @@ final readonly class EnumNode implements Node
         public array $cases,
     ) {}
 
+    /**
+     * @return class-string<BackedEnum>
+     */
     public function getClassName(): string
     {
         return $this->className;

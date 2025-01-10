@@ -8,13 +8,14 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class CustomScalarNodeInputChildResolver implements InputChildResolver
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {
-        return $ast->getNodeByClassName($child->type->value) instanceof CustomScalarNode;
+        return $child->type instanceof ObjectNodeType && $ast->getNodeByClassName($child->type->className) instanceof CustomScalarNode;
     }
 
     public function resolve(FieldNode|ArgNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
@@ -55,13 +56,13 @@ final class MethodArgNodesParserTest extends TestCase
 
         self::assertEquals([
             new ArgNode(
-                Type::createObject(DateTimeImmutable::class),
+                ObjectNodeType::create(DateTimeImmutable::class),
                 'date',
                 null,
                 'date',
             ),
             new ArgNode(
-                Type::createScalar('string')->setNullableValue(),
+                ScalarNodeType::create('string')->setNullableValue(),
                 'mutationId',
                 'Mutation ID',
                 'id',

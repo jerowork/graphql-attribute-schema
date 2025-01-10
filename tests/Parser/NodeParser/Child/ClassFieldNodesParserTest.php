@@ -6,7 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
@@ -55,7 +56,7 @@ final class ClassFieldNodesParserTest extends TestCase
 
         self::assertEquals([
             new FieldNode(
-                Type::createScalar('string')->setNullableValue(),
+                ScalarNodeType::create('string')->setNullableValue(),
                 'typeId',
                 null,
                 [],
@@ -65,7 +66,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 null,
             ),
             new FieldNode(
-                Type::createObject(DateTimeImmutable::class),
+                ObjectNodeType::create(DateTimeImmutable::class),
                 'date',
                 null,
                 [],
@@ -75,7 +76,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 null,
             ),
             new FieldNode(
-                Type::createScalar('string')->setNullableValue(),
+                ScalarNodeType::create('string')->setNullableValue(),
                 'flow',
                 null,
                 [],
@@ -85,7 +86,7 @@ final class ClassFieldNodesParserTest extends TestCase
                 null,
             ),
             new FieldNode(
-                Type::createScalar('string'),
+                ScalarNodeType::create('string'),
                 'status',
                 null,
                 [],

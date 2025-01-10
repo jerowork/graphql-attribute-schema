@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\Attributes\Test;
@@ -51,7 +51,7 @@ final class EnumNodeOutputChildResolverTest extends TestCase
         );
 
         self::assertTrue($this->resolver->supports(new FieldNode(
-            Type::createObject(TestEnumType::class),
+            ObjectNodeType::create(TestEnumType::class),
             'TestEnum',
             null,
             [],
@@ -62,7 +62,7 @@ final class EnumNodeOutputChildResolverTest extends TestCase
         ), $ast));
 
         self::assertFalse($this->resolver->supports(new FieldNode(
-            Type::createObject(TestScalarType::class),
+            ObjectNodeType::create(TestScalarType::class),
             'TestScalar',
             null,
             [],
@@ -87,7 +87,7 @@ final class EnumNodeOutputChildResolverTest extends TestCase
 
         $output = $this->resolver->resolve(
             new FieldNode(
-                Type::createObject(TestEnumType::class),
+                ObjectNodeType::create(TestEnumType::class),
                 'TestEnum',
                 null,
                 [],
@@ -117,7 +117,7 @@ final class EnumNodeOutputChildResolverTest extends TestCase
 
         $output = $this->resolver->resolve(
             new FieldNode(
-                Type::createObject(TestEnumType::class)->setList(),
+                ObjectNodeType::create(TestEnumType::class)->setList(),
                 'TestEnum',
                 null,
                 [],

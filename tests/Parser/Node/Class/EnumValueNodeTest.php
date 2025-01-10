@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Class;
 
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;

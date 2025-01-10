@@ -11,8 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestAnotherEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
@@ -96,19 +97,19 @@ final class AstTest extends TestCase
                 'description',
                 [
                     new ArgNode(
-                        Type::createScalar('int'),
+                        ScalarNodeType::create('int'),
                         'name',
                         'a description',
                         'aPropertyName',
                     ),
                     new ArgNode(
-                        Type::createScalar('string'),
+                        ScalarNodeType::create('string'),
                         'name 2',
                         'b description',
                         'bPropertyName',
                     ),
                 ],
-                Type::createObject(TestType::class),
+                ObjectNodeType::create(TestType::class),
                 'method',
                 'deprecated',
             ),
@@ -118,19 +119,19 @@ final class AstTest extends TestCase
                 'description',
                 [
                     new ArgNode(
-                        Type::createScalar('int'),
+                        ScalarNodeType::create('int'),
                         'name',
                         'a description',
                         'aPropertyName',
                     ),
                     new ArgNode(
-                        Type::createScalar('string'),
+                        ScalarNodeType::create('string'),
                         'name 2',
                         'b description',
                         'bPropertyName',
                     ),
                 ],
-                Type::createObject(TestType::class),
+                ObjectNodeType::create(TestType::class),
                 'method',
                 'deprecated',
             ),

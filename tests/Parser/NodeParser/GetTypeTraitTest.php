@@ -8,7 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation())?->equals(Type::createScalar('string')->setNullableValue()));
+        self::assertTrue($trait->getType($type, new Mutation())?->equals(ScalarNodeType::create('string')->setNullableValue()));
     }
 
     #[Test]
@@ -52,7 +53,7 @@ final class GetTypeTraitTest extends TestCase
         $type = $parameters[0]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getType($type, new Mutation())?->equals(Type::createObject(DateTimeImmutable::class)));
+        self::assertTrue($trait->getType($type, new Mutation())?->equals(ObjectNodeType::create(DateTimeImmutable::class)));
     }
 
     #[Test]
@@ -70,7 +71,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: ScalarType::Int));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')));
     }
 
     #[Test]
@@ -88,7 +89,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: DateTime::class));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createObject(DateTime::class)));
+        self::assertTrue($nodeType?->equals(ObjectNodeType::create(DateTime::class)));
     }
 
     #[Test]
@@ -106,7 +107,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new NullableType(ScalarType::Int)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')->setNullableValue()));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')->setNullableValue()));
     }
 
     #[Test]
@@ -124,7 +125,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new NullableType(DateTime::class)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createObject(DateTime::class)->setNullableValue()));
+        self::assertTrue($nodeType?->equals(ObjectNodeType::create(DateTime::class)->setNullableValue()));
     }
 
     #[Test]
@@ -142,7 +143,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new ListType(ScalarType::Int)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')->setList()));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')->setList()));
     }
 
     #[Test]
@@ -160,7 +161,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new ListType(new NullableType(ScalarType::Int))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')->setList()->setNullableValue()));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')->setList()->setNullableValue()));
     }
 
     #[Test]
@@ -178,7 +179,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new NullableType(new ListType(ScalarType::Int))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')->setList()->setNullableList()));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')->setList()->setNullableList()));
     }
 
     #[Test]
@@ -196,7 +197,7 @@ final class GetTypeTraitTest extends TestCase
         $nodeType = $trait->getType($type, new Mutation(type: new NullableType(new ListType(new NullableType(ScalarType::Int)))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($nodeType?->equals(Type::createScalar('int')->setNullableValue()->setList()->setNullableList()));
+        self::assertTrue($nodeType?->equals(ScalarNodeType::create('int')->setNullableValue()->setList()->setNullableList()));
     }
 
     #[Test]

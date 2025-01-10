@@ -8,22 +8,29 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use BackedEnum;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class EnumNodeInputChildResolver implements InputChildResolver
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {
-        return $ast->getNodeByClassName($child->type->value) instanceof EnumNode;
+        return $child->type instanceof ObjectNodeType && $ast->getNodeByClassName($child->type->className) instanceof EnumNode;
     }
 
+    /**
+     * @throws ResolveException
+     */
     public function resolve(FieldNode|ArgNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
-        /** @var EnumNode $node */
-        $node = $ast->getNodeByClassName($child->type->value);
+        if (!$child->type instanceof ObjectNodeType) {
+            throw ResolveException::logicError('Child type must be an object type');
+        }
 
-        /** @var class-string<BackedEnum> $className */
+        /** @var EnumNode $node */
+        $node = $ast->getNodeByClassName($child->type->className);
+
         $className = $node->getClassName();
 
         if ($child->type->isList()) {

@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Class;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -28,18 +29,18 @@ final class TypeNodeTest extends TestCase
             'description',
             [
                 new FieldNode(
-                    Type::createObject(stdClass::class),
+                    ObjectNodeType::create(stdClass::class),
                     'name',
                     'description',
                     [
                         new ArgNode(
-                            Type::createScalar('int'),
+                            ScalarNodeType::create('int'),
                             'name',
                             'a description',
                             'aPropertyName',
                         ),
                         new ArgNode(
-                            Type::createScalar('string'),
+                            ScalarNodeType::create('string'),
                             'name 2',
                             'b description',
                             'bPropertyName',

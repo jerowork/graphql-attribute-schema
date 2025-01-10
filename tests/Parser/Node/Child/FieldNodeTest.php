@@ -8,7 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use stdClass;
@@ -22,18 +23,18 @@ final class FieldNodeTest extends TestCase
     public function itShouldSerializeAndDeserialize(): void
     {
         $fieldNode = new FieldNode(
-            Type::createObject(stdClass::class),
+            ObjectNodeType::create(stdClass::class),
             'name',
             'description',
             [
                 new ArgNode(
-                    Type::createScalar('int'),
+                    ScalarNodeType::create('int'),
                     'name',
                     'a description',
                     'aPropertyName',
                 ),
                 new ArgNode(
-                    Type::createScalar('string'),
+                    ScalarNodeType::create('string'),
                     'name 2',
                     'b description',
                     'bPropertyName',

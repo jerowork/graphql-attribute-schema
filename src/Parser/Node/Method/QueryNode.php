@@ -6,18 +6,20 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
- * @phpstan-import-type TypePayload from Type
  *
  * @phpstan-type QueryNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
  *     argNodes: list<ArgNodePayload>,
- *     outputType: TypePayload,
+ *     outputType: array{
+ *          type: class-string,
+ *          payload: array<string, mixed>
+ *     },
  *     methodName: string,
  *     deprecationReason: null|string
  * }
@@ -33,7 +35,7 @@ final readonly class QueryNode implements Node
         public string $name,
         public ?string $description,
         public array $argNodes,
-        public Type $outputType,
+        public NodeType $outputType,
         public string $methodName,
         public ?string $deprecationReason,
     ) {}
@@ -48,12 +50,16 @@ final readonly class QueryNode implements Node
      */
     public function toArray(): array
     {
+        // @phpstan-ignore-next-line
         return [
             'className' => $this->className,
             'name' => $this->name,
             'description' => $this->description,
             'argNodes' => array_map(fn($argNode) => $argNode->toArray(), $this->argNodes),
-            'outputType' => $this->outputType->toArray(),
+            'outputType' => [
+                'type' => $this->outputType::class,
+                'payload' => $this->outputType->toArray(),
+            ],
             'methodName' => $this->methodName,
             'deprecationReason' => $this->deprecationReason,
         ];
@@ -64,12 +70,15 @@ final readonly class QueryNode implements Node
      */
     public static function fromArray(array $payload): QueryNode
     {
+        /** @var class-string<NodeType> $type */
+        $type = $payload['outputType']['type'];
+
         return new self(
             $payload['className'],
             $payload['name'],
             $payload['description'],
             array_map(fn($argNodePayload) => ArgNode::fromArray($argNodePayload), $payload['argNodes']),
-            Type::fromArray($payload['outputType']),
+            $type::fromArray($payload['outputType']['payload']), // @phpstan-ignore-line
             $payload['methodName'],
             $payload['deprecationReason'],
         );

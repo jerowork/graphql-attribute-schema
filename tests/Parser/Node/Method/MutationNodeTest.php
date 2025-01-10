@@ -2,47 +2,48 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use PHPUnit\Framework\Attributes\Test;
 
 /**
  * @internal
  */
-final class QueryNodeTest extends TestCase
+final class MutationNodeTest extends TestCase
 {
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $queryNode = new QueryNode(
-            TestQuery::class,
+        $mutationNode = new MutationNode(
+            TestMutation::class,
             'name',
             'description',
             [
                 new ArgNode(
-                    Type::createScalar('int'),
+                    ScalarNodeType::create('int'),
                     'name',
                     'a description',
                     'aPropertyName',
                 ),
                 new ArgNode(
-                    Type::createScalar('string'),
+                    ScalarNodeType::create('string'),
                     'name 2',
                     'b description',
                     'bPropertyName',
                 ),
             ],
-            Type::createObject(TestType::class),
+            ObjectNodeType::create(TestType::class),
             'method',
             'deprecated',
         );
 
-        self::assertEquals(QueryNode::fromArray($queryNode->toArray()), $queryNode);
+        self::assertEquals(MutationNode::fromArray($mutationNode->toArray()), $mutationNode);
     }
 }

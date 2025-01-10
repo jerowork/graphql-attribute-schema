@@ -11,8 +11,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -76,12 +76,12 @@ final class TypeObjectTypeBuilderTest extends TestCase
                 'A description',
                 [
                     new FieldNode(
-                        Type::createScalar('string'),
+                        ScalarNodeType::create('string'),
                         'field',
                         'A field description',
                         [
                             new ArgNode(
-                                Type::createScalar('int')->setNullableValue(),
+                                ScalarNodeType::create('int')->setNullableValue(),
                                 'arg',
                                 'An argument',
                                 'arg',

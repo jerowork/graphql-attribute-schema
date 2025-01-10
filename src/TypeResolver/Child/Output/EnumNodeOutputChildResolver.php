@@ -8,17 +8,19 @@ use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ListableNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 
 final readonly class EnumNodeOutputChildResolver implements OutputChildResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool
     {
-        return $ast->getNodeByClassName($field->type->value) instanceof EnumNode;
+        return $field->type instanceof ObjectNodeType && $ast->getNodeByClassName($field->type->className) instanceof EnumNode;
     }
 
     public function resolve(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
     {
-        if ($field->type->isList()) {
+        if ($field->type instanceof ListableNodeType && $field->type->isList()) {
             /** @var list<BackedEnum> $enums */
             $enums = $fieldCallback();
 

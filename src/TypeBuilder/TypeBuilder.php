@@ -9,7 +9,9 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
 
 final class TypeBuilder
@@ -29,18 +31,16 @@ final class TypeBuilder
     /**
      * @throws BuildException
      */
-    public function build(Type $type, Ast $ast): WebonyxType
+    public function build(NodeType $type, Ast $ast): WebonyxType
     {
         $builtType = null;
 
-        if ($type->isScalar()) {
+        if ($type instanceof ScalarNodeType) {
             $builtType = $this->buildScalar($type->value);
         }
 
-        if ($type->isObject()) {
-            /** @var class-string $value */
-            $value = $type->value;
-            $builtType = $this->buildObject($value, $ast);
+        if ($type instanceof ObjectNodeType) {
+            $builtType = $this->buildObject($type->className, $ast);
         }
 
         if ($builtType === null) {

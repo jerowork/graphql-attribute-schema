@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use PHPUnit\Framework\Attributes\Test;
@@ -18,7 +18,7 @@ final class ArgNodeTest extends TestCase
     public function itShouldSerializeAndDeserialize(): void
     {
         $argNode = new ArgNode(
-            Type::createScalar('int'),
+            ScalarNodeType::create('int'),
             'name',
             'a description',
             'aPropertyName',

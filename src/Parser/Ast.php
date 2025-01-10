@@ -40,6 +40,9 @@ final readonly class Ast implements ArraySerializable
         return array_values(array_filter($this->nodes, fn($node) => $node instanceof $nodeType));
     }
 
+    /**
+     * @param class-string $className
+     */
     public function getNodeByClassName(string $className): ?Node
     {
         foreach ($this->nodes as $node) {

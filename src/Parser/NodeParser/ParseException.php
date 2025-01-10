@@ -67,4 +67,9 @@ final class ParseException extends Exception
     {
         return new self(sprintf('Class %s does not implement %s', $class, $implements));
     }
+
+    public static function invalidListTypeConfiguration(string $type): self
+    {
+        return new self(sprintf('Invalid list type configuration, %s cannot be a list type', $type));
+    }
 }

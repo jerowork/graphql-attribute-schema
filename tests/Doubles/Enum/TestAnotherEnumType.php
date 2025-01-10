@@ -7,4 +7,4 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 
 #[Enum]
-enum TestAnotherEnumType {}
+enum TestAnotherEnumType: string {}
