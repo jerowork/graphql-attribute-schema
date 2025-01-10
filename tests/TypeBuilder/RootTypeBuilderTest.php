@@ -18,10 +18,10 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -51,10 +51,10 @@ final class RootTypeBuilderTest extends TestCase
             new RootTypeResolver(
                 $this->container = new TestContainer(),
                 [
-                    new ScalarTypeInputChildResolver(),
-                    new CustomScalarNodeInputChildResolver(),
-                    new EnumNodeInputChildResolver(),
-                    new InputTypeNodeInputChildResolver(),
+                    new ScalarTypeInputFieldResolver(),
+                    new CustomScalarNodeInputFieldResolver(),
+                    new EnumNodeInputFieldResolver(),
+                    new InputTypeNodeInputFieldResolver(),
                 ],
             ),
         );

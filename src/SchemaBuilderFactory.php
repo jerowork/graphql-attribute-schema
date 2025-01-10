@@ -17,12 +17,12 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use Psr\Container\ContainerInterface;
@@ -40,8 +40,8 @@ final readonly class SchemaBuilderFactory
                 new FieldResolver(
                     $container,
                     [
-                        new ScalarTypeOutputChildResolver(),
-                        new EnumNodeOutputChildResolver(),
+                        new ScalarTypeOutputFieldResolver(),
+                        new EnumNodeOutputFieldResolver(),
                     ],
                 ),
             ),
@@ -60,10 +60,10 @@ final readonly class SchemaBuilderFactory
                 new RootTypeResolver(
                     $container,
                     [
-                        new ScalarTypeInputChildResolver(),
-                        new CustomScalarNodeInputChildResolver(),
-                        new EnumNodeInputChildResolver(),
-                        new InputTypeNodeInputChildResolver(),
+                        new ScalarTypeInputFieldResolver(),
+                        new CustomScalarNodeInputFieldResolver(),
+                        new EnumNodeInputFieldResolver(),
+                        new InputTypeNodeInputFieldResolver(),
                     ],
                 ),
             ),

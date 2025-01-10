@@ -14,7 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
 use Override;
 
 /**
@@ -22,14 +22,14 @@ use Override;
  */
 final class EnumNodeOutputChildResolverTest extends TestCase
 {
-    private EnumNodeOutputChildResolver $resolver;
+    private EnumNodeOutputFieldResolver $resolver;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->resolver = new EnumNodeOutputChildResolver();
+        $this->resolver = new EnumNodeOutputFieldResolver();
     }
 
     #[Test]

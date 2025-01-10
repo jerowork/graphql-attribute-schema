@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 
-interface OutputChildResolver
+interface OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool;
 

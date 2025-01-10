@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
-final readonly class InputTypeNodeInputChildResolver implements InputChildResolver
+final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolver
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {
@@ -39,7 +39,7 @@ final readonly class InputTypeNodeInputChildResolver implements InputChildResolv
 
             return array_map(
                 fn($item) => new $className(...array_map(
-                    fn($fieldNode) => $rootTypeResolver->resolveChild($fieldNode, $item, $ast),
+                    fn($fieldNode) => $rootTypeResolver->resolveField($fieldNode, $item, $ast),
                     $node->fieldNodes,
                 )),
                 $childArgs,
@@ -50,7 +50,7 @@ final readonly class InputTypeNodeInputChildResolver implements InputChildResolv
         $childArgs = $args[$child->name];
 
         return new $className(...array_map(
-            fn($fieldNode) => $rootTypeResolver->resolveChild($fieldNode, $childArgs, $ast),
+            fn($fieldNode) => $rootTypeResolver->resolveField($fieldNode, $childArgs, $ast),
             $node->fieldNodes,
         ));
     }

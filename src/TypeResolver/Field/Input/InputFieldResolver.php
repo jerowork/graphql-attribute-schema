@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
-interface InputChildResolver
+interface InputFieldResolver
 {
     public function supports(ArgNode|FieldNode $child, Ast $ast): bool;
 

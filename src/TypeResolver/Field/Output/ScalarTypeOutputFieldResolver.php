@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 
-final readonly class ScalarTypeOutputChildResolver implements OutputChildResolver
+final readonly class ScalarTypeOutputFieldResolver implements OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool
     {

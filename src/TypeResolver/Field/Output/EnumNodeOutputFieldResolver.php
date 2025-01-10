@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ListableNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 
-final readonly class EnumNodeOutputChildResolver implements OutputChildResolver
+final readonly class EnumNodeOutputFieldResolver implements OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool
     {

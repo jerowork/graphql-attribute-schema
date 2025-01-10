@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
-final readonly class EnumNodeInputChildResolver implements InputChildResolver
+final readonly class EnumNodeInputFieldResolver implements InputFieldResolver
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {

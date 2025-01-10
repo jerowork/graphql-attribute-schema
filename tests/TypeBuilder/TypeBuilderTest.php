@@ -23,8 +23,8 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -51,8 +51,8 @@ final class TypeBuilderTest extends TestCase
             new TypeObjectTypeBuilder(new FieldResolver(
                 new TestContainer(),
                 [
-                    new ScalarTypeOutputChildResolver(),
-                    new EnumNodeOutputChildResolver(),
+                    new ScalarTypeOutputFieldResolver(),
+                    new EnumNodeOutputFieldResolver(),
                 ],
             )),
         ];

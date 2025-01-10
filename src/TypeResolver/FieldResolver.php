@@ -8,13 +8,13 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputFieldResolver;
 use Psr\Container\ContainerInterface;
 
 final readonly class FieldResolver
 {
     /**
-     * @param iterable<OutputChildResolver> $outputResolvers
+     * @param iterable<OutputFieldResolver> $outputResolvers
      */
     public function __construct(
         private ContainerInterface $container,
@@ -25,7 +25,7 @@ final readonly class FieldResolver
     {
         return function (object $object, array $args) use ($fieldNode, $ast) {
             if ($fieldNode->fieldType === FieldNodeType::Property) {
-                return $this->resolveChild(
+                return $this->resolveField(
                     $fieldNode,
                     fn() => $object->{$fieldNode->propertyName},
                     $ast,
@@ -43,7 +43,7 @@ final readonly class FieldResolver
                 $arguments[] = $args[$argumentNode->name];
             }
 
-            return $this->resolveChild(
+            return $this->resolveField(
                 $fieldNode,
                 fn() => $object->{$fieldNode->methodName}(...$arguments),
                 $ast,
@@ -54,7 +54,7 @@ final readonly class FieldResolver
     /**
      * @throws ResolveException
      */
-    private function resolveChild(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
+    private function resolveField(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
     {
         foreach ($this->outputResolvers as $outputResolver) {
             if (!$outputResolver->supports($field, $ast)) {

@@ -9,17 +9,17 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputFieldResolver;
 use Psr\Container\ContainerInterface;
 
 final readonly class RootTypeResolver
 {
     /**
-     * @param iterable<InputChildResolver> $childResolvers
+     * @param iterable<InputFieldResolver> $inputResolvers
      */
     public function __construct(
         private ContainerInterface $container,
-        private iterable $childResolvers,
+        private iterable $inputResolvers,
     ) {}
 
     /**
@@ -35,7 +35,7 @@ final readonly class RootTypeResolver
             /** @var array<string, mixed> $args */
             return $this->container->get($node->getClassName())->{$node->methodName}(
                 ...array_map(
-                    fn($arg) => $this->resolveChild($arg, $args, $ast),
+                    fn($arg) => $this->resolveField($arg, $args, $ast),
                     $node->argNodes,
                 ),
             );
@@ -47,9 +47,9 @@ final readonly class RootTypeResolver
      *
      * @throws ResolveException
      */
-    public function resolveChild(ArgNode|FieldNode $child, array $args, Ast $ast): mixed
+    public function resolveField(ArgNode|FieldNode $child, array $args, Ast $ast): mixed
     {
-        foreach ($this->childResolvers as $resolver) {
+        foreach ($this->inputResolvers as $resolver) {
             if (!$resolver->supports($child, $ast)) {
                 continue;
             }

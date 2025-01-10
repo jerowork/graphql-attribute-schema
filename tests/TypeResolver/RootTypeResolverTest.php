@@ -19,10 +19,10 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputTy
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;
@@ -45,10 +45,10 @@ final class RootTypeResolverTest extends TestCase
         $this->rootTypeResolver = new RootTypeResolver(
             $this->container = new TestContainer(),
             [
-                new ScalarTypeInputChildResolver(),
-                new CustomScalarNodeInputChildResolver(),
-                new EnumNodeInputChildResolver(),
-                new InputTypeNodeInputChildResolver(),
+                new ScalarTypeInputFieldResolver(),
+                new CustomScalarNodeInputFieldResolver(),
+                new EnumNodeInputFieldResolver(),
+                new InputTypeNodeInputFieldResolver(),
             ],
         );
     }
