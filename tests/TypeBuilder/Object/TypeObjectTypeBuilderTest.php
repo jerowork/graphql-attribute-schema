@@ -16,6 +16,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\EnumNodeOutputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\ScalarTypeOutputChildResolver;
@@ -94,7 +95,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
                     ),
                 ],
             ),
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new Ast(),
         );
 

@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\CustomScalarObjectTypeBuilder;
@@ -60,7 +61,7 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
                 null,
                 DateTime::class,
             ),
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new Ast(),
         );
 

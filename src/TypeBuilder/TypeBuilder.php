@@ -14,18 +14,14 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
 
-final class TypeBuilder
+final readonly class TypeBuilder
 {
-    /**
-     * @var array<class-string, WebonyxType>
-     */
-    private array $builtTypes = [];
-
     /**
      * @param iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders
      */
     public function __construct(
-        private readonly iterable $objectTypeBuilders,
+        private BuiltTypesRegistry $builtTypesRegistry,
+        private iterable $objectTypeBuilders,
     ) {}
 
     /**
@@ -95,8 +91,8 @@ final class TypeBuilder
             $nodeClassName = $node->getClassName();
         }
 
-        if (array_key_exists($nodeClassName, $this->builtTypes)) {
-            return $this->builtTypes[$nodeClassName];
+        if ($this->builtTypesRegistry->hasType($nodeClassName)) {
+            return $this->builtTypesRegistry->getType($nodeClassName);
         }
 
         foreach ($this->objectTypeBuilders as $objectTypeBuilder) {
@@ -104,9 +100,11 @@ final class TypeBuilder
                 continue;
             }
 
-            $this->builtTypes[$nodeClassName] = $objectTypeBuilder->build($node, $this, $ast);
+            $builtType = $objectTypeBuilder->build($node, $this, $ast);
 
-            return $this->builtTypes[$nodeClassName];
+            $this->builtTypesRegistry->addType($nodeClassName, $builtType);
+
+            return $builtType;
         }
 
         throw BuildException::logicError(sprintf('Invalid object class %s', $nodeClassName));

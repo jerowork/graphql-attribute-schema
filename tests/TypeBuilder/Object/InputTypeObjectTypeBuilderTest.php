@@ -15,6 +15,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\InputTypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
@@ -82,7 +83,7 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
                     ),
                 ],
             ),
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new Ast(),
         );
 

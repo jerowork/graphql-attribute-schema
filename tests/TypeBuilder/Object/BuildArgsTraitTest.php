@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\BuildArgsTrait;
@@ -51,7 +52,7 @@ final class BuildArgsTraitTest extends TestCase
                 'name',
                 null,
             ),
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new Ast(),
         );
 

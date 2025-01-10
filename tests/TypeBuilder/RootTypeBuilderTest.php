@@ -11,6 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
@@ -36,7 +37,7 @@ final class RootTypeBuilderTest extends TestCase
         parent::setUp();
 
         $this->builder = new RootTypeBuilder(
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new RootTypeResolver(
                 $this->container = new TestContainer(),
                 [

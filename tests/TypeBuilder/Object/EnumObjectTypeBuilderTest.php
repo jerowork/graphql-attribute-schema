@@ -11,6 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -63,7 +64,7 @@ final class EnumObjectTypeBuilderTest extends TestCase
                     new EnumValueNode('closed', 'Case Closed', null),
                 ],
             ),
-            new TypeBuilder([]),
+            new TypeBuilder(new BuiltTypesRegistry(), []),
             new Ast(),
         );
 
