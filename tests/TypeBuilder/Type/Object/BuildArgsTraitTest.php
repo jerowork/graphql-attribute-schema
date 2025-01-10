@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
+namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\NodeType\Object;
 
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\BuildArgsTrait;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\BuildArgsTrait;
 use PHPUnit\Framework\Attributes\Test;
 
 /**
@@ -27,6 +31,12 @@ final class BuildArgsTraitTest extends TestCase
         $trait = new class {
             use BuildArgsTrait;
         };
+
+        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        $nodeTypeBuilders = [
+            new ScalarNodeTypeBuilder(),
+            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+        ];
 
         $args = $trait->buildArgs(
             new FieldNode(
@@ -52,7 +62,7 @@ final class BuildArgsTraitTest extends TestCase
                 'name',
                 null,
             ),
-            new TypeBuilder(new BuiltTypesRegistry(), []),
+            new TypeBuilder($nodeTypeBuilders),
             new Ast(),
         );
 

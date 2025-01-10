@@ -8,10 +8,14 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
@@ -36,8 +40,14 @@ final class RootTypeBuilderTest extends TestCase
     {
         parent::setUp();
 
+        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        $nodeTypeBuilders = [
+            new ScalarNodeTypeBuilder(),
+            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+        ];
+
         $this->builder = new RootTypeBuilder(
-            new TypeBuilder(new BuiltTypesRegistry(), []),
+            new TypeBuilder($nodeTypeBuilders),
             new RootTypeResolver(
                 $this->container = new TestContainer(),
                 [

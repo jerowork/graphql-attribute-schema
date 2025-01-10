@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\CustomScalarObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\EnumObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\InputTypeObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\TypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
@@ -44,12 +48,15 @@ final readonly class SchemaBuilderFactory
             new CustomScalarObjectTypeBuilder(),
         ];
 
+        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        $nodeTypeBuilders = [
+            new ScalarNodeTypeBuilder(),
+            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
+        ];
+
         return new SchemaBuilder(
             new RootTypeBuilder(
-                new TypeBuilder(
-                    new BuiltTypesRegistry(),
-                    $objectTypeBuilders,
-                ),
+                new TypeBuilder($nodeTypeBuilders),
                 new RootTypeResolver(
                     $container,
                     [

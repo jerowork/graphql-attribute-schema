@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Object;
+namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;

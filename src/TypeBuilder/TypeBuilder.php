@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
-use GraphQL\Type\Definition\NullableType as WebonyxNullableType;
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ListableNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\ObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
 
 final readonly class TypeBuilder
 {
     /**
-     * @param iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders
+     * @param iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders
      */
     public function __construct(
-        private BuiltTypesRegistry $builtTypesRegistry,
-        private iterable $objectTypeBuilders,
+        private iterable $nodeTypeBuilders,
     ) {}
 
     /**
@@ -31,12 +26,12 @@ final readonly class TypeBuilder
     {
         $builtType = null;
 
-        if ($type instanceof ScalarNodeType) {
-            $builtType = $this->buildScalar($type->value);
-        }
+        foreach ($this->nodeTypeBuilders as $nodeTypeBuilder) {
+            if (!$nodeTypeBuilder->supports($type)) {
+                continue;
+            }
 
-        if ($type instanceof ObjectNodeType) {
-            $builtType = $this->buildObject($type->className, $ast);
+            $builtType = $nodeTypeBuilder->build($type, $this, $ast);
         }
 
         if ($builtType === null) {
@@ -47,7 +42,7 @@ final readonly class TypeBuilder
             $builtType = WebonyxType::nonNull($builtType); // @phpstan-ignore-line
         }
 
-        if ($type->isList()) {
+        if ($type instanceof ListableNodeType && $type->isList()) {
             $builtType = WebonyxType::listOf($builtType);
 
             if (!$type->isListNullable()) {
@@ -56,57 +51,5 @@ final readonly class TypeBuilder
         }
 
         return $builtType;
-    }
-
-    /**
-     * @throws BuildException
-     */
-    private function buildScalar(string $type): WebonyxType&WebonyxNullableType
-    {
-        return match ($type) {
-            'string' => WebonyxType::string(),
-            'int' => WebonyxType::int(),
-            'float' => WebonyxType::float(),
-            'bool' => WebonyxType::boolean(),
-            default => throw BuildException::logicError(sprintf('Invalid type: %s', $type)),
-        };
-    }
-
-    /**
-     * @param class-string $className
-     *
-     * @throws BuildException
-     */
-    private function buildObject(string $className, Ast $ast): WebonyxType
-    {
-        $node = $ast->getNodeByClassName($className);
-
-        if ($node === null) {
-            throw BuildException::logicError(sprintf('No node found for class: %s', $className));
-        }
-
-        if ($node instanceof AliasedNode && $node->getAlias() !== null) {
-            $nodeClassName = $node->getAlias();
-        } else {
-            $nodeClassName = $node->getClassName();
-        }
-
-        if ($this->builtTypesRegistry->hasType($nodeClassName)) {
-            return $this->builtTypesRegistry->getType($nodeClassName);
-        }
-
-        foreach ($this->objectTypeBuilders as $objectTypeBuilder) {
-            if (!$objectTypeBuilder->supports($node)) {
-                continue;
-            }
-
-            $builtType = $objectTypeBuilder->build($node, $this, $ast);
-
-            $this->builtTypesRegistry->addType($nodeClassName, $builtType);
-
-            return $builtType;
-        }
-
-        throw BuildException::logicError(sprintf('Invalid object class %s', $nodeClassName));
     }
 }

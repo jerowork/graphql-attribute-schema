@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
+namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\NodeType\Object;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type as WebonyxType;
@@ -12,18 +12,22 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\EnumNodeOutputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\ScalarTypeOutputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\TypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
 use Override;
 
 /**
@@ -70,6 +74,12 @@ final class TypeObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildType(): void
     {
+        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        $nodeTypeBuilders = [
+            new ScalarNodeTypeBuilder(),
+            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+        ];
+
         $type = $this->builder->build(
             new TypeNode(
                 TestType::class,
@@ -95,7 +105,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
                     ),
                 ],
             ),
-            new TypeBuilder(new BuiltTypesRegistry(), []),
+            new TypeBuilder($nodeTypeBuilders),
             new Ast(),
         );
 

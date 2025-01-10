@@ -2,38 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Object;
+namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object;
 
-use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\InputObjectType;
+use GraphQL\Type\Definition\InputType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Override;
 
 /**
- * @implements ObjectTypeBuilder<TypeNode>
+ * @implements ObjectTypeBuilder<InputTypeNode>
  */
-final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
+final readonly class InputTypeObjectTypeBuilder implements ObjectTypeBuilder
 {
     use BuildArgsTrait;
-
-    public function __construct(
-        private FieldResolver $typeResolver,
-    ) {}
 
     #[Override]
     public function supports(Node $node): bool
     {
-        return $node instanceof TypeNode;
+        return $node instanceof InputTypeNode;
     }
 
     #[Override]
     public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
     {
-        return new ObjectType([
+        return new InputObjectType([
             'name' => $node->name,
             'description' => $node->description,
             'fields' => $this->buildFields($node, $typeBuilder, $ast),
@@ -41,35 +38,35 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
     }
 
     /**
+     * @throws BuildException
+     *
      * @return list<array{
      *     name: string,
-     *     type: Type,
+     *     type: InputType&Type,
      *     args: list<array{
      *         name: string,
      *         type: Type,
      *         description: null|string
-     *     }>,
-     *     resolve: callable
+     *     }>
      * }>
      */
-    private function buildFields(TypeNode $node, TypeBuilder $typeBuilder, Ast $ast): array
+    private function buildFields(InputTypeNode $node, TypeBuilder $typeBuilder, Ast $ast): array
     {
         $fields = [];
 
         foreach ($node->fieldNodes as $fieldNode) {
-            $field = [
-                'name' => $fieldNode->name,
-                'type' => $typeBuilder->build($fieldNode->type, $ast),
-                'description' => $fieldNode->description,
-                'args' => $this->buildArgs($fieldNode, $typeBuilder, $ast),
-                'resolve' => $this->typeResolver->resolve($fieldNode, $ast),
-            ];
+            $type = $typeBuilder->build($fieldNode->type, $ast);
 
-            if ($fieldNode->deprecationReason !== null) {
-                $field['deprecationReason'] = $fieldNode->deprecationReason;
+            if (!$type instanceof InputType) {
+                throw BuildException::invalidTypeForField($fieldNode->name, $type::class);
             }
 
-            $fields[] = $field;
+            $fields[] = [
+                'name' => $fieldNode->name,
+                'type' => $type,
+                'description' => $fieldNode->description,
+                'args' => $this->buildArgs($fieldNode, $typeBuilder, $ast),
+            ];
         }
 
         return $fields;

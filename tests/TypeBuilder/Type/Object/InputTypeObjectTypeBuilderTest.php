@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
+namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\NodeType\Object;
 
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type as WebonyxType;
@@ -12,11 +12,15 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Object\InputTypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -58,6 +62,12 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildType(): void
     {
+        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        $nodeTypeBuilders = [
+            new ScalarNodeTypeBuilder(),
+            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+        ];
+
         $type = $this->builder->build(
             new InputTypeNode(
                 TestType::class,
@@ -83,7 +93,7 @@ final class InputTypeObjectTypeBuilderTest extends TestCase
                     ),
                 ],
             ),
-            new TypeBuilder(new BuiltTypesRegistry(), []),
+            new TypeBuilder($nodeTypeBuilders),
             new Ast(),
         );
 
