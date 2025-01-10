@@ -2,39 +2,39 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Method;
 
-use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
-use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method\MutationMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithNoMethods;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidReturnType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Override;
+use ReflectionClass;
+use DateTimeImmutable;
 
 /**
  * @internal
  */
-final class QueryNodeParserTest extends TestCase
+final class MutationMethodNodeParserTest extends TestCase
 {
-    private QueryNodeParser $parser;
+    private MutationMethodNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new QueryNodeParser(
+        $this->parser = new MutationMethodNodeParser(
             new MethodArgumentNodesParser(
                 new AutowireNodeParser(),
                 new ArgNodeParser(),
@@ -43,9 +43,9 @@ final class QueryNodeParserTest extends TestCase
     }
 
     #[Test]
-    public function itShouldSupportQueryOnly(): void
+    public function itShouldSupportMutationOnly(): void
     {
-        self::assertTrue($this->parser->supports(Query::class));
+        self::assertTrue($this->parser->supports(Mutation::class));
         self::assertFalse($this->parser->supports(InputType::class));
     }
 
@@ -53,20 +53,24 @@ final class QueryNodeParserTest extends TestCase
     public function itShouldGuardThatMethodHasValidReturnType(): void
     {
         self::expectException(ParseException::class);
-        self::expectExceptionMessage('Missing method in class');
+        self::expectExceptionMessage('Invalid return type');
 
-        $this->parser->parse(new ReflectionClass(TestInvalidQueryWithNoMethods::class));
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
+
+        $this->parser->parse($class, $class->getMethod('mutation'));
     }
 
     #[Test]
     public function itShouldParseInputType(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestQuery::class));
+        $class = new ReflectionClass(TestMutation::class);
 
-        self::assertEquals(new QueryNode(
-            TestQuery::class,
-            'testQuery',
-            'Test query',
+        $node = $this->parser->parse($class, $class->getMethod('testMutation'));
+
+        self::assertEquals(new MutationNode(
+            TestMutation::class,
+            'testMutation',
+            'Test mutation',
             [
                 new ArgNode(
                     Type::createObject(DateTimeImmutable::class),
@@ -75,14 +79,14 @@ final class QueryNodeParserTest extends TestCase
                     'date',
                 ),
                 new ArgNode(
-                    Type::createScalar('string'),
-                    'id',
-                    null,
+                    Type::createScalar('string')->setNullableValue(),
+                    'mutationId',
+                    'Mutation ID',
                     'id',
                 ),
             ],
             Type::createScalar('string'),
-            '__invoke',
+            'testMutation',
             null,
         ), $node);
     }

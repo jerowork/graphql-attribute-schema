@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Object;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 use Override;

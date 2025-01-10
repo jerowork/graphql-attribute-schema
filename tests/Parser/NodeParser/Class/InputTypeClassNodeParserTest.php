@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
@@ -14,23 +14,23 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesP
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\InputTypeClassNodeParser;
 use Override;
 use ReflectionClass;
 
 /**
  * @internal
  */
-final class InputTypeNodeParserTest extends TestCase
+final class InputTypeClassNodeParserTest extends TestCase
 {
-    private InputTypeNodeParser $parser;
+    private InputTypeClassNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new InputTypeNodeParser(
+        $this->parser = new InputTypeClassNodeParser(
             new ClassFieldNodesParser(
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),

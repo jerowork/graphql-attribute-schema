@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
 use Override;
 
-final readonly class TypeNodeParser implements NodeParser
+final readonly class TypeClassNodeParser implements ClassNodeParser
 {
     use RetrieveNameForTypeTrait;
-    use GetClassAttributeTrait;
+    use GetAttributeTrait;
 
     public function __construct(
         private ClassFieldNodesParser $classFieldNodesParser,
@@ -29,7 +31,7 @@ final readonly class TypeNodeParser implements NodeParser
     #[Override]
     public function parse(ReflectionClass $class): Node
     {
-        $attribute = $this->getClassAttribute($class, Type::class);
+        $attribute = $this->getAttribute($class, Type::class);
 
         return new TypeNode(
             $class->getName(),

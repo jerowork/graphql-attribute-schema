@@ -31,7 +31,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -47,7 +47,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
@@ -63,7 +63,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -81,7 +81,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
@@ -99,7 +99,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -117,7 +117,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -135,7 +135,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -153,7 +153,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -171,7 +171,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
@@ -189,7 +189,7 @@ final class GetTypeTraitTest extends TestCase
         };
 
         $class = new ReflectionClass(TestMutation::class);
-        $methods = $class->getMethod('__invoke');
+        $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 

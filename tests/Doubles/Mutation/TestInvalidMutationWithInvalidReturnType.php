@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
 
-#[Mutation]
-final readonly class TestInvalidMutationWithNoReturnType
+final readonly class TestInvalidMutationWithInvalidReturnType
 {
-    public function __invoke(DateTimeImmutable $date, string $id): void {}
+    #[Mutation]
+    public function mutation(DateTimeImmutable $date, string $id): void {}
 }

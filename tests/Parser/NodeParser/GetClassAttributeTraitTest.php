@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetClassAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -23,12 +23,12 @@ final class GetClassAttributeTraitTest extends TestCase
     public function itShouldGuardMissingAttribute(): void
     {
         $trait = new class {
-            use GetClassAttributeTrait;
+            use GetAttributeTrait;
         };
 
         self::expectException(ParseException::class);
 
-        $trait->getClassAttribute(
+        $trait->getAttribute(
             new ReflectionClass(TestType::class),
             Enum::class,
         );
@@ -38,10 +38,10 @@ final class GetClassAttributeTraitTest extends TestCase
     public function itShouldGetAttributeFromClass(): void
     {
         $trait = new class {
-            use GetClassAttributeTrait;
+            use GetAttributeTrait;
         };
 
-        $type = $trait->getClassAttribute(
+        $type = $trait->getAttribute(
             new ReflectionClass(TestInputType::class),
             InputType::class,
         );

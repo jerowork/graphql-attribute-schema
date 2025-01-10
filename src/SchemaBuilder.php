@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Schema;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 
 final readonly class SchemaBuilder

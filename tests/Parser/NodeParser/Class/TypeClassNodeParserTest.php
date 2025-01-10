@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\TypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\TypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\TestCase;
@@ -25,16 +25,16 @@ use DateTimeImmutable;
 /**
  * @internal
  */
-final class TypeNodeParserTest extends TestCase
+final class TypeClassNodeParserTest extends TestCase
 {
-    private TypeNodeParser $parser;
+    private TypeClassNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new TypeNodeParser(
+        $this->parser = new TypeClassNodeParser(
             new ClassFieldNodesParser(
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),

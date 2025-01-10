@@ -7,27 +7,18 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser;
 use DateTime;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\CustomScalarNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\TypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Parser;
+use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\FoobarQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusType;
@@ -36,8 +27,6 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\Baz;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateFoobarInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
-use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
-use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Override;
@@ -54,24 +43,7 @@ final class ParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new Parser(
-            new NativeFinder(),
-            new RoaveReflector(),
-            [
-                new MutationNodeParser($methodArgsNodeParser = new MethodArgumentNodesParser(
-                    new AutowireNodeParser(),
-                    new ArgNodeParser(),
-                )),
-                new QueryNodeParser($methodArgsNodeParser),
-                new EnumNodeParser(),
-                new InputTypeNodeParser($classFieldNodesParser = new ClassFieldNodesParser($methodArgsNodeParser)),
-                new TypeNodeParser($classFieldNodesParser),
-                new CustomScalarNodeParser(),
-            ],
-            [
-                DateTimeType::class,
-            ],
-        );
+        $this->parser = ParserFactory::create();
     }
 
     #[Test]
@@ -82,7 +54,7 @@ final class ParserTest extends TestCase
         self::assertEquals([
             new MutationNode(
                 FoobarMutation::class,
-                'foobar',
+                'first',
                 'Mutate a foobar',
                 [
                     new ArgNode(
@@ -96,16 +68,32 @@ final class ParserTest extends TestCase
                 '__invoke',
                 null,
             ),
+            new MutationNode(
+                FoobarMutation::class,
+                'second',
+                'Mutate a second foobar',
+                [
+                    new ArgNode(
+                        Type::createScalar('string'),
+                        'value',
+                        null,
+                        'value',
+                    ),
+                ],
+                Type::createScalar('string'),
+                'second',
+                null,
+            ),
         ], $ast->getNodesByNodeType(MutationNode::class));
 
         self::assertEquals([
             new QueryNode(
                 FoobarQuery::class,
                 'getFoobar',
-                null,
+                'Get a Foobar',
                 [
                     new ArgNode(
-                        Type::createScalar('int'),
+                        Type::createScalar('int')->setNullableValue(),
                         'id',
                         null,
                         'id',
@@ -119,7 +107,7 @@ final class ParserTest extends TestCase
                     new ArgNode(
                         Type::createScalar('bool')->setList(),
                         'values',
-                        null,
+                        'List of values',
                         'values',
                     ),
                 ],

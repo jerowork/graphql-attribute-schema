@@ -10,7 +10,7 @@ final class ParseException extends Exception
 {
     public static function invalidReturnType(string $class, string $method): self
     {
-        return new self(sprintf('Invalid return type for Mutation %s:%s', $class, $method));
+        return new self(sprintf('Invalid return type %s:%s', $class, $method));
     }
 
     public static function invalidParameterType(string $parameter): self
@@ -58,9 +58,9 @@ final class ParseException extends Exception
         return new self(sprintf('Enum %s is not a BackedEnum', $class));
     }
 
-    public static function missingAttributeOnClass(string $class, string $attribute): self
+    public static function missingAttribute(string $reflector, string $attribute): self
     {
-        return new self(sprintf('Missing attribute %s on class %s', $attribute, $class));
+        return new self(sprintf('Missing attribute %s on %s', $attribute, $reflector));
     }
 
     public static function missingImplements(string $class, string $implements): self

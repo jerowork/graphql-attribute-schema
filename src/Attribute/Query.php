@@ -8,7 +8,7 @@ use Attribute;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 
-#[Attribute(Attribute::TARGET_CLASS)]
+#[Attribute(Attribute::TARGET_METHOD)]
 final readonly class Query implements BaseAttribute, TypedAttribute
 {
     /**

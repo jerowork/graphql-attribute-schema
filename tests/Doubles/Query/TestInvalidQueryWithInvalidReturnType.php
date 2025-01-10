@@ -6,5 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Query;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 
-#[Query]
-final readonly class TestInvalidQueryWithNoMethods {}
+final readonly class TestInvalidQueryWithInvalidReturnType
+{
+    #[Query]
+    public function __invoke(): void {}
+}

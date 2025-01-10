@@ -11,32 +11,39 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\NodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\ClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method\MethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Finder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Reflector;
 use Generator;
 use ReflectionClass;
+use ReflectionMethod;
 
 final readonly class Parser
 {
-    private const array SUPPORTED_ATTRIBUTES = [
-        Mutation::class,
-        Query::class,
+    private const array SUPPORTED_CLASS_ATTRIBUTES = [
         Type::class,
         InputType::class,
         Enum::class,
         Scalar::class,
     ];
 
+    private const array SUPPORTED_METHOD_ATTRIBUTES = [
+        Mutation::class,
+        Query::class,
+    ];
+
     /**
-     * @param iterable<NodeParser> $nodeParsers
+     * @param iterable<ClassNodeParser> $classNodeParsers
+     * @param iterable<MethodNodeParser> $methodNodeParsers
      * @param iterable<class-string> $customTypes
      */
     public function __construct(
         private Finder $finder,
         private Reflector $reflector,
-        private iterable $nodeParsers,
+        private iterable $classNodeParsers,
+        private iterable $methodNodeParsers,
         private iterable $customTypes,
     ) {}
 
@@ -48,20 +55,11 @@ final readonly class Parser
         $nodes = [];
 
         foreach ($this->getClasses(...$dirs) as $class) {
-            $node = $this->parseClass($class);
-
-            if ($node !== null) {
-                $nodes[] = $node;
-            }
+            $nodes = [...$nodes, ...$this->parseClass($class)];
         }
 
         foreach ($this->customTypes as $customType) {
-            $class = new ReflectionClass($customType);
-            $node = $this->parseClass($class);
-
-            if ($node !== null) {
-                $nodes[] = $node;
-            }
+            $nodes = [...$nodes, ...$this->parseClass(new ReflectionClass($customType))];
         }
 
         return new Ast(...$nodes);
@@ -71,24 +69,42 @@ final readonly class Parser
      * @param ReflectionClass<object> $class
      *
      * @throws ParseException
+     *
+     * @return Generator<Node>
      */
-    private function parseClass(ReflectionClass $class): ?Node
+    private function parseClass(ReflectionClass $class): Generator
     {
+        // Class attributes
         $attribute = $this->getSupportedAttribute($class);
 
-        if ($attribute === null) {
-            return null;
+        if ($attribute !== null) {
+            foreach ($this->classNodeParsers as $nodeParser) {
+                if (!$nodeParser->supports($attribute)) {
+                    continue;
+                }
+
+                yield $nodeParser->parse($class);
+
+                return null;
+            }
         }
 
-        foreach ($this->nodeParsers as $nodeParser) {
-            if (!$nodeParser->supports($attribute)) {
+        // Method attributes
+        foreach ($class->getMethods() as $method) {
+            $attribute = $this->getSupportedAttribute($method);
+
+            if ($attribute === null) {
                 continue;
             }
 
-            return $nodeParser->parse($class);
-        }
+            foreach ($this->methodNodeParsers as $nodeParser) {
+                if (!$nodeParser->supports($attribute)) {
+                    continue;
+                }
 
-        return null;
+                yield $nodeParser->parse($class, $method);
+            }
+        }
     }
 
     /**
@@ -102,14 +118,16 @@ final readonly class Parser
     }
 
     /**
-     * @param ReflectionClass<object> $class
+     * @param ReflectionClass<object>|ReflectionMethod $reflector
      *
      * @return class-string|null
      */
-    private function getSupportedAttribute(ReflectionClass $class): ?string
+    private function getSupportedAttribute(ReflectionClass|ReflectionMethod $reflector): ?string
     {
-        foreach (self::SUPPORTED_ATTRIBUTES as $attribute) {
-            if ($class->getAttributes($attribute) === []) {
+        $supportedAttributes = $reflector instanceof ReflectionClass ? self::SUPPORTED_CLASS_ATTRIBUTES : self::SUPPORTED_METHOD_ATTRIBUTES;
+
+        foreach ($supportedAttributes as $attribute) {
+            if ($reflector->getAttributes($attribute) === []) {
                 continue;
             }
 

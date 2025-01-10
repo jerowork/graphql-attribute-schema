@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
 use BackedEnum;
 use Override;
@@ -16,10 +19,10 @@ use ReflectionEnum;
 use ReflectionException;
 use UnitEnum;
 
-final readonly class EnumNodeParser implements NodeParser
+final readonly class EnumClassNodeParser implements ClassNodeParser
 {
     use RetrieveNameForTypeTrait;
-    use GetClassAttributeTrait;
+    use GetAttributeTrait;
 
     public function supports(string $attribute): bool
     {
@@ -43,7 +46,7 @@ final readonly class EnumNodeParser implements NodeParser
             throw ParseException::notABackedEnumClass($className);
         }
 
-        $attribute = $this->getClassAttribute($class, Enum::class);
+        $attribute = $this->getAttribute($class, Enum::class);
 
         /** @var ReflectionClass<UnitEnum> $class */
         return new EnumNode(

@@ -9,12 +9,12 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
 use DateTimeInterface;
 
-#[Mutation(description: 'Test mutation')]
 final readonly class TestMutation
 {
     public function __construct() {}
 
-    public function __invoke(
+    #[Mutation(description: 'Test mutation')]
+    public function testMutation(
         DateTimeImmutable $date,
         #[Arg(name: 'mutationId', description: 'Mutation ID')]
         ?string $id,

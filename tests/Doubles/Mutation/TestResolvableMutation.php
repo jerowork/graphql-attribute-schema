@@ -12,13 +12,13 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 
-#[Mutation]
 final readonly class TestResolvableMutation
 {
     /**
      * @param list<string> $userIds
      * @param list<TestSmallInputType> $smallInputs
      */
+    #[Mutation]
     public function __invoke(
         string $id,
         TestResolvableInputType $input,

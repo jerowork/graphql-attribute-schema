@@ -2,35 +2,35 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestInvalidEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\EnumClassNodeParser;
 use Override;
 use ReflectionClass;
 
 /**
  * @internal
  */
-final class EnumNodeParserTest extends TestCase
+final class EnumClassNodeParserTest extends TestCase
 {
-    private EnumNodeParser $parser;
+    private EnumClassNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new EnumNodeParser();
+        $this->parser = new EnumClassNodeParser();
     }
 
     #[Test]

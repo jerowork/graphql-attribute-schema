@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use PHPUnit\Framework\Attributes\Test;
 
 /**

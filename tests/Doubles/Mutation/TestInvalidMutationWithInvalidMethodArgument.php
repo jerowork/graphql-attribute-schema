@@ -7,10 +7,10 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
 
-#[Mutation(description: 'Test mutation')]
-final readonly class TesInvalidMutationWithInvalidMethodArgument
+final readonly class TestInvalidMutationWithInvalidMethodArgument
 {
     // @phpstan-ignore-next-line
+    #[Mutation(description: 'Test mutation')]
     public function __invoke(
         DateTimeImmutable $date,
         $id,

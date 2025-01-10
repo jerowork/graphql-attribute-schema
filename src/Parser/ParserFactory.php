@@ -8,22 +8,26 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\CustomScalarNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\EnumNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\InputTypeNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\MutationNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\QueryNodeParser;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\TypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\CustomScalarClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\EnumClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\InputTypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method\MutationMethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method\QueryMethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\TypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
 
 final readonly class ParserFactory
 {
     /**
-     * @param class-string ...$customTypes
+     * @param list<class-string> $customTypes
      */
-    public static function create(string ...$customTypes): Parser
-    {
+    public static function create(
+        array $customTypes = [
+            DateTimeType::class,
+        ],
+    ): Parser {
         $methodArgNodesParser = new MethodArgumentNodesParser(
             new AutowireNodeParser(),
             new ArgNodeParser(),
@@ -34,12 +38,14 @@ final readonly class ParserFactory
             new NativeFinder(),
             new RoaveReflector(),
             [
-                new EnumNodeParser(),
-                new InputTypeNodeParser($classFieldNodesParser),
-                new TypeNodeParser($classFieldNodesParser),
-                new MutationNodeParser($methodArgNodesParser),
-                new QueryNodeParser($methodArgNodesParser),
-                new CustomScalarNodeParser(),
+                new EnumClassNodeParser(),
+                new InputTypeClassNodeParser($classFieldNodesParser),
+                new TypeClassNodeParser($classFieldNodesParser),
+                new CustomScalarClassNodeParser(),
+            ],
+            [
+                new MutationMethodNodeParser($methodArgNodesParser),
+                new QueryMethodNodeParser($methodArgNodesParser),
             ],
             $customTypes,
         );

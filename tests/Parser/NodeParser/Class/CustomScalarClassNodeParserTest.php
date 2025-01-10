@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestInvalidScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\CustomScalarNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\CustomScalarClassNodeParser;
 use Override;
 use ReflectionClass;
 use DateTime;
@@ -20,16 +20,16 @@ use DateTime;
 /**
  * @internal
  */
-final class ScalarNodeParserTest extends TestCase
+final class CustomScalarClassNodeParserTest extends TestCase
 {
-    private CustomScalarNodeParser $parser;
+    private CustomScalarClassNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new CustomScalarNodeParser();
+        $this->parser = new CustomScalarClassNodeParser();
     }
 
     #[Test]

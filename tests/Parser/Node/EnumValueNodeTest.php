@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
 
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use PHPUnit\Framework\Attributes\Test;
 
 /**

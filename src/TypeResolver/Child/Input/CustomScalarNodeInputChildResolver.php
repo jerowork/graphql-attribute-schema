@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class CustomScalarNodeInputChildResolver implements InputChildResolver

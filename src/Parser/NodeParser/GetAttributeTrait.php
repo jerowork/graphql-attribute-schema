@@ -6,25 +6,26 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\BaseAttribute;
 use ReflectionClass;
+use ReflectionMethod;
 
-trait GetClassAttributeTrait
+trait GetAttributeTrait
 {
     /**
      * @template T of BaseAttribute
      *
-     * @param ReflectionClass<object> $class
+     * @param ReflectionClass<object>|ReflectionMethod $reflector
      * @param class-string<T> $attributeName
      *
      * @throws ParseException
      *
      * @return T
      */
-    public function getClassAttribute(ReflectionClass $class, string $attributeName): BaseAttribute
+    public function getAttribute(ReflectionClass|ReflectionMethod $reflector, string $attributeName): BaseAttribute
     {
-        $attributes = $class->getAttributes($attributeName);
+        $attributes = $reflector->getAttributes($attributeName);
 
         if ($attributes === []) {
-            throw ParseException::missingAttributeOnClass($class->getName(), $attributeName);
+            throw ParseException::missingAttribute($reflector->getName(), $attributeName);
         }
 
         return array_pop($attributes)->newInstance();

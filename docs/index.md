@@ -28,19 +28,19 @@ use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 
-#[Mutation]
 final readonly class CreateUserMutation
 {
-    public function __invoke(CreateUserInputType $input): User
+    #[Mutation]
+    public function createUser(CreateUserInputType $input): User
     {
         // Do your magic; create your user here and return
     }
 }
 
-#[Query(description: 'Get a user')]
 final readonly class UserQuery
 {
-    public function __invoke(int $userid): User
+    #[Query(description: 'Get a user')]
+    public function user(int $userid): User
     {
         // Do your magic; retrieve your user and return    
     }

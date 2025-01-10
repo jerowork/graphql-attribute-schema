@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Class;
+
+use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 
 /**
- * @phpstan-import-type EnumValueNodePayload from EnumValueNode
- *
- * @phpstan-type EnumNodePayload array{
+ * @phpstan-type CustomScalarNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
- *     cases: list<EnumValueNodePayload>
+ *     alias: null|class-string
  * }
  */
-final readonly class EnumNode implements Node
+final readonly class CustomScalarNode implements Node, AliasedNode
 {
     /**
      * @param class-string $className
-     * @param list<EnumValueNode> $cases
+     * @param class-string|null $alias
      */
     public function __construct(
         public string $className,
         public string $name,
         public ?string $description,
-        public array $cases,
+        public ?string $alias,
     ) {}
 
     public function getClassName(): string
@@ -32,8 +33,13 @@ final readonly class EnumNode implements Node
         return $this->className;
     }
 
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
     /**
-     * @return EnumNodePayload
+     * @return CustomScalarNodePayload
      */
     public function toArray(): array
     {
@@ -41,20 +47,20 @@ final readonly class EnumNode implements Node
             'className' => $this->className,
             'name' => $this->name,
             'description' => $this->description,
-            'cases' => array_map(fn($case) => $case->toArray(), $this->cases),
+            'alias' => $this->alias,
         ];
     }
 
     /**
-     * @param EnumNodePayload $payload
+     * @param CustomScalarNodePayload $payload
      */
-    public static function fromArray(array $payload): EnumNode
+    public static function fromArray(array $payload): CustomScalarNode
     {
         return new self(
             $payload['className'],
             $payload['name'],
             $payload['description'],
-            array_map(fn($casePayload) => EnumValueNode::fromArray($casePayload), $payload['cases']),
+            $payload['alias'],
         );
     }
 }

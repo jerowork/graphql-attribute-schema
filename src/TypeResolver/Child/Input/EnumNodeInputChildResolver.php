@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 

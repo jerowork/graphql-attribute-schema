@@ -2,24 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForResolverTrait;
 use ReflectionClass;
 use Override;
+use ReflectionMethod;
 
-final readonly class QueryNodeParser implements NodeParser
+final readonly class QueryMethodNodeParser implements MethodNodeParser
 {
     use RetrieveNameForResolverTrait;
-    use GetMethodFromClassTrait;
     use GetTypeTrait;
-    use GetClassAttributeTrait;
-
-    private const string RESOLVER_SUFFIX = 'Query';
+    use GetAttributeTrait;
 
     public function __construct(
         private MethodArgumentNodesParser $methodArgumentNodesParser,
@@ -32,10 +34,9 @@ final readonly class QueryNodeParser implements NodeParser
     }
 
     #[Override]
-    public function parse(ReflectionClass $class): Node
+    public function parse(ReflectionClass $class, ReflectionMethod $method): Node
     {
-        $method = $this->getMethodFromClass($class);
-        $attribute = $this->getClassAttribute($class, Query::class);
+        $attribute = $this->getAttribute($method, Query::class);
 
         $type = $this->getType($method->getReturnType(), $attribute);
 
@@ -48,7 +49,7 @@ final readonly class QueryNodeParser implements NodeParser
 
         return new QueryNode(
             $class->getName(),
-            $this->retrieveNameForResolver($class, $attribute, self::RESOLVER_SUFFIX),
+            $this->retrieveNameForResolver($method, $attribute),
             $attribute->getDescription(),
             $argumentNodes,
             $type,

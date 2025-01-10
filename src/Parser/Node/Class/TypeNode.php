@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Class;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 
 /**
  * @phpstan-import-type FieldNodePayload from FieldNode

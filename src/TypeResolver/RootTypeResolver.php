@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputChildResolver;
 use Psr\Container\ContainerInterface;
 

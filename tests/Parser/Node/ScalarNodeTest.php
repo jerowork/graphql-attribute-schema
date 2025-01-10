@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;

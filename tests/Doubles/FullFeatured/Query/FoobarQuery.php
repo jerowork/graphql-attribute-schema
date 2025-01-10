@@ -10,7 +10,6 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use DateTimeImmutable;
 
-#[Query(name: 'getFoobar', type: new ListType(ScalarType::String))]
 final readonly class FoobarQuery
 {
     /**
@@ -18,10 +17,11 @@ final readonly class FoobarQuery
      *
      * @return list<string>
      */
+    #[Query(name: 'getFoobar', description: 'Get a Foobar', type: new ListType(ScalarType::String))]
     public function __invoke(
-        int $id,
+        ?int $id,
         DateTimeImmutable $date,
-        #[Arg(type: new ListType(ScalarType::Bool))]
+        #[Arg(description: 'List of values', type: new ListType(ScalarType::Bool))]
         array $values,
     ): array {
         return [];

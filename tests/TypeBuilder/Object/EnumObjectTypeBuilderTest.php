@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Object;
 
 use GraphQL\Type\Definition\EnumType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;

@@ -2,17 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
+namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;
 
-final readonly class CustomScalarNodeParser implements NodeParser
+final readonly class CustomScalarClassNodeParser implements ClassNodeParser
 {
-    use GetClassAttributeTrait;
+    use GetAttributeTrait;
     use RetrieveNameForTypeTrait;
 
     public function supports(string $attribute): bool
@@ -29,7 +32,7 @@ final readonly class CustomScalarNodeParser implements NodeParser
             throw ParseException::missingImplements($class->getName(), ScalarType::class);
         }
 
-        $attribute = $this->getClassAttribute($class, Scalar::class);
+        $attribute = $this->getAttribute($class, Scalar::class);
 
         return new CustomScalarNode(
             $class->getName(),

@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForResolverTrait;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithNoMethods;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,38 +24,26 @@ final class RetrieveNameForResolverTraitTest extends TestCase
             use RetrieveNameForResolverTrait;
         };
 
+        $class = new ReflectionClass(TestMutation::class);
+
         self::assertSame('customName', $trait->retrieveNameForResolver(
-            new ReflectionClass(TestMutation::class),
+            $class->getMethod('testMutation'),
             new Mutation('customName'),
-            'Mutation',
         ));
     }
 
     #[Test]
-    public function itShouldRetrieveNameFromClass(): void
+    public function itShouldRetrieveNameFromMethod(): void
     {
         $trait = new class {
             use RetrieveNameForResolverTrait;
         };
 
-        self::assertSame('testInvalidMutationWithNoMethods', $trait->retrieveNameForResolver(
-            new ReflectionClass(TestInvalidMutationWithNoMethods::class),
-            new Mutation(),
-            'Mutation',
-        ));
-    }
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
 
-    #[Test]
-    public function itShouldRetrieveNameFromClassAndRemoveSuffix(): void
-    {
-        $trait = new class {
-            use RetrieveNameForResolverTrait;
-        };
-
-        self::assertSame('test', $trait->retrieveNameForResolver(
-            new ReflectionClass(TestMutation::class),
+        self::assertSame('mutation', $trait->retrieveNameForResolver(
+            $class->getMethod('mutation'),
             new Mutation(),
-            'Mutation',
         ));
     }
 }

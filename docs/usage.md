@@ -22,35 +22,35 @@ See below for more information about each attribute:
 ### #[Mutation] and #[Query]
 
 Mutations and queries can be defined with `#[Mutation]` and `#[Query]`. In order to configure your class as mutation or
-query, just add these attributes on class level:
+query, just add these attributes on method level:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 
-#[Mutation]
 final readonly YourMutation
 {
-    public function __invoke(SomeInputType $input): OutputType {}
+    #[Mutation]
+    public function mutationName(SomeInputType $input): OutputType {}
 }
 
-#[Query]
 final readonly YourQuery
 {
-    public function __invoke(string $id, int $status) : string {}
+    #[Query]
+    public function queryName(string $id, int $status) : string {}
 }
 ```
 
 #### Automatic schema creation
 
-*GraphQL Attribute Schema* will read the available public method's signature: input arguments and output type. These
+*GraphQL Attribute Schema* will read the available method's signature: input arguments and output type. These
 will be automatically configured in the schema (this can be overwritten by using `#[Arg]`, see [Arg](#arg) section).
 
 Input and output can be both scalars or objects.
 When using objects, make sure these are defined as well with `#[InputType]` for input or `#[Type]` for output.
 `#[Enum]` can be used for both input and output.
 
-Also, the name of the mutation or query will be automatically read from the class name (this can be overwritten, see
+Also, the name of the mutation or query will be automatically read from the method name (this can be overwritten, see
 options).
 
 #### Requirements
@@ -60,8 +60,7 @@ Mutations and queries:
 - must be in the namespace as defined at `Parser` creation (
   see [Getting started > Integration with webonyx/graphql-php](../docs/getting_started.md#integration-with-webonyxgraphql-php)),
 - must be retrievable from the container (`get()`); especially for Symfony users, these should be set to public (e.g.
-  with `#[Autoconfigure(public: true)]`),
-- must have only one *public* method (apart from `__construct`), which will be called on resolve.
+  with `#[Autoconfigure(public: true)]`).
 
 #### Options
 
@@ -69,7 +68,7 @@ Both `#[Mutation]` and `#[Query]` attribute can be configured:
 
 | Option              | Description                                                                                                                                                                                                                                                                                                                                                                            |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | Set custom name of mutation or query (instead of based on class)                                                                                                                                                                                                                                                                                                                       |
+| `name`              | Set custom name of mutation or query (instead of based on method)                                                                                                                                                                                                                                                                                                                      |
 | `description`       | Set description of the mutation or query, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                               |
 | `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
 | `deprecationReason` | If set, deprecates the mutation or query                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                          |

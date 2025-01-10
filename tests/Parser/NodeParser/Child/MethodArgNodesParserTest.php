@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TesInvalidMutationWithInvalidMethodArgument;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidMethodArgument;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ final class MethodArgNodesParserTest extends TestCase
     #[Test]
     public function itShouldGuardInvalidMethodArgType(): void
     {
-        $class = new ReflectionClass(TesInvalidMutationWithInvalidMethodArgument::class);
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidMethodArgument::class);
 
         self::expectException(ParseException::class);
 
@@ -51,7 +51,7 @@ final class MethodArgNodesParserTest extends TestCase
     {
         $class = new ReflectionClass(TestMutation::class);
 
-        $argNodes = $this->parser->parse($class->getMethod('__invoke'));
+        $argNodes = $this->parser->parse($class->getMethod('testMutation'));
 
         self::assertEquals([
             new ArgNode(
