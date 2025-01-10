@@ -19,10 +19,10 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputTy
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestResolvableMutation;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\CustomScalarNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\EnumNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputTypeNodeInputChildResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\ScalarTypeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputChildResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 use PHPUnit\Framework\Attributes\Test;

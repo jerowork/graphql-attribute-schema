@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output;
+namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output;
 
 use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;

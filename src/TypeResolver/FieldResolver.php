@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Output\OutputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputChildResolver;
 use Psr\Container\ContainerInterface;
 
 final readonly class FieldResolver

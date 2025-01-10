@@ -2,19 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input;
+namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
-final readonly class ScalarTypeInputChildResolver implements InputChildResolver
+final readonly class CustomScalarNodeInputChildResolver implements InputChildResolver
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {
-        return $child->type instanceof ScalarNodeType;
+        return $child->type instanceof ObjectNodeType && $ast->getNodeByClassName($child->type->className) instanceof CustomScalarNode;
     }
 
     public function resolve(FieldNode|ArgNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed

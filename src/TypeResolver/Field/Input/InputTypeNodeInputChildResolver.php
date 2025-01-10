@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input;
+namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
@@ -25,7 +25,7 @@ final readonly class InputTypeNodeInputChildResolver implements InputChildResolv
     public function resolve(FieldNode|ArgNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
         if (!$child->type instanceof ObjectNodeType) {
-            throw ResolveException::logicError('Child type must be an object type');
+            throw ResolveException::logicError('Node type must be an object type');
         }
 
         /** @var InputTypeNode $node */

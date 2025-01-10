@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Child\Input\InputChildResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputChildResolver;
 use Psr\Container\ContainerInterface;
 
 final readonly class RootTypeResolver
@@ -57,6 +57,6 @@ final readonly class RootTypeResolver
             return $resolver->resolve($child, $args, $ast, $this);
         }
 
-        throw ResolveException::logicError(sprintf('Child node %s cannot be handled', $child->name));
+        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $child->name));
     }
 }
