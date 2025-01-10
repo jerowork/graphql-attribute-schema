@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type;
 
 use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
@@ -28,10 +27,10 @@ final readonly class ScalarNodeTypeBuilder implements NodeTypeBuilder
     public function build(NodeType $type, TypeBuilder $typeBuilder, Ast $ast): Type
     {
         return match ($type->value) {
-            'string' => WebonyxType::string(),
-            'int' => WebonyxType::int(),
-            'float' => WebonyxType::float(),
-            'bool' => WebonyxType::boolean(),
+            'string' => Type::string(),
+            'int' => Type::int(),
+            'float' => Type::float(),
+            'bool' => Type::boolean(),
             default => throw BuildException::logicError(sprintf('Invalid type: %s', $type->value)),
         };
     }
