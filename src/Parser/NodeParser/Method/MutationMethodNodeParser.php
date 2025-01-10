@@ -12,14 +12,14 @@ use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesP
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForResolverTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use ReflectionClass;
 use Override;
 use ReflectionMethod;
 
 final readonly class MutationMethodNodeParser implements MethodNodeParser
 {
-    use RetrieveNameForResolverTrait;
+    use RetrieveNameForFieldTrait;
     use GetTypeTrait;
     use GetAttributeTrait;
 
@@ -49,7 +49,7 @@ final readonly class MutationMethodNodeParser implements MethodNodeParser
 
         return new MutationNode(
             $class->getName(),
-            $this->retrieveNameForResolver($method, $attribute),
+            $this->retrieveNameForField($method, $attribute),
             $attribute->getDescription(),
             $argumentNodes,
             $type,
