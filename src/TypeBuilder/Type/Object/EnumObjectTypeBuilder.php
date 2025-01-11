@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
@@ -24,7 +24,7 @@ final readonly class EnumObjectTypeBuilder implements ObjectTypeBuilder
     }
 
     #[Override]
-    public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Node $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         $values = [];
         foreach ($node->cases as $case) {

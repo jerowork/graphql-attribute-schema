@@ -16,28 +16,28 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Override;
 
 /**
  * @internal
  */
-final class TypeBuilderTest extends TestCase
+final class ExecutingTypeBuilderTest extends TestCase
 {
-    private TypeBuilder $builder;
+    private ExecutingTypeBuilder $builder;
 
     #[Override]
     protected function setUp(): void
@@ -57,13 +57,13 @@ final class TypeBuilderTest extends TestCase
             )),
         ];
 
-        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
-            new ScalarNodeTypeBuilder(),
-            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
+            new ScalarTypeBuilder(),
+            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
         ];
 
-        $this->builder = new TypeBuilder($nodeTypeBuilders);
+        $this->builder = new ExecutingTypeBuilder($nodeTypeBuilders);
     }
 
     #[Test]

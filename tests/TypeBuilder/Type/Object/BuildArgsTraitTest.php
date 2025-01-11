@@ -12,10 +12,10 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\BuildArgsTrait;
 use PHPUnit\Framework\Attributes\Test;
@@ -32,10 +32,10 @@ final class BuildArgsTraitTest extends TestCase
             use BuildArgsTrait;
         };
 
-        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
-            new ScalarNodeTypeBuilder(),
-            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+            new ScalarTypeBuilder(),
+            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), []),
         ];
 
         $args = $trait->buildArgs(
@@ -62,7 +62,7 @@ final class BuildArgsTraitTest extends TestCase
                 'name',
                 null,
             ),
-            new TypeBuilder($nodeTypeBuilders),
+            new ExecutingTypeBuilder($nodeTypeBuilders),
             new Ast(),
         );
 

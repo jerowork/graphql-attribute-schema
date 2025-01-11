@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use GraphQL\Type\Definition\Type;
 
 /**
@@ -22,5 +22,5 @@ interface ObjectTypeBuilder
      *
      * @throws BuildException
      */
-    public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type;
+    public function build(Node $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type;
 }

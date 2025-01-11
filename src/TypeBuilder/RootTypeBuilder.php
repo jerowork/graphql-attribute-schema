@@ -13,7 +13,7 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 final readonly class RootTypeBuilder
 {
     public function __construct(
-        private TypeBuilder $typeBuilder,
+        private ExecutingTypeBuilder $typeBuilder,
         private RootTypeResolver $rootTypeResolver,
     ) {}
 

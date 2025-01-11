@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
 trait BuildArgsTrait
 {
@@ -19,7 +19,7 @@ trait BuildArgsTrait
      *     description: null|string
      * }>
      */
-    public function buildArgs(FieldNode $fieldNode, TypeBuilder $typeBuilder, Ast $ast): array
+    public function buildArgs(FieldNode $fieldNode, ExecutingTypeBuilder $typeBuilder, Ast $ast): array
     {
         $args = [];
         foreach ($fieldNode->argumentNodes as $argumentNode) {

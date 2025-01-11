@@ -12,10 +12,10 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
 use PHPUnit\Framework\Attributes\Test;
@@ -58,10 +58,10 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildCustomScalarType(): void
     {
-        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
-            new ScalarNodeTypeBuilder(),
-            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+            new ScalarTypeBuilder(),
+            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), []),
         ];
 
         $type = $this->builder->build(
@@ -71,7 +71,7 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
                 null,
                 DateTime::class,
             ),
-            new TypeBuilder($nodeTypeBuilders),
+            new ExecutingTypeBuilder($nodeTypeBuilders),
             new Ast(),
         );
 

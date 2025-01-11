@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
@@ -28,7 +28,7 @@ final readonly class InputTypeObjectTypeBuilder implements ObjectTypeBuilder
     }
 
     #[Override]
-    public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Node $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         return new InputObjectType([
             'name' => $node->name,
@@ -50,7 +50,7 @@ final readonly class InputTypeObjectTypeBuilder implements ObjectTypeBuilder
      *     }>
      * }>
      */
-    private function buildFields(InputTypeNode $node, TypeBuilder $typeBuilder, Ast $ast): array
+    private function buildFields(InputTypeNode $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): array
     {
         $fields = [];
 

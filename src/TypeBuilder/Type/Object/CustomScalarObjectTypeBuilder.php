@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
@@ -26,7 +26,7 @@ final readonly class CustomScalarObjectTypeBuilder implements ObjectTypeBuilder
     }
 
     #[Override]
-    public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Node $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         /** @var ScalarType<mixed> $scalarType */
         $scalarType = $node->className;

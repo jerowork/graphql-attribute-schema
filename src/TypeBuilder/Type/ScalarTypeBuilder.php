@@ -9,13 +9,13 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
- * @implements NodeTypeBuilder<ScalarReference>
+ * @implements TypeBuilder<ScalarReference>
  */
-final readonly class ScalarNodeTypeBuilder implements NodeTypeBuilder
+final readonly class ScalarTypeBuilder implements TypeBuilder
 {
     #[Override]
     public function supports(Reference $reference): bool
@@ -24,7 +24,7 @@ final readonly class ScalarNodeTypeBuilder implements NodeTypeBuilder
     }
 
     #[Override]
-    public function build(Reference $reference, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Reference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         return match ($reference->value) {
             'string' => Type::string(),

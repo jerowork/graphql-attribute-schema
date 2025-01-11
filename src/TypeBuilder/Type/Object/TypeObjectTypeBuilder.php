@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Override;
@@ -31,7 +31,7 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
     }
 
     #[Override]
-    public function build(Node $node, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Node $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         return new ObjectType([
             'name' => $node->name,
@@ -52,7 +52,7 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
      *     resolve: callable
      * }>
      */
-    private function buildFields(TypeNode $node, TypeBuilder $typeBuilder, Ast $ast): array
+    private function buildFields(TypeNode $node, ExecutingTypeBuilder $typeBuilder, Ast $ast): array
     {
         $fields = [];
 

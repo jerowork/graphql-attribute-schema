@@ -8,15 +8,15 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ListableReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 
-final readonly class TypeBuilder
+final readonly class ExecutingTypeBuilder
 {
     /**
-     * @param iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders
+     * @param iterable<TypeBuilder<Reference>> $typeBuilders
      */
     public function __construct(
-        private iterable $nodeTypeBuilders,
+        private iterable $typeBuilders,
     ) {}
 
     /**
@@ -26,12 +26,12 @@ final readonly class TypeBuilder
     {
         $builtType = null;
 
-        foreach ($this->nodeTypeBuilders as $nodeTypeBuilder) {
-            if (!$nodeTypeBuilder->supports($reference)) {
+        foreach ($this->typeBuilders as $typeBuilder) {
+            if (!$typeBuilder->supports($reference)) {
                 continue;
             }
 
-            $builtType = $nodeTypeBuilder->build($reference, $this, $ast);
+            $builtType = $typeBuilder->build($reference, $this, $ast);
         }
 
         if ($builtType === null) {

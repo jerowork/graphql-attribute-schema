@@ -13,12 +13,12 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
 /**
- * @implements NodeTypeBuilder<ObjectReference>
+ * @implements TypeBuilder<ObjectReference>
  */
-final readonly class ObjectNodeTypeBuilder implements NodeTypeBuilder
+final readonly class ExecutingObjectTypeBuilder implements TypeBuilder
 {
     /**
      * @param iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders
@@ -33,7 +33,7 @@ final readonly class ObjectNodeTypeBuilder implements NodeTypeBuilder
         return $reference instanceof ObjectReference;
     }
 
-    public function build(Reference $reference, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Reference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         $node = $ast->getNodeByClassName($reference->className);
 

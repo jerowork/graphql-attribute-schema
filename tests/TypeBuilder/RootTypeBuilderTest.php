@@ -13,11 +13,11 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ObjectNodeTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarNodeTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
@@ -40,14 +40,14 @@ final class RootTypeBuilderTest extends TestCase
     {
         parent::setUp();
 
-        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
-            new ScalarNodeTypeBuilder(),
-            new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
+            new ScalarTypeBuilder(),
+            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), []),
         ];
 
         $this->builder = new RootTypeBuilder(
-            new TypeBuilder($nodeTypeBuilders),
+            new ExecutingTypeBuilder($nodeTypeBuilders),
             new RootTypeResolver(
                 $this->container = new TestContainer(),
                 [
