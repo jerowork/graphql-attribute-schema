@@ -8,8 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -29,18 +29,18 @@ final class InputTypeNodeTest extends TestCase
             'description',
             [
                 new FieldNode(
-                    ObjectNodeType::create(stdClass::class),
+                    ObjectReference::create(stdClass::class),
                     'name',
                     'description',
                     [
                         new ArgNode(
-                            ScalarNodeType::create('int'),
+                            ScalarReference::create('int'),
                             'name',
                             'a description',
                             'aPropertyName',
                         ),
                         new ArgNode(
-                            ScalarNodeType::create('string'),
+                            ScalarReference::create('string'),
                             'name 2',
                             'b description',
                             'bPropertyName',

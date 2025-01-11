@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArraySerializable;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 
 /**
  * @phpstan-type ArgNodePayload array{
- *     type: array{
- *         type: class-string<NodeType>,
+ *     reference: array{
+ *         type: class-string<Reference>,
  *         payload: array<string, mixed>
  *     },
  *     name: string,
@@ -23,7 +23,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
 final readonly class ArgNode implements ArraySerializable
 {
     public function __construct(
-        public NodeType $type,
+        public Reference $reference,
         public string $name,
         public ?string $description,
         public string $propertyName,
@@ -33,9 +33,9 @@ final readonly class ArgNode implements ArraySerializable
     {
         // @phpstan-ignore-next-line
         return [
-            'type' => [
-                'type' => $this->type::class,
-                'payload' => $this->type->toArray(),
+            'reference' => [
+                'type' => $this->reference::class,
+                'payload' => $this->reference->toArray(),
             ],
             'name' => $this->name,
             'description' => $this->description,
@@ -45,11 +45,11 @@ final readonly class ArgNode implements ArraySerializable
 
     public static function fromArray(array $payload): ArgNode
     {
-        /** @var class-string<NodeType> $type */
-        $type = $payload['type']['type'];
+        /** @var class-string<Reference> $reference */
+        $reference = $payload['reference']['type'];
 
         return new self(
-            $type::fromArray($payload['type']['payload']), // @phpstan-ignore-line
+            $reference::fromArray($payload['reference']['payload']), // @phpstan-ignore-line
             $payload['name'],
             $payload['description'],
             $payload['propertyName'],

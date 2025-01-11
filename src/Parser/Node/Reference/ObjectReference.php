@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
 
 /**
  * @phpstan-type ObjectNodeTypePayload array{
@@ -12,10 +12,10 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
  *     isListNullable: bool
  * }
  */
-final class ObjectNodeType implements ListableNodeType
+final class ObjectReference implements ListableReference
 {
-    use NodeTypeTrait;
-    use ListableNodeTypeTrait;
+    use ReferenceTrait;
+    use ListableReferenceTrait;
 
     /**
      * @param class-string $className
@@ -55,7 +55,7 @@ final class ObjectNodeType implements ListableNodeType
     /**
      * @param ObjectNodeTypePayload $payload
      */
-    public static function fromArray(array $payload): ObjectNodeType
+    public static function fromArray(array $payload): ObjectReference
     {
         return new self(
             $payload['className'],
@@ -65,7 +65,7 @@ final class ObjectNodeType implements ListableNodeType
         );
     }
 
-    public function equals(NodeType $type): bool
+    public function equals(Reference $type): bool
     {
         return $type instanceof self
             && $type->className === $this->className

@@ -8,15 +8,15 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 
 /**
- * @implements NodeTypeBuilder<ObjectNodeType>
+ * @implements NodeTypeBuilder<ObjectReference>
  */
 final readonly class ObjectNodeTypeBuilder implements NodeTypeBuilder
 {
@@ -28,17 +28,17 @@ final readonly class ObjectNodeTypeBuilder implements NodeTypeBuilder
         private iterable $objectTypeBuilders,
     ) {}
 
-    public function supports(NodeType $type): bool
+    public function supports(Reference $reference): bool
     {
-        return $type instanceof ObjectNodeType;
+        return $reference instanceof ObjectReference;
     }
 
-    public function build(NodeType $type, TypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(Reference $reference, TypeBuilder $typeBuilder, Ast $ast): Type
     {
-        $node = $ast->getNodeByClassName($type->className);
+        $node = $ast->getNodeByClassName($reference->className);
 
         if ($node === null) {
-            throw BuildException::logicError(sprintf('No node found for class: %s', $type->className));
+            throw BuildException::logicError(sprintf('No node found for class: %s', $reference->className));
         }
 
         if ($node instanceof AliasedNode && $node->getAlias() !== null) {

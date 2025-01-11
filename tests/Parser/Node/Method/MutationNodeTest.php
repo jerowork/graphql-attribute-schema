@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
@@ -27,19 +27,19 @@ final class MutationNodeTest extends TestCase
             'description',
             [
                 new ArgNode(
-                    ScalarNodeType::create('int'),
+                    ScalarReference::create('int'),
                     'name',
                     'a description',
                     'aPropertyName',
                 ),
                 new ArgNode(
-                    ScalarNodeType::create('string'),
+                    ScalarReference::create('string'),
                     'name 2',
                     'b description',
                     'bPropertyName',
                 ),
             ],
-            ObjectNodeType::create(TestType::class),
+            ObjectReference::create(TestType::class),
             'method',
             'deprecated',
         );

@@ -35,14 +35,14 @@ final readonly class RootTypeBuilder
         foreach ($node->argNodes as $argNode) {
             $args[] = [
                 'name' => $argNode->name,
-                'type' => $this->typeBuilder->build($argNode->type, $ast),
+                'type' => $this->typeBuilder->build($argNode->reference, $ast),
                 'description' => $argNode->description,
             ];
         }
 
         $root = [
             'name' => $node->name,
-            'type' => $this->typeBuilder->build($node->outputType, $ast),
+            'type' => $this->typeBuilder->build($node->outputReference, $ast),
             'description' => $node->description,
             'args' => $args,
             'resolve' => $this->rootTypeResolver->resolve($node, $ast),

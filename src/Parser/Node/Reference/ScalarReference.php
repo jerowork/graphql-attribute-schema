@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
 
 /**
  * @phpstan-type ScalarNodeTypePayload array{
@@ -12,10 +12,10 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
  *     isListNullable: bool
  * }
  */
-final class ScalarNodeType implements ListableNodeType
+final class ScalarReference implements ListableReference
 {
-    use NodeTypeTrait;
-    use ListableNodeTypeTrait;
+    use ReferenceTrait;
+    use ListableReferenceTrait;
 
     public function __construct(
         public readonly string $value,
@@ -49,7 +49,7 @@ final class ScalarNodeType implements ListableNodeType
     /**
      * @param ScalarNodeTypePayload $payload
      */
-    public static function fromArray(array $payload): ScalarNodeType
+    public static function fromArray(array $payload): ScalarReference
     {
         return new self(
             $payload['value'],
@@ -59,7 +59,7 @@ final class ScalarNodeType implements ListableNodeType
         );
     }
 
-    public function equals(NodeType $type): bool
+    public function equals(Reference $type): bool
     {
         return $type instanceof self
             && $type->value === $this->value

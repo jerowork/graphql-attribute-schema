@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Type;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Reference;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use stdClass;
@@ -12,12 +12,12 @@ use stdClass;
 /**
  * @internal
  */
-final class ObjectNodeTypeTest extends TestCase
+final class ObjectReferenceTest extends TestCase
 {
     #[Test]
     public function itShouldCreateBaseObject(): void
     {
-        $type = ObjectNodeType::create(stdClass::class);
+        $type = ObjectReference::create(stdClass::class);
 
         self::assertSame(stdClass::class, $type->className);
         self::assertFalse($type->isValueNullable());
@@ -28,7 +28,7 @@ final class ObjectNodeTypeTest extends TestCase
     #[Test]
     public function itShouldSetValueNullable(): void
     {
-        $type = ObjectNodeType::create(stdClass::class);
+        $type = ObjectReference::create(stdClass::class);
 
         self::assertFalse($type->isValueNullable());
 
@@ -40,7 +40,7 @@ final class ObjectNodeTypeTest extends TestCase
     #[Test]
     public function itShouldSetList(): void
     {
-        $type = ObjectNodeType::create(stdClass::class);
+        $type = ObjectReference::create(stdClass::class);
 
         self::assertFalse($type->isList());
 
@@ -52,7 +52,7 @@ final class ObjectNodeTypeTest extends TestCase
     #[Test]
     public function itShouldSetListNullable(): void
     {
-        $type = ObjectNodeType::create(stdClass::class);
+        $type = ObjectReference::create(stdClass::class);
 
         self::assertFalse($type->isListNullable());
 
@@ -64,11 +64,11 @@ final class ObjectNodeTypeTest extends TestCase
     #[Test]
     public function itShouldEqual(): void
     {
-        $type = ObjectNodeType::create(stdClass::class)->setList();
-        self::assertTrue($type->equals(ObjectNodeType::create(stdClass::class)->setList()));
+        $type = ObjectReference::create(stdClass::class)->setList();
+        self::assertTrue($type->equals(ObjectReference::create(stdClass::class)->setList()));
 
-        $type2 = ObjectNodeType::create(stdClass::class)->setList()->setNullableValue()->setNullableList();
-        self::assertTrue($type2->equals(ObjectNodeType::create(stdClass::class)->setList()->setNullableValue()->setNullableList()));
+        $type2 = ObjectReference::create(stdClass::class)->setList()->setNullableValue()->setNullableList();
+        self::assertTrue($type2->equals(ObjectReference::create(stdClass::class)->setList()->setNullableValue()->setNullableList()));
 
         self::assertFalse($type->equals($type2));
     }
@@ -76,10 +76,10 @@ final class ObjectNodeTypeTest extends TestCase
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $typeNode = ObjectNodeType::create(stdClass::class)
+        $typeNode = ObjectReference::create(stdClass::class)
             ->setList()
             ->setNullableList();
 
-        self::assertEquals(ObjectNodeType::fromArray($typeNode->toArray()), $typeNode);
+        self::assertEquals(ObjectReference::fromArray($typeNode->toArray()), $typeNode);
     }
 }

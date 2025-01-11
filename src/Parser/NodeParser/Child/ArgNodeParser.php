@@ -6,27 +6,27 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use ReflectionParameter;
 
 final readonly class ArgNodeParser
 {
-    use GetTypeTrait;
+    use GetReferenceTrait;
 
     /**
      * @throws ParseException
      */
     public function parse(ReflectionParameter $parameter, ?Arg $attribute): ArgNode
     {
-        $type = $this->getType($parameter->getType(), $attribute);
+        $reference = $this->getReference($parameter->getType(), $attribute);
 
-        if ($type === null) {
+        if ($reference === null) {
             throw ParseException::invalidParameterType($parameter->getName());
         }
 
         return new ArgNode(
-            $type,
+            $reference,
             $attribute->name ?? $parameter->getName(),
             $attribute?->description,
             $parameter->getName(),

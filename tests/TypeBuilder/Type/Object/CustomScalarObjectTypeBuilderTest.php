@@ -8,7 +8,7 @@ use GraphQL\Type\Definition\CustomScalarType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
@@ -58,7 +58,7 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildCustomScalarType(): void
     {
-        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarNodeTypeBuilder(),
             new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),

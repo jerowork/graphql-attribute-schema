@@ -6,24 +6,24 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\TypeBuilder;
 
 /**
- * @template T of NodeType
+ * @template T of Reference
  */
 interface NodeTypeBuilder
 {
     /**
-     * @param T $type
+     * @param T $reference
      */
-    public function supports(NodeType $type): bool;
+    public function supports(Reference $reference): bool;
 
     /**
-     * @param T $type
+     * @param T $reference
      *
      * @throws BuildException
      */
-    public function build(NodeType $type, TypeBuilder $typeBuilder, Ast $ast): Type;
+    public function build(Reference $reference, TypeBuilder $typeBuilder, Ast $ast): Type;
 }

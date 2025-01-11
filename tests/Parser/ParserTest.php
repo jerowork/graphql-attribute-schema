@@ -16,8 +16,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Parser;
 use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
@@ -59,13 +59,13 @@ final class ParserTest extends TestCase
                 'Mutate a foobar',
                 [
                     new ArgNode(
-                        ObjectNodeType::create(MutateFoobarInputType::class),
+                        ObjectReference::create(MutateFoobarInputType::class),
                         'input',
                         null,
                         'input',
                     ),
                 ],
-                ObjectNodeType::create(FoobarType::class),
+                ObjectReference::create(FoobarType::class),
                 '__invoke',
                 null,
             ),
@@ -75,13 +75,13 @@ final class ParserTest extends TestCase
                 'Mutate a second foobar',
                 [
                     new ArgNode(
-                        ScalarNodeType::create('string'),
+                        ScalarReference::create('string'),
                         'value',
                         null,
                         'value',
                     ),
                 ],
-                ScalarNodeType::create('string'),
+                ScalarReference::create('string'),
                 'second',
                 null,
             ),
@@ -94,25 +94,25 @@ final class ParserTest extends TestCase
                 'Get a Foobar',
                 [
                     new ArgNode(
-                        ScalarNodeType::create('int')->setNullableValue(),
+                        ScalarReference::create('int')->setNullableValue(),
                         'id',
                         null,
                         'id',
                     ),
                     new ArgNode(
-                        ObjectNodeType::create(DateTimeImmutable::class),
+                        ObjectReference::create(DateTimeImmutable::class),
                         'date',
                         null,
                         'date',
                     ),
                     new ArgNode(
-                        ScalarNodeType::create('bool')->setList(),
+                        ScalarReference::create('bool')->setList(),
                         'values',
                         'List of values',
                         'values',
                     ),
                 ],
-                ScalarNodeType::create('string')->setList(),
+                ScalarReference::create('string')->setList(),
                 '__invoke',
                 null,
             ),
@@ -125,7 +125,7 @@ final class ParserTest extends TestCase
                 null,
                 [
                     new FieldNode(
-                        ScalarNodeType::create('string'),
+                        ScalarReference::create('string'),
                         'bazId',
                         'A baz ID',
                         [],
@@ -135,7 +135,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ObjectNodeType::create(FoobarStatusType::class),
+                        ObjectReference::create(FoobarStatusType::class),
                         'status',
                         null,
                         [],
@@ -152,7 +152,7 @@ final class ParserTest extends TestCase
                 null,
                 [
                     new FieldNode(
-                        ScalarNodeType::create('int'),
+                        ScalarReference::create('int'),
                         'id',
                         null,
                         [],
@@ -162,7 +162,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ScalarNodeType::create('string')->setNullableValue(),
+                        ScalarReference::create('string')->setNullableValue(),
                         'value',
                         null,
                         [],
@@ -172,7 +172,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ObjectNodeType::create(Baz::class),
+                        ObjectReference::create(Baz::class),
                         'baz',
                         null,
                         [],
@@ -182,7 +182,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ObjectNodeType::create(DateTimeImmutable::class)->setNullableValue(),
+                        ObjectReference::create(DateTimeImmutable::class)->setNullableValue(),
                         'date',
                         null,
                         [],
@@ -202,7 +202,7 @@ final class ParserTest extends TestCase
                 'A foobar',
                 [
                     new FieldNode(
-                        ScalarNodeType::create('string'),
+                        ScalarReference::create('string'),
                         'foobarId',
                         'A foobar ID',
                         [],
@@ -212,7 +212,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ObjectNodeType::create(FoobarStatusType::class)->setNullableValue(),
+                        ObjectReference::create(FoobarStatusType::class)->setNullableValue(),
                         'status',
                         null,
                         [],
@@ -222,18 +222,18 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ObjectNodeType::create(DateTimeImmutable::class)->setNullableValue(),
+                        ObjectReference::create(DateTimeImmutable::class)->setNullableValue(),
                         'date',
                         'A foobar date',
                         [
                             new ArgNode(
-                                ScalarNodeType::create('string'),
+                                ScalarReference::create('string'),
                                 'limiting',
                                 null,
                                 'limit',
                             ),
                             new ArgNode(
-                                ScalarNodeType::create('int')->setNullableValue(),
+                                ScalarReference::create('int')->setNullableValue(),
                                 'value',
                                 'The value',
                                 'value',

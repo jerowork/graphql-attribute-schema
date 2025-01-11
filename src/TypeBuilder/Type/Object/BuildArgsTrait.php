@@ -29,7 +29,7 @@ trait BuildArgsTrait
 
             $args[] = [
                 'name' => $argumentNode->name,
-                'type' => $typeBuilder->build($argumentNode->type, $ast),
+                'type' => $typeBuilder->build($argumentNode->reference, $ast),
                 'description' => $argumentNode->description,
             ];
         }

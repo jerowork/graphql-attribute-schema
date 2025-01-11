@@ -8,8 +8,8 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
@@ -40,7 +40,7 @@ final class RootTypeBuilderTest extends TestCase
     {
         parent::setUp();
 
-        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarNodeTypeBuilder(),
             new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
@@ -72,13 +72,13 @@ final class RootTypeBuilderTest extends TestCase
                 'A mutation',
                 [
                     new ArgNode(
-                        ScalarNodeType::create('int')->setNullableValue(),
+                        ScalarReference::create('int')->setNullableValue(),
                         'arg',
                         'An argument',
                         'arg',
                     ),
                 ],
-                ScalarNodeType::create('string'),
+                ScalarReference::create('string'),
                 '__invoke',
                 null,
             ),

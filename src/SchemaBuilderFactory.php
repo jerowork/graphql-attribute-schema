@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\NodeTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
@@ -48,7 +48,7 @@ final readonly class SchemaBuilderFactory
             new CustomScalarObjectTypeBuilder(),
         ];
 
-        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarNodeTypeBuilder(),
             new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),

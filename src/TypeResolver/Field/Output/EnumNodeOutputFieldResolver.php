@@ -8,19 +8,19 @@ use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ListableNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ListableReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 
 final readonly class EnumNodeOutputFieldResolver implements OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool
     {
-        return $field->type instanceof ObjectNodeType && $ast->getNodeByClassName($field->type->className) instanceof EnumNode;
+        return $field->reference instanceof ObjectReference && $ast->getNodeByClassName($field->reference->className) instanceof EnumNode;
     }
 
     public function resolve(FieldNode $field, callable $fieldCallback, Ast $ast): mixed
     {
-        if ($field->type instanceof ListableNodeType && $field->type->isList()) {
+        if ($field->reference instanceof ListableReference && $field->reference->isList()) {
             /** @var list<BackedEnum> $enums */
             $enums = $fieldCallback();
 

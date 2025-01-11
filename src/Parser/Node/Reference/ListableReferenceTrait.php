@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Type;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
 
-trait ListableNodeTypeTrait
+trait ListableReferenceTrait
 {
     protected bool $isList;
     protected bool $isListNullable;

@@ -12,8 +12,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -74,7 +74,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildType(): void
     {
-        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarNodeTypeBuilder(),
             new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), []),
@@ -87,12 +87,12 @@ final class TypeObjectTypeBuilderTest extends TestCase
                 'A description',
                 [
                     new FieldNode(
-                        ScalarNodeType::create('string'),
+                        ScalarReference::create('string'),
                         'field',
                         'A field description',
                         [
                             new ArgNode(
-                                ScalarNodeType::create('int')->setNullableValue(),
+                                ScalarReference::create('int')->setNullableValue(),
                                 'arg',
                                 'An argument',
                                 'arg',

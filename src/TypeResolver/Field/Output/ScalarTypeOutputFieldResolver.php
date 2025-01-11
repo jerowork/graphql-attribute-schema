@@ -6,13 +6,13 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 
 final readonly class ScalarTypeOutputFieldResolver implements OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool
     {
-        return $field->type instanceof ScalarNodeType;
+        return $field->reference instanceof ScalarReference;
     }
 
     public function resolve(FieldNode $field, callable $fieldCallback, Ast $ast): mixed

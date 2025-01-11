@@ -9,8 +9,8 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
@@ -63,7 +63,7 @@ final class TypeClassNodeParserTest extends TestCase
             'Test Type',
             [
                 new FieldNode(
-                    ScalarNodeType::create('string')->setNullableValue(),
+                    ScalarReference::create('string')->setNullableValue(),
                     'typeId',
                     null,
                     [],
@@ -73,7 +73,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ObjectNodeType::create(DateTimeImmutable::class),
+                    ObjectReference::create(DateTimeImmutable::class),
                     'date',
                     null,
                     [],
@@ -83,7 +83,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ScalarNodeType::create('string')->setNullableValue(),
+                    ScalarReference::create('string')->setNullableValue(),
                     'flow',
                     null,
                     [],
@@ -93,7 +93,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ScalarNodeType::create('string'),
+                    ScalarReference::create('string'),
                     'status',
                     null,
                     [],

@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
@@ -16,7 +16,7 @@ final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolv
 {
     public function supports(FieldNode|ArgNode $child, Ast $ast): bool
     {
-        return $child->type instanceof ObjectNodeType && $ast->getNodeByClassName($child->type->className) instanceof InputTypeNode;
+        return $child->reference instanceof ObjectReference && $ast->getNodeByClassName($child->reference->className) instanceof InputTypeNode;
     }
 
     /**
@@ -24,16 +24,16 @@ final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolv
      */
     public function resolve(FieldNode|ArgNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
-        if (!$child->type instanceof ObjectNodeType) {
+        if (!$child->reference instanceof ObjectReference) {
             throw ResolveException::logicError('Node type must be an object type');
         }
 
         /** @var InputTypeNode $node */
-        $node = $ast->getNodeByClassName($child->type->className);
+        $node = $ast->getNodeByClassName($child->reference->className);
 
-        $className = $child->type->className;
+        $className = $child->reference->className;
 
-        if ($child->type->isList()) {
+        if ($child->reference->isList()) {
             /** @var list<array<string, mixed>> $childArgs */
             $childArgs = $args[$child->name];
 

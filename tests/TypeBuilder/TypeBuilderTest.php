@@ -9,9 +9,9 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\NodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
@@ -57,7 +57,7 @@ final class TypeBuilderTest extends TestCase
             )),
         ];
 
-        /** @var iterable<NodeTypeBuilder<NodeType>> $nodeTypeBuilders */
+        /** @var iterable<NodeTypeBuilder<Reference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarNodeTypeBuilder(),
             new ObjectNodeTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
@@ -69,7 +69,7 @@ final class TypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildNullableScalarType(): void
     {
-        $type = $this->builder->build(ScalarNodeType::create('string')->setNullableValue(), new Ast());
+        $type = $this->builder->build(ScalarReference::create('string')->setNullableValue(), new Ast());
 
         self::assertEquals(WebonyxType::string(), $type);
     }
@@ -77,7 +77,7 @@ final class TypeBuilderTest extends TestCase
     #[Test]
     public function it_should_build_non_nullable_scalar_type(): void
     {
-        $type = $this->builder->build(ScalarNodeType::create('float'), new Ast());
+        $type = $this->builder->build(ScalarReference::create('float'), new Ast());
 
         self::assertEquals(WebonyxType::nonNull(WebonyxType::float()), $type);
     }
@@ -89,7 +89,7 @@ final class TypeBuilderTest extends TestCase
         self::expectExceptionMessage('No node found for class');
 
         $this->builder->build(
-            ObjectNodeType::create(TestEnumType::class),
+            ObjectReference::create(TestEnumType::class),
             new Ast(),
         );
     }
@@ -98,7 +98,7 @@ final class TypeBuilderTest extends TestCase
     public function itShouldBuildNullableObjectType(): void
     {
         $type = $this->builder->build(
-            ObjectNodeType::create(TestEnumType::class)->setNullableValue(),
+            ObjectReference::create(TestEnumType::class)->setNullableValue(),
             new Ast(
                 new EnumNode(
                     TestEnumType::class,
@@ -132,7 +132,7 @@ final class TypeBuilderTest extends TestCase
     public function itShouldBuildNonNullableObjectType(): void
     {
         $type = $this->builder->build(
-            ObjectNodeType::create(TestEnumType::class),
+            ObjectReference::create(TestEnumType::class),
             new Ast(
                 new EnumNode(
                     TestEnumType::class,

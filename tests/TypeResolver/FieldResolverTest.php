@@ -10,8 +10,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ObjectNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Type\ScalarNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
@@ -50,7 +50,7 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveProperty(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            ScalarNodeType::create('string'),
+            ScalarReference::create('string'),
             'name',
             null,
             [],
@@ -67,12 +67,12 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveMethod(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            ScalarNodeType::create('string'),
+            ScalarReference::create('string'),
             'name',
             null,
             [
                 new ArgNode(
-                    ScalarNodeType::create('string'),
+                    ScalarReference::create('string'),
                     'name',
                     null,
                     'name',
@@ -96,12 +96,12 @@ final class FieldResolverTest extends TestCase
     public function itShouldResolveMethodWithEnumOutput(): void
     {
         $type = $this->fieldResolver->resolve(new FieldNode(
-            ObjectNodeType::create(TestEnumType::class),
+            ObjectReference::create(TestEnumType::class),
             'name',
             null,
             [
                 new ArgNode(
-                    ScalarNodeType::create('string'),
+                    ScalarReference::create('string'),
                     'name',
                     null,
                     'name',

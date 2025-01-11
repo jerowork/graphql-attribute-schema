@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use ReflectionClass;
@@ -20,7 +20,7 @@ use ReflectionMethod;
 final readonly class MutationMethodNodeParser implements MethodNodeParser
 {
     use RetrieveNameForFieldTrait;
-    use GetTypeTrait;
+    use GetReferenceTrait;
     use GetAttributeTrait;
 
     public function __construct(
@@ -38,9 +38,9 @@ final readonly class MutationMethodNodeParser implements MethodNodeParser
     {
         $attribute = $this->getAttribute($method, Mutation::class);
 
-        $type = $this->getType($method->getReturnType(), $attribute);
+        $reference = $this->getReference($method->getReturnType(), $attribute);
 
-        if ($type === null) {
+        if ($reference === null) {
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
@@ -52,7 +52,7 @@ final readonly class MutationMethodNodeParser implements MethodNodeParser
             $this->retrieveNameForField($method, $attribute),
             $attribute->getDescription(),
             $argumentNodes,
-            $type,
+            $reference,
             $method->getName(),
             $attribute->deprecationReason,
         );

@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use ReflectionClass;
@@ -17,7 +17,7 @@ use ReflectionMethod;
 final readonly class ClassFieldNodesParser
 {
     use RetrieveNameForFieldTrait;
-    use GetTypeTrait;
+    use GetReferenceTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
@@ -41,14 +41,14 @@ final readonly class ClassFieldNodesParser
          * @var Field $fieldAttribute
          */
         foreach ($this->parseProperties($class) as [$property, $fieldAttribute]) {
-            $type = $this->getType($property->getType(), $fieldAttribute);
+            $reference = $this->getReference($property->getType(), $fieldAttribute);
 
-            if ($type === null) {
+            if ($reference === null) {
                 throw ParseException::invalidPropertyType($class->getName(), $property->getName());
             }
 
             $fieldNodes[] = new FieldNode(
-                $type,
+                $reference,
                 $fieldAttribute->name ?? $property->getName(),
                 $fieldAttribute->description,
                 [],
@@ -66,14 +66,14 @@ final readonly class ClassFieldNodesParser
         foreach ($this->parseMethods($class) as [$method, $fieldAttribute]) {
             $returnType = $method->getReturnType();
 
-            $type = $this->getType($returnType, $fieldAttribute);
+            $reference = $this->getReference($returnType, $fieldAttribute);
 
-            if ($type === null) {
+            if ($reference === null) {
                 throw ParseException::invalidReturnType($class->getName(), $method->getName());
             }
 
             $fieldNodes[] = new FieldNode(
-                $type,
+                $reference,
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
                 $this->methodArgNodesParser->parse($method),
