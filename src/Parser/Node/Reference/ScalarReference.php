@@ -59,12 +59,12 @@ final class ScalarReference implements ListableReference
         );
     }
 
-    public function equals(Reference $type): bool
+    public function equals(Reference $reference): bool
     {
-        return $type instanceof self
-            && $type->value === $this->value
-            && $type->isValueNullable === $this->isValueNullable
-            && $type->isList === $this->isList
-            && $type->isListNullable === $this->isListNullable;
+        return $reference instanceof self
+            && $reference->value === $this->value
+            && $reference->isValueNullable === $this->isValueNullable
+            && $reference->isList === $this->isList
+            && $reference->isListNullable === $this->isListNullable;
     }
 }

@@ -65,12 +65,12 @@ final class ObjectReference implements ListableReference
         );
     }
 
-    public function equals(Reference $type): bool
+    public function equals(Reference $reference): bool
     {
-        return $type instanceof self
-            && $type->className === $this->className
-            && $type->isValueNullable === $this->isValueNullable
-            && $type->isList === $this->isList
-            && $type->isListNullable === $this->isListNullable;
+        return $reference instanceof self
+            && $reference->className === $this->className
+            && $reference->isValueNullable === $this->isValueNullable
+            && $reference->isList === $this->isList
+            && $reference->isListNullable === $this->isListNullable;
     }
 }

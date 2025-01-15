@@ -15,5 +15,5 @@ interface Reference extends ArraySerializable
 
     public function isValueNullable(): bool;
 
-    public function equals(Reference $type): bool;
+    public function equals(Reference $reference): bool;
 }
