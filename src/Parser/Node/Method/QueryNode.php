@@ -5,17 +5,22 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
+ * @phpstan-import-type EdgeArgsNodePayload from EdgeArgsNode
  *
  * @phpstan-type QueryNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
- *     argNodes: list<ArgNodePayload>,
+ *     argumentNodes: list<array{
+ *          node: class-string<ArgNode|EdgeArgsNode>,
+ *          payload: ArgNodePayload|EdgeArgsNodePayload
+ *     }>,
  *     outputReference: array{
  *          type: class-string,
  *          payload: array<string, mixed>
@@ -28,13 +33,13 @@ final readonly class QueryNode implements Node
 {
     /**
      * @param class-string $className
-     * @param list<ArgNode> $argNodes
+     * @param list<ArgNode|EdgeArgsNode> $argumentNodes
      */
     public function __construct(
         public string $className,
         public string $name,
         public ?string $description,
-        public array $argNodes,
+        public array $argumentNodes,
         public Reference $outputReference,
         public string $methodName,
         public ?string $deprecationReason,
@@ -50,12 +55,20 @@ final readonly class QueryNode implements Node
      */
     public function toArray(): array
     {
+        $argumentNodes = [];
+        foreach ($this->argumentNodes as $argumentNode) {
+            $argumentNodes[] = [
+                'node' => $argumentNode::class,
+                'payload' => $argumentNode->toArray(),
+            ];
+        }
+
         // @phpstan-ignore-next-line
         return [
             'className' => $this->className,
             'name' => $this->name,
             'description' => $this->description,
-            'argNodes' => array_map(fn($argNode) => $argNode->toArray(), $this->argNodes),
+            'argumentNodes' => $argumentNodes,
             'outputReference' => [
                 'type' => $this->outputReference::class,
                 'payload' => $this->outputReference->toArray(),
@@ -70,6 +83,18 @@ final readonly class QueryNode implements Node
      */
     public static function fromArray(array $payload): QueryNode
     {
+        $argumentNodes = [];
+        foreach ($payload['argumentNodes'] as $argumentNode) {
+            $argumentPayload = $argumentNode['payload'];
+            if ($argumentNode['node'] === ArgNode::class) {
+                /** @var ArgNodePayload $argumentPayload */
+                $argumentNodes[] = ArgNode::fromArray($argumentPayload);
+            } else {
+                /** @var EdgeArgsNodePayload $argumentPayload */
+                $argumentNodes[] = EdgeArgsNode::fromArray($argumentPayload);
+            }
+        }
+
         /** @var class-string<Reference> $type */
         $type = $payload['outputReference']['type'];
 
@@ -77,7 +102,7 @@ final readonly class QueryNode implements Node
             $payload['className'],
             $payload['name'],
             $payload['description'],
-            array_map(fn($argNodePayload) => ArgNode::fromArray($argNodePayload), $payload['argNodes']),
+            $argumentNodes,
             $type::fromArray($payload['outputReference']['payload']), // @phpstan-ignore-line
             $payload['methodName'],
             $payload['deprecationReason'],

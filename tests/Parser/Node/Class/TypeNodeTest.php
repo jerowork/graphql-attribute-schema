@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Class;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
@@ -52,6 +53,12 @@ final class TypeNodeTest extends TestCase
                     'deprecated',
                 ),
             ],
+            new CursorNode(
+                ScalarReference::create('string'),
+                FieldNodeType::Property,
+                null,
+                'property',
+            ),
         );
 
         self::assertEquals(TypeNode::fromArray($typeNode->toArray()), $typeNode);

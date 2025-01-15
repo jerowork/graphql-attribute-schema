@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
  * @phpstan-import-type AutowireNodePayload from AutowireNode
+ * @phpstan-import-type EdgeArgsNodePayload from EdgeArgsNode
  *
  * @phpstan-type FieldNodePayload array{
  *     reference: array{
@@ -19,8 +20,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
  *     name: string,
  *     description: null|string,
  *     argumentNodes: list<array{
- *          node: class-string<ArgNode|AutowireNode>,
- *          payload: ArgNodePayload|AutowireNodePayload
+ *          node: class-string<ArgNode|AutowireNode|EdgeArgsNode>,
+ *          payload: ArgNodePayload|AutowireNodePayload|EdgeArgsNodePayload
  *     }>,
  *     fieldType: string,
  *     methodName: null|string,
@@ -33,7 +34,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 final readonly class FieldNode implements ArraySerializable
 {
     /**
-     * @param list<ArgNode|AutowireNode> $argumentNodes
+     * @param list<ArgNode|AutowireNode|EdgeArgsNode> $argumentNodes
      */
     public function __construct(
         public Reference $reference,
@@ -80,6 +81,9 @@ final readonly class FieldNode implements ArraySerializable
             if ($argumentNode['node'] === ArgNode::class) {
                 /** @var ArgNodePayload $argumentPayload */
                 $argumentNodes[] = ArgNode::fromArray($argumentPayload);
+            } elseif ($argumentNode['node'] === EdgeArgsNode::class) {
+                /** @var EdgeArgsNodePayload $argumentPayload */
+                $argumentNodes[] = EdgeArgsNode::fromArray($argumentPayload);
             } else {
                 /** @var AutowireNodePayload $argumentPayload */
                 $argumentNodes[] = AutowireNode::fromArray($argumentPayload);

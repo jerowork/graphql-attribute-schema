@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
@@ -38,6 +39,7 @@ final class QueryNodeTest extends TestCase
                     'b description',
                     'bPropertyName',
                 ),
+                new EdgeArgsNode('property'),
             ],
             ObjectReference::create(TestType::class),
             'method',

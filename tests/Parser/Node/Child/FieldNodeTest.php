@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
@@ -43,6 +44,7 @@ final class FieldNodeTest extends TestCase
                     stdClass::class,
                     'service',
                 ),
+                new EdgeArgsNode('property'),
             ],
             FieldNodeType::Method,
             'method',
