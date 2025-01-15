@@ -8,21 +8,25 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use ReflectionMethod;
 use ReflectionParameter;
+use ReflectionNamedType;
 
 final readonly class MethodArgumentNodesParser
 {
     public function __construct(
         private AutowireNodeParser $autowireNodeParser,
+        private EdgeArgsNodeParser $edgeArgsNodeParser,
         private ArgNodeParser $argNodeParser,
     ) {}
 
     /**
      * @throws ParseException
      *
-     * @return list<ArgNode|AutowireNode>
+     * @return list<ArgNode|AutowireNode|EdgeArgsNode>
      */
     public function parse(ReflectionMethod $method, bool $includeAutowireNodes = true): array
     {
@@ -37,6 +41,12 @@ final readonly class MethodArgumentNodesParser
 
                     continue;
                 }
+            }
+
+            if ($parameter->getType() instanceof ReflectionNamedType && $parameter->getType()->getName() === EdgeArgs::class) {
+                $argumentNodes[]  = $this->edgeArgsNodeParser->parse($parameter);
+
+                continue;
             }
 
             $argAttribute = $this->getAttribute($parameter, Arg::class);
