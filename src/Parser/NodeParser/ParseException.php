@@ -13,6 +13,11 @@ final class ParseException extends Exception
         return new self(sprintf('Invalid return type %s:%s', $class, $method));
     }
 
+    public static function invalidConnectionReturnType(string $class, string $method): self
+    {
+        return new self(sprintf('Invalid return type for connection %s:%s', $class, $method));
+    }
+
     public static function invalidParameterType(string $parameter): self
     {
         return new self(sprintf('Invalid arg parameter type for parameter %s', $parameter));
@@ -26,6 +31,11 @@ final class ParseException extends Exception
     public static function invalidPropertyType(string $class, string $property): self
     {
         return new self(sprintf('Invalid property type for class %s:%s', $class, $property));
+    }
+
+    public static function invalidConnectionPropertyType(string $class, string $property): self
+    {
+        return new self(sprintf('Invalid property type for connection for class %s:%s', $class, $property));
     }
 
     public static function invalidNameForResolver(string $name): self
@@ -71,5 +81,10 @@ final class ParseException extends Exception
     public static function invalidListTypeConfiguration(string $type): self
     {
         return new self(sprintf('Invalid list type configuration, %s cannot be a list type', $type));
+    }
+
+    public static function multipleCursorsFound(string $class): self
+    {
+        return new self(sprintf('Multiple cursors found for class: %s', $class));
     }
 }
