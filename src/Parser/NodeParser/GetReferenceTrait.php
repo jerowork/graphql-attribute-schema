@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser;
 
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ConnectionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ObjectType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type as OptionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ListableReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
@@ -30,6 +32,10 @@ trait GetReferenceTrait
         // Retrieve from attribute if set
         if ($attribute?->getType() !== null) {
             $attributeType = $attribute->getType();
+
+            if ($attributeType instanceof ConnectionType) {
+                return ConnectionReference::create($attributeType->edgeType, $attributeType->first);
+            }
 
             if ($attributeType instanceof ListType) {
                 if ($attributeType->type instanceof NullableType) {
@@ -52,6 +58,11 @@ trait GetReferenceTrait
             }
 
             if ($attributeType instanceof NullableType) {
+                if ($attributeType->type instanceof ConnectionType) {
+                    return ConnectionReference::create($attributeType->type->edgeType, $attributeType->type->first)
+                        ->setNullableValue();
+                }
+
                 if ($attributeType->type instanceof ListType) {
                     if ($attributeType->type->type instanceof NullableType) {
                         $type = $this->getReferenceFromAttribute($attributeType->type->type->type);

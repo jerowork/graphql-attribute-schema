@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ConnectionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestConnectionMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestNullableConnectionMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
@@ -208,5 +213,41 @@ final class GetReferenceTraitTest extends TestCase
         };
 
         self::assertNull($trait->getReference(null, new Mutation()));
+    }
+
+    #[Test]
+    public function it_should_return_connection_from_attribute(): void
+    {
+        $trait = new class {
+            use GetReferenceTrait;
+        };
+
+        $class = new ReflectionClass(TestConnectionMutation::class);
+        $methods = $class->getMethod('mutate');
+        $parameters = $methods->getParameters();
+        $type = $parameters[0]->getType();
+
+        $reference = $trait->getReference($type, new Mutation(type: new ConnectionType(TestType::class, 12)));
+
+        self::assertInstanceOf(ReflectionNamedType::class, $type);
+        self::assertTrue($reference?->equals(ConnectionReference::create(TestType::class, 12)));
+    }
+
+    #[Test]
+    public function it_should_return_nullable_connection_from_attribute(): void
+    {
+        $trait = new class {
+            use GetReferenceTrait;
+        };
+
+        $class = new ReflectionClass(TestNullableConnectionMutation::class);
+        $methods = $class->getMethod('mutate');
+        $parameters = $methods->getParameters();
+        $type = $parameters[0]->getType();
+
+        $reference = $trait->getReference($type, new Mutation(type: new NullableType(new ConnectionType(TestType::class, 12))));
+
+        self::assertInstanceOf(ReflectionNamedType::class, $type);
+        self::assertTrue($reference?->equals(ConnectionReference::create(TestType::class, 12)->setNullableValue()));
     }
 }
