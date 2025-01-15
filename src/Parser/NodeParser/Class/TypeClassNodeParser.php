@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
@@ -20,6 +21,7 @@ final readonly class TypeClassNodeParser implements ClassNodeParser
 
     public function __construct(
         private ClassFieldNodesParser $classFieldNodesParser,
+        private CursorNodeParser $cursorNodeParser,
     ) {}
 
     #[Override]
@@ -38,6 +40,7 @@ final readonly class TypeClassNodeParser implements ClassNodeParser
             $this->retrieveNameForType($class, $attribute),
             $attribute->getDescription(),
             $this->classFieldNodesParser->parse($class),
+            $this->cursorNodeParser->parse($class),
         );
     }
 }

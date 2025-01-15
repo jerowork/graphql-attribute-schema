@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Class;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
@@ -14,6 +15,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\CursorNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\TypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -39,9 +42,11 @@ final class TypeClassNodeParserTest extends TestCase
             new ClassFieldNodesParser(
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),
+                    new EdgeArgsNodeParser(),
                     new ArgNodeParser(),
                 ),
             ),
+            new CursorNodeParser(),
         );
     }
 
@@ -103,6 +108,12 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
             ],
+            new CursorNode(
+                ScalarReference::create('string')->setNullableValue(),
+                FieldNodeType::Method,
+                'flow',
+                null,
+            ),
         ), $node);
     }
 }
