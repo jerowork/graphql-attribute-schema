@@ -8,14 +8,17 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use ReflectionClass;
 use Override;
 use ReflectionMethod;
+use ReflectionNamedType;
 
 final readonly class QueryMethodNodeParser implements MethodNodeParser
 {
@@ -37,11 +40,19 @@ final readonly class QueryMethodNodeParser implements MethodNodeParser
     public function parse(ReflectionClass $class, ReflectionMethod $method): Node
     {
         $attribute = $this->getAttribute($method, Query::class);
+        $returnType = $method->getReturnType();
 
-        $reference = $this->getReference($method->getReturnType(), $attribute);
+        $reference = $this->getReference($returnType, $attribute);
 
         if ($reference === null) {
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
+        }
+
+        // When reference is ConnectionType, the query needs to have Connection as return type
+        if ($reference instanceof ConnectionReference) {
+            if (!$returnType instanceof ReflectionNamedType || $returnType->getName() !== Connection::class) {
+                throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
+            }
         }
 
         /** @var list<ArgNode> $argumentNodes */

@@ -7,12 +7,15 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use ReflectionClass;
 use ReflectionProperty;
 use ReflectionMethod;
+use ReflectionNamedType;
 
 final readonly class ClassFieldNodesParser
 {
@@ -47,6 +50,13 @@ final readonly class ClassFieldNodesParser
                 throw ParseException::invalidPropertyType($class->getName(), $property->getName());
             }
 
+            // When reference is ConnectionType, the property needs to have Connection as type
+            if ($reference instanceof ConnectionReference) {
+                if (!$property->getType() instanceof ReflectionNamedType || $property->getType()->getName() !== Connection::class) {
+                    throw ParseException::invalidConnectionPropertyType($class->getName(), $property->getName());
+                }
+            }
+
             $fieldNodes[] = new FieldNode(
                 $reference,
                 $fieldAttribute->name ?? $property->getName(),
@@ -70,6 +80,13 @@ final readonly class ClassFieldNodesParser
 
             if ($reference === null) {
                 throw ParseException::invalidReturnType($class->getName(), $method->getName());
+            }
+
+            // When reference is ConnectionType, the property needs to have Connection as return type
+            if ($reference instanceof ConnectionReference) {
+                if (!$returnType instanceof ReflectionNamedType || $returnType->getName() !== Connection::class) {
+                    throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
+                }
             }
 
             $fieldNodes[] = new FieldNode(

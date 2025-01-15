@@ -11,8 +11,11 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionMethodType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionPropertyType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
@@ -36,6 +39,7 @@ final class ClassFieldNodesParserTest extends TestCase
         $this->parser = new ClassFieldNodesParser(
             new MethodArgumentNodesParser(
                 new AutowireNodeParser(),
+                new EdgeArgsNodeParser(),
                 new ArgNodeParser(),
             ),
         );
@@ -45,8 +49,27 @@ final class ClassFieldNodesParserTest extends TestCase
     public function itShouldGuardInvalidReturnType(): void
     {
         self::expectException(ParseException::class);
+        self::expectExceptionMessage('Invalid return type');
 
         $this->parser->parse(new ReflectionClass(TestInvalidType::class));
+    }
+
+    #[Test]
+    public function itShouldGuardPropertyConnectionType(): void
+    {
+        self::expectException(ParseException::class);
+        self::expectExceptionMessage('Invalid property type for connection');
+
+        $this->parser->parse(new ReflectionClass(TestInvalidConnectionPropertyType::class));
+    }
+
+    #[Test]
+    public function itShouldGuardMethodConnectionReturnType(): void
+    {
+        self::expectException(ParseException::class);
+        self::expectExceptionMessage('Invalid return type for connection');
+
+        $this->parser->parse(new ReflectionClass(TestInvalidConnectionMethodType::class));
     }
 
     #[Test]

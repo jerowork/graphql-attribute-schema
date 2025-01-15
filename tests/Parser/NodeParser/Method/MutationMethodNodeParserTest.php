@@ -12,9 +12,11 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Method\MutationMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidConnectionReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
@@ -38,6 +40,7 @@ final class MutationMethodNodeParserTest extends TestCase
         $this->parser = new MutationMethodNodeParser(
             new MethodArgumentNodesParser(
                 new AutowireNodeParser(),
+                new EdgeArgsNodeParser(),
                 new ArgNodeParser(),
             ),
         );
@@ -57,6 +60,17 @@ final class MutationMethodNodeParserTest extends TestCase
         self::expectExceptionMessage('Invalid return type');
 
         $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
+
+        $this->parser->parse($class, $class->getMethod('mutation'));
+    }
+
+    #[Test]
+    public function itShouldGuardConnectionReturnType(): void
+    {
+        self::expectException(ParseException::class);
+        self::expectExceptionMessage('Invalid return type for connection');
+
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidConnectionReturnType::class);
 
         $this->parser->parse($class, $class->getMethod('mutation'));
     }
