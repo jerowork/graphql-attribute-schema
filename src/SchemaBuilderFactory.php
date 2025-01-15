@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
@@ -18,6 +19,7 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EdgeArgsInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
@@ -32,26 +34,29 @@ final readonly class SchemaBuilderFactory
     public static function create(
         ContainerInterface $container,
     ): SchemaBuilder {
+        $fieldResolver = new FieldResolver(
+            $container,
+            [
+                new ScalarTypeOutputFieldResolver(),
+                new EnumNodeOutputFieldResolver(),
+            ],
+        );
+
         /** @var iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders */
         $objectTypeBuilders = [
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder(
-                new FieldResolver(
-                    $container,
-                    [
-                        new ScalarTypeOutputFieldResolver(),
-                        new EnumNodeOutputFieldResolver(),
-                    ],
-                ),
-            ),
+            new TypeObjectTypeBuilder($fieldResolver),
             new CustomScalarObjectTypeBuilder(),
         ];
+
+        $builtTypesRegistry = new BuiltTypesRegistry();
 
         /** @var iterable<TypeBuilder<Reference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
-            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
+            new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
+            new ExecutingObjectTypeBuilder($builtTypesRegistry, $objectTypeBuilders),
         ];
 
         return new SchemaBuilder(
@@ -61,6 +66,7 @@ final readonly class SchemaBuilderFactory
                     $container,
                     [
                         new ScalarTypeInputFieldResolver(),
+                        new EdgeArgsInputFieldResolver(),
                         new CustomScalarNodeInputFieldResolver(),
                         new EnumNodeInputFieldResolver(),
                         new InputTypeNodeInputFieldResolver(),
