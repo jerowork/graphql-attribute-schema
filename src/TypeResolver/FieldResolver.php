@@ -6,8 +6,10 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputFieldResolver;
 use Psr\Container\ContainerInterface;
 
@@ -36,6 +38,17 @@ final readonly class FieldResolver
             foreach ($fieldNode->argumentNodes as $argumentNode) {
                 if ($argumentNode instanceof AutowireNode) {
                     $arguments[] = $this->container->get($argumentNode->service);
+
+                    continue;
+                }
+
+                if ($argumentNode instanceof EdgeArgsNode) {
+                    $arguments[] = new EdgeArgs(
+                        $args['first'] ?? null,
+                        $args['after'] ?? null,
+                        $args['last'] ?? null,
+                        $args['before'] ?? null,
+                    );
 
                     continue;
                 }

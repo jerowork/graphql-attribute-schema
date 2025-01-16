@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
@@ -35,8 +36,8 @@ final readonly class RootTypeResolver
             /** @var array<string, mixed> $args */
             return $this->container->get($node->getClassName())->{$node->methodName}(
                 ...array_map(
-                    fn($arg) => $this->resolveField($arg, $args, $ast),
-                    $node->argNodes,
+                    fn($argument) => $this->resolveField($argument, $args, $ast),
+                    $node->argumentNodes,
                 ),
             );
         };
@@ -47,7 +48,7 @@ final readonly class RootTypeResolver
      *
      * @throws ResolveException
      */
-    public function resolveField(ArgNode|FieldNode $child, array $args, Ast $ast): mixed
+    public function resolveField(ArgNode|FieldNode|EdgeArgsNode $child, array $args, Ast $ast): mixed
     {
         foreach ($this->inputResolvers as $resolver) {
             if (!$resolver->supports($child, $ast)) {
