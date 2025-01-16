@@ -14,7 +14,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
  */
 final class ObjectTypeReference implements ListableTypeReference
 {
-    use ReferenceTrait;
+    use TypeReferenceTrait;
     use ListableReferenceTrait;
 
     /**

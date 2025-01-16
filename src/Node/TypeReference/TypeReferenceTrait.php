@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
 
-trait ReferenceTrait
+trait TypeReferenceTrait
 {
     protected bool $isValueNullable;
 

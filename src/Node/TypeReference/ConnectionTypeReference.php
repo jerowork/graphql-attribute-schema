@@ -13,7 +13,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
  */
 final class ConnectionTypeReference implements TypeReference
 {
-    use ReferenceTrait;
+    use TypeReferenceTrait;
 
     /**
      * @param class-string $className

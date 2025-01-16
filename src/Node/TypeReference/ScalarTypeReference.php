@@ -14,7 +14,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
  */
 final class ScalarTypeReference implements ListableTypeReference
 {
-    use ReferenceTrait;
+    use TypeReferenceTrait;
     use ListableReferenceTrait;
 
     public function __construct(
