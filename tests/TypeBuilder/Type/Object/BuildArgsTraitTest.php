@@ -9,8 +9,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
@@ -32,7 +32,7 @@ final class BuildArgsTraitTest extends TestCase
             use BuildArgsTrait;
         };
 
-        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<TypeReference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarTypeBuilder(),
             new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), []),
@@ -40,18 +40,18 @@ final class BuildArgsTraitTest extends TestCase
 
         $args = $trait->buildArgs(
             new FieldNode(
-                ScalarReference::create('string'),
+                ScalarTypeReference::create('string'),
                 'name',
                 null,
                 [
                     new ArgNode(
-                        ScalarReference::create('string'),
+                        ScalarTypeReference::create('string'),
                         'arg1',
                         'Arg 1 description',
                         'arg1',
                     ),
                     new ArgNode(
-                        ScalarReference::create('bool')->setNullableValue(),
+                        ScalarTypeReference::create('bool')->setNullableValue(),
                         'arg2',
                         'Arg 2 description',
                         'arg2',

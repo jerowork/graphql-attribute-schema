@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference;
 
 /**
  * @phpstan-type ConnectionReferencePayload array{
@@ -11,7 +11,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
  *     isValueNullable: bool
  * }
  */
-final class ConnectionReference implements Reference
+final class ConnectionTypeReference implements TypeReference
 {
     use ReferenceTrait;
 
@@ -49,7 +49,7 @@ final class ConnectionReference implements Reference
     /**
      * @param ConnectionReferencePayload $payload
      */
-    public static function fromArray(array $payload): ConnectionReference
+    public static function fromArray(array $payload): ConnectionTypeReference
     {
         return new self(
             $payload['className'],
@@ -58,7 +58,7 @@ final class ConnectionReference implements Reference
         );
     }
 
-    public function equals(Reference $reference): bool
+    public function equals(TypeReference $reference): bool
     {
         return $reference instanceof self
             && $reference->className === $this->className

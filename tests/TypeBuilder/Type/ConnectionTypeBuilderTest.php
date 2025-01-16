@@ -12,9 +12,9 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
@@ -68,7 +68,7 @@ final class ConnectionTypeBuilderTest extends TestCase
             new TypeObjectTypeBuilder($fieldResolver),
         ];
 
-        /** @var list<TypeBuilder<Reference>> $typeBuilders */
+        /** @var list<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
             new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
@@ -88,7 +88,7 @@ final class ConnectionTypeBuilderTest extends TestCase
         self::expectExceptionMessage('No node found for connection');
 
         $this->builder->build(
-            ConnectionReference::create(TestType::class, 15),
+            ConnectionTypeReference::create(TestType::class, 15),
             $this->typeBuilder,
             new Ast(),
         );
@@ -101,7 +101,7 @@ final class ConnectionTypeBuilderTest extends TestCase
         self::expectExceptionMessage('Invalid edge node for connection');
 
         $this->builder->build(
-            ConnectionReference::create(TestType::class, 15),
+            ConnectionTypeReference::create(TestType::class, 15),
             $this->typeBuilder,
             new Ast(
                 new CustomScalarNode(
@@ -118,7 +118,7 @@ final class ConnectionTypeBuilderTest extends TestCase
     public function itShouldBuildConnection(): void
     {
         $connection = $this->builder->build(
-            ConnectionReference::create(TestType::class, 15),
+            ConnectionTypeReference::create(TestType::class, 15),
             $this->typeBuilder,
             new Ast(
                 new TypeNode(
@@ -127,7 +127,7 @@ final class ConnectionTypeBuilderTest extends TestCase
                     null,
                     [],
                     new CursorNode(
-                        ScalarReference::create('string'),
+                        ScalarTypeReference::create('string'),
                         FieldNodeType::Property,
                         null,
                         'property',

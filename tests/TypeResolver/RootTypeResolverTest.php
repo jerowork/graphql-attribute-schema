@@ -12,8 +12,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestSmallInputType;
@@ -65,7 +65,7 @@ final class RootTypeResolverTest extends TestCase
                 'Test',
                 null,
                 [],
-                ScalarReference::create('string'),
+                ScalarTypeReference::create('string'),
                 '__invoke',
                 null,
             ),
@@ -85,37 +85,37 @@ final class RootTypeResolverTest extends TestCase
                 null,
                 [
                     new ArgNode(
-                        ScalarReference::create('string'),
+                        ScalarTypeReference::create('string'),
                         'id',
                         null,
                         'id',
                     ),
                     new ArgNode(
-                        ObjectReference::create(TestResolvableInputType::class),
+                        ObjectTypeReference::create(TestResolvableInputType::class),
                         'input',
                         null,
                         'input',
                     ),
                     new ArgNode(
-                        ScalarReference::create('string')->setList(),
+                        ScalarTypeReference::create('string')->setList(),
                         'userIds',
                         null,
                         'userIds',
                     ),
                     new ArgNode(
-                        ObjectReference::create(TestSmallInputType::class)->setList(),
+                        ObjectTypeReference::create(TestSmallInputType::class)->setList(),
                         'smallInputs',
                         null,
                         'smallInputs',
                     ),
                     new ArgNode(
-                        ObjectReference::create(DateTimeImmutable::class),
+                        ObjectTypeReference::create(DateTimeImmutable::class),
                         'dateTime',
                         null,
                         'dateTime',
                     ),
                 ],
-                ScalarReference::create('string'),
+                ScalarTypeReference::create('string'),
                 '__invoke',
                 null,
             ),
@@ -126,7 +126,7 @@ final class RootTypeResolverTest extends TestCase
                     null,
                     [
                         new FieldNode(
-                            ScalarReference::create('string'),
+                            ScalarTypeReference::create('string'),
                             'name',
                             null,
                             [],
@@ -136,7 +136,7 @@ final class RootTypeResolverTest extends TestCase
                             null,
                         ),
                         new FieldNode(
-                            ScalarReference::create('string')->setList(),
+                            ScalarTypeReference::create('string')->setList(),
                             'parentNames',
                             null,
                             [],
@@ -146,7 +146,7 @@ final class RootTypeResolverTest extends TestCase
                             null,
                         ),
                         new FieldNode(
-                            ObjectReference::create(DateTimeImmutable::class),
+                            ObjectTypeReference::create(DateTimeImmutable::class),
                             'date',
                             null,
                             [],
@@ -163,7 +163,7 @@ final class RootTypeResolverTest extends TestCase
                     null,
                     [
                         new FieldNode(
-                            ScalarReference::create('string'),
+                            ScalarTypeReference::create('string'),
                             'id',
                             null,
                             [],

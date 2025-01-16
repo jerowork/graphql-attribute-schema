@@ -14,9 +14,9 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -97,7 +97,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
             )),
         ];
 
-        /** @var iterable<TypeBuilder<Reference>> $typeBuilders */
+        /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
             new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), $fieldResolver),
@@ -111,12 +111,12 @@ final class TypeObjectTypeBuilderTest extends TestCase
                 'A description',
                 [
                     new FieldNode(
-                        ScalarReference::create('string'),
+                        ScalarTypeReference::create('string'),
                         'field',
                         'A field description',
                         [
                             new ArgNode(
-                                ScalarReference::create('int')->setNullableValue(),
+                                ScalarTypeReference::create('int')->setNullableValue(),
                                 'arg',
                                 'An argument',
                                 'arg',
@@ -128,7 +128,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ConnectionReference::create(TestType::class, 15),
+                        ConnectionTypeReference::create(TestType::class, 15),
                         'name',
                         null,
                         [],
@@ -148,7 +148,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
                     null,
                     [],
                     new CursorNode(
-                        ScalarReference::create('string'),
+                        ScalarTypeReference::create('string'),
                         FieldNodeType::Property,
                         null,
                         'property',

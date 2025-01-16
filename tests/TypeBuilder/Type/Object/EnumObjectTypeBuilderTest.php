@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
@@ -59,7 +59,7 @@ final class EnumObjectTypeBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildEnumType(): void
     {
-        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
+        /** @var iterable<TypeBuilder<TypeReference>> $nodeTypeBuilders */
         $nodeTypeBuilders = [
             new ScalarTypeBuilder(),
             new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), []),

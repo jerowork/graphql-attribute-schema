@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\TypeReference;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use stdClass;
@@ -12,12 +12,12 @@ use stdClass;
 /**
  * @internal
  */
-final class ScalarReferenceTest extends TestCase
+final class ScalarTypeReferenceTest extends TestCase
 {
     #[Test]
     public function itShouldCreateBaseScalar(): void
     {
-        $type = ScalarReference::create('string');
+        $type = ScalarTypeReference::create('string');
 
         self::assertSame('string', $type->value);
         self::assertFalse($type->isValueNullable());
@@ -28,7 +28,7 @@ final class ScalarReferenceTest extends TestCase
     #[Test]
     public function itShouldSetValueNullable(): void
     {
-        $type = ScalarReference::create('string');
+        $type = ScalarTypeReference::create('string');
 
         self::assertFalse($type->isValueNullable());
 
@@ -40,7 +40,7 @@ final class ScalarReferenceTest extends TestCase
     #[Test]
     public function itShouldSetList(): void
     {
-        $type = ScalarReference::create('string');
+        $type = ScalarTypeReference::create('string');
 
         self::assertFalse($type->isList());
 
@@ -52,7 +52,7 @@ final class ScalarReferenceTest extends TestCase
     #[Test]
     public function itShouldSetListNullable(): void
     {
-        $type = ScalarReference::create('string');
+        $type = ScalarTypeReference::create('string');
 
         self::assertFalse($type->isListNullable());
 
@@ -64,11 +64,11 @@ final class ScalarReferenceTest extends TestCase
     #[Test]
     public function itShouldEqual(): void
     {
-        $type = ScalarReference::create('int')->setList();
-        self::assertTrue($type->equals(ScalarReference::create('int')->setList()));
+        $type = ScalarTypeReference::create('int')->setList();
+        self::assertTrue($type->equals(ScalarTypeReference::create('int')->setList()));
 
-        $type2 = ScalarReference::create('int')->setList()->setNullableValue()->setNullableList();
-        self::assertTrue($type2->equals(ScalarReference::create('int')->setList()->setNullableValue()->setNullableList()));
+        $type2 = ScalarTypeReference::create('int')->setList()->setNullableValue()->setNullableList();
+        self::assertTrue($type2->equals(ScalarTypeReference::create('int')->setList()->setNullableValue()->setNullableList()));
 
         self::assertFalse($type->equals($type2));
     }
@@ -76,10 +76,10 @@ final class ScalarReferenceTest extends TestCase
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $typeNode = ScalarReference::create(stdClass::class)
+        $typeNode = ScalarTypeReference::create(stdClass::class)
             ->setList()
             ->setNullableList();
 
-        self::assertEquals(ScalarReference::fromArray($typeNode->toArray()), $typeNode);
+        self::assertEquals(ScalarTypeReference::fromArray($typeNode->toArray()), $typeNode);
     }
 }

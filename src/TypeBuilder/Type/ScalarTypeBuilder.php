@@ -6,25 +6,25 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
- * @implements TypeBuilder<ScalarReference>
+ * @implements TypeBuilder<ScalarTypeReference>
  */
 final readonly class ScalarTypeBuilder implements TypeBuilder
 {
     #[Override]
-    public function supports(Reference $reference): bool
+    public function supports(TypeReference $reference): bool
     {
-        return $reference instanceof ScalarReference;
+        return $reference instanceof ScalarTypeReference;
     }
 
     #[Override]
-    public function build(Reference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(TypeReference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         return match ($reference->value) {
             'string' => Type::string(),

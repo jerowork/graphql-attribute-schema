@@ -6,14 +6,14 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ListableReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ListableTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 
 final readonly class ExecutingTypeBuilder
 {
     /**
-     * @param iterable<TypeBuilder<Reference>> $typeBuilders
+     * @param iterable<TypeBuilder<TypeReference>> $typeBuilders
      */
     public function __construct(
         private iterable $typeBuilders,
@@ -22,7 +22,7 @@ final readonly class ExecutingTypeBuilder
     /**
      * @throws BuildException
      */
-    public function build(Reference $reference, Ast $ast): WebonyxType
+    public function build(TypeReference $reference, Ast $ast): WebonyxType
     {
         $builtType = null;
 
@@ -42,7 +42,7 @@ final readonly class ExecutingTypeBuilder
             $builtType = WebonyxType::nonNull($builtType); // @phpstan-ignore-line
         }
 
-        if ($reference instanceof ListableReference && $reference->isList()) {
+        if ($reference instanceof ListableTypeReference && $reference->isList()) {
             $builtType = WebonyxType::listOf($builtType);
 
             if (!$reference->isListNullable()) {

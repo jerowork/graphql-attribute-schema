@@ -8,8 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
@@ -88,19 +88,19 @@ final class MutationMethodNodeParserTest extends TestCase
             'Test mutation',
             [
                 new ArgNode(
-                    ObjectReference::create(DateTimeImmutable::class),
+                    ObjectTypeReference::create(DateTimeImmutable::class),
                     'date',
                     null,
                     'date',
                 ),
                 new ArgNode(
-                    ScalarReference::create('string')->setNullableValue(),
+                    ScalarTypeReference::create('string')->setNullableValue(),
                     'mutationId',
                     'Mutation ID',
                     'id',
                 ),
             ],
-            ScalarReference::create('string'),
+            ScalarTypeReference::create('string'),
             'testMutation',
             null,
         ), $node);

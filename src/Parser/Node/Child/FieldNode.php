@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\ArraySerializable;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
@@ -14,7 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
  *
  * @phpstan-type FieldNodePayload array{
  *     reference: array{
- *          type: class-string<Reference>,
+ *          type: class-string<TypeReference>,
  *          payload: array<string, mixed>
  *     },
  *     name: string,
@@ -37,7 +37,7 @@ final readonly class FieldNode implements ArraySerializable
      * @param list<ArgNode|AutowireNode|EdgeArgsNode> $argumentNodes
      */
     public function __construct(
-        public Reference $reference,
+        public TypeReference $reference,
         public string $name,
         public ?string $description,
         public array $argumentNodes,
@@ -90,7 +90,7 @@ final readonly class FieldNode implements ArraySerializable
             }
         }
 
-        /** @var class-string<Reference> $reference */
+        /** @var class-string<TypeReference> $reference */
         $reference = $payload['reference']['type'];
 
         return new self(

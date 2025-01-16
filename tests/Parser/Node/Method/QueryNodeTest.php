@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Method;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
@@ -28,20 +28,20 @@ final class QueryNodeTest extends TestCase
             'description',
             [
                 new ArgNode(
-                    ScalarReference::create('int'),
+                    ScalarTypeReference::create('int'),
                     'name',
                     'a description',
                     'aPropertyName',
                 ),
                 new ArgNode(
-                    ScalarReference::create('string'),
+                    ScalarTypeReference::create('string'),
                     'name 2',
                     'b description',
                     'bPropertyName',
                 ),
                 new EdgeArgsNode('property'),
             ],
-            ObjectReference::create(TestType::class),
+            ObjectTypeReference::create(TestType::class),
             'method',
             'deprecated',
         );

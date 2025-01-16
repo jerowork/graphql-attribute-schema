@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Method;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
@@ -40,7 +40,7 @@ final readonly class MutationNode implements Node
         public string $name,
         public ?string $description,
         public array $argumentNodes,
-        public Reference $outputReference,
+        public TypeReference $outputReference,
         public string $methodName,
         public ?string $deprecationReason,
     ) {}
@@ -95,7 +95,7 @@ final readonly class MutationNode implements Node
             }
         }
 
-        /** @var class-string<Reference> $type */
+        /** @var class-string<TypeReference> $type */
         $type = $payload['outputReference']['type'];
 
         return new self(

@@ -13,9 +13,9 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -70,7 +70,7 @@ final class RootTypeBuilderTest extends TestCase
             new TypeObjectTypeBuilder($fieldResolver),
         ];
 
-        /** @var iterable<TypeBuilder<Reference>> $typeBuilders */
+        /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
             new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), $fieldResolver),
@@ -103,13 +103,13 @@ final class RootTypeBuilderTest extends TestCase
                 'A mutation',
                 [
                     new ArgNode(
-                        ScalarReference::create('int')->setNullableValue(),
+                        ScalarTypeReference::create('int')->setNullableValue(),
                         'arg',
                         'An argument',
                         'arg',
                     ),
                 ],
-                ScalarReference::create('string'),
+                ScalarTypeReference::create('string'),
                 '__invoke',
                 null,
             ),
@@ -143,13 +143,13 @@ final class RootTypeBuilderTest extends TestCase
                 'A mutation',
                 [
                     new ArgNode(
-                        ScalarReference::create('int')->setNullableValue(),
+                        ScalarTypeReference::create('int')->setNullableValue(),
                         'arg',
                         'An argument',
                         'arg',
                     ),
                 ],
-                ConnectionReference::create(TestType::class, 15),
+                ConnectionTypeReference::create(TestType::class, 15),
                 '__invoke',
                 null,
             ),
@@ -159,7 +159,7 @@ final class RootTypeBuilderTest extends TestCase
                     'Test',
                     null,
                     [],
-                    new CursorNode(ScalarReference::create('string'), FieldNodeType::Property, null, 'property'),
+                    new CursorNode(ScalarTypeReference::create('string'), FieldNodeType::Property, null, 'property'),
                 ),
             ),
         );

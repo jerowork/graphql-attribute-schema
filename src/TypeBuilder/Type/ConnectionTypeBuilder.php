@@ -12,9 +12,9 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
@@ -22,7 +22,7 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 
 /**
- * @implements TypeBuilder<ConnectionReference>
+ * @implements TypeBuilder<ConnectionTypeReference>
  */
 final readonly class ConnectionTypeBuilder implements TypeBuilder
 {
@@ -31,12 +31,12 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
         private FieldResolver $fieldResolver,
     ) {}
 
-    public function supports(Reference $reference): bool
+    public function supports(TypeReference $reference): bool
     {
-        return $reference instanceof ConnectionReference;
+        return $reference instanceof ConnectionTypeReference;
     }
 
-    public function build(Reference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(TypeReference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         $node = $ast->getNodeByClassName($reference->className);
 
@@ -58,7 +58,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
      * @throws BuildException
      */
     private function createEdgeType(
-        ConnectionReference $reference,
+        ConnectionTypeReference $reference,
         TypeNode $node,
         Ast $ast,
         ExecutingTypeBuilder $typeBuilder,
@@ -71,7 +71,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
             throw BuildException::logicError(sprintf('No cursor found for connection edge type: %s', $node->name));
         }
 
-        if ($cursorNode->reference instanceof ObjectReference) {
+        if ($cursorNode->reference instanceof ObjectTypeReference) {
             $cursorNodeType = $ast->getNodeByClassName($cursorNode->reference->className);
 
             if (!$cursorNodeType instanceof CustomScalarNode) {
@@ -87,7 +87,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
                 'fields' => [
                     [
                         'name' => 'node',
-                        'type' => $typeBuilder->build(ObjectReference::create($reference->className), $ast),
+                        'type' => $typeBuilder->build(ObjectTypeReference::create($reference->className), $ast),
                         'resolve' => fn($objectValue) => $objectValue,
                     ],
                     [

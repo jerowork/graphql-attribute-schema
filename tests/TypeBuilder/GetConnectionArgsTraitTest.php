@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder;
 
 use GraphQL\Type\Definition\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\GetConnectionArgsTrait;
@@ -24,7 +24,7 @@ final class GetConnectionArgsTraitTest extends TestCase
             use GetConnectionArgsTrait;
         };
 
-        self::assertSame([], $trait->getConnectionArgs(ObjectReference::create(TestType::class)));
+        self::assertSame([], $trait->getConnectionArgs(ObjectTypeReference::create(TestType::class)));
     }
 
     #[Test]
@@ -56,6 +56,6 @@ final class GetConnectionArgsTraitTest extends TestCase
                 'type' => Type::string(),
                 'description' => 'Connection: return items before cursor',
             ],
-        ], $trait->getConnectionArgs(ConnectionReference::create(TestType::class, 15)));
+        ], $trait->getConnectionArgs(ConnectionTypeReference::create(TestType::class, 15)));
     }
 }

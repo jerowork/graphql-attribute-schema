@@ -11,37 +11,37 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ObjectType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type as OptionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ListableReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ListableTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 use ReflectionNamedType;
 use ReflectionType;
 use LogicException;
 
-trait GetReferenceTrait
+trait GetTypeReferenceTrait
 {
     private const array ALLOWED_SCALAR_TYPES = ['float', 'string', 'int', 'bool'];
 
     /**
      * @throws ParseException
      */
-    public function getReference(?ReflectionType $reflectionType, ?TypedAttribute $attribute): ?Reference
+    public function getTypeReference(?ReflectionType $reflectionType, ?TypedAttribute $attribute): ?TypeReference
     {
         // Retrieve from attribute if set
         if ($attribute?->getType() !== null) {
             $attributeType = $attribute->getType();
 
             if ($attributeType instanceof ConnectionType) {
-                return ConnectionReference::create($attributeType->edgeType, $attributeType->first);
+                return ConnectionTypeReference::create($attributeType->edgeType, $attributeType->first);
             }
 
             if ($attributeType instanceof ListType) {
                 if ($attributeType->type instanceof NullableType) {
                     $type = $this->getReferenceFromAttribute($attributeType->type->type);
 
-                    if (!$type instanceof ListableReference) {
+                    if (!$type instanceof ListableTypeReference) {
                         throw ParseException::invalidListTypeConfiguration($type::class);
                     }
 
@@ -50,7 +50,7 @@ trait GetReferenceTrait
 
                 $type = $this->getReferenceFromAttribute($attributeType->type);
 
-                if (!$type instanceof ListableReference) {
+                if (!$type instanceof ListableTypeReference) {
                     throw ParseException::invalidListTypeConfiguration($type::class);
                 }
 
@@ -59,7 +59,7 @@ trait GetReferenceTrait
 
             if ($attributeType instanceof NullableType) {
                 if ($attributeType->type instanceof ConnectionType) {
-                    return ConnectionReference::create($attributeType->type->edgeType, $attributeType->type->first)
+                    return ConnectionTypeReference::create($attributeType->type->edgeType, $attributeType->type->first)
                         ->setNullableValue();
                 }
 
@@ -67,7 +67,7 @@ trait GetReferenceTrait
                     if ($attributeType->type->type instanceof NullableType) {
                         $type = $this->getReferenceFromAttribute($attributeType->type->type->type);
 
-                        if (!$type instanceof ListableReference) {
+                        if (!$type instanceof ListableTypeReference) {
                             throw ParseException::invalidListTypeConfiguration($type::class);
                         }
 
@@ -76,7 +76,7 @@ trait GetReferenceTrait
 
                     $type = $this->getReferenceFromAttribute($attributeType->type->type);
 
-                    if (!$type instanceof ListableReference) {
+                    if (!$type instanceof ListableTypeReference) {
                         throw ParseException::invalidListTypeConfiguration($type::class);
                     }
 
@@ -100,30 +100,30 @@ trait GetReferenceTrait
         }
 
         if ($reflectionType->isBuiltin()) {
-            $type = ScalarReference::create($reflectionType->getName());
+            $type = ScalarTypeReference::create($reflectionType->getName());
         } else {
             /** @var class-string $className */
             $className = $reflectionType->getName();
 
-            $type = ObjectReference::create($className);
+            $type = ObjectTypeReference::create($className);
         }
 
         return $reflectionType->allowsNull() ? $type->setNullableValue() : $type;
     }
 
-    private function getReferenceFromAttribute(string|OptionType|ScalarType $type): Reference
+    private function getReferenceFromAttribute(string|OptionType|ScalarType $type): TypeReference
     {
         if ($type instanceof ScalarType) {
-            return ScalarReference::create($type->value);
+            return ScalarTypeReference::create($type->value);
         }
 
         if ($type instanceof ObjectType) {
-            return ObjectReference::create($type->className);
+            return ObjectTypeReference::create($type->className);
         }
 
         if (is_string($type)) {
             /** @var class-string $type */
-            return ObjectReference::create($type);
+            return ObjectTypeReference::create($type);
         }
 
         throw new LogicException('Failed to determine reference from Attribute');

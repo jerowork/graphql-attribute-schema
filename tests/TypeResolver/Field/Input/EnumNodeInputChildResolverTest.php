@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
@@ -53,7 +53,7 @@ final class EnumNodeInputChildResolverTest extends TestCase
         );
 
         self::assertTrue($this->resolver->supports(new FieldNode(
-            ObjectReference::create(TestEnumType::class),
+            ObjectTypeReference::create(TestEnumType::class),
             'TestEnum',
             null,
             [],
@@ -64,7 +64,7 @@ final class EnumNodeInputChildResolverTest extends TestCase
         ), $ast));
 
         self::assertFalse($this->resolver->supports(new FieldNode(
-            ObjectReference::create(TestScalarType::class),
+            ObjectTypeReference::create(TestScalarType::class),
             'TestScalar',
             null,
             [],
@@ -89,7 +89,7 @@ final class EnumNodeInputChildResolverTest extends TestCase
 
         $enum = $this->resolver->resolve(
             new FieldNode(
-                ObjectReference::create(TestEnumType::class),
+                ObjectTypeReference::create(TestEnumType::class),
                 'enum',
                 null,
                 [],
@@ -122,7 +122,7 @@ final class EnumNodeInputChildResolverTest extends TestCase
 
         $enum = $this->resolver->resolve(
             new FieldNode(
-                ObjectReference::create(TestEnumType::class)->setList(),
+                ObjectTypeReference::create(TestEnumType::class)->setList(),
                 'enum',
                 null,
                 [],

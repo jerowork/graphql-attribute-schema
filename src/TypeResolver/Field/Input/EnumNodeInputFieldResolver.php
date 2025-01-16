@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
@@ -17,7 +17,7 @@ final readonly class EnumNodeInputFieldResolver implements InputFieldResolver
 {
     public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool
     {
-        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectReference && $ast->getNodeByClassName($child->reference->className) instanceof EnumNode;
+        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectTypeReference && $ast->getNodeByClassName($child->reference->className) instanceof EnumNode;
     }
 
     /**
@@ -29,7 +29,7 @@ final readonly class EnumNodeInputFieldResolver implements InputFieldResolver
             throw ResolveException::logicError(sprintf('Invalid child %s', $child::class));
         }
 
-        if (!$child->reference instanceof ObjectReference) {
+        if (!$child->reference instanceof ObjectTypeReference) {
             throw ResolveException::logicError('Node type must be an object type');
         }
 

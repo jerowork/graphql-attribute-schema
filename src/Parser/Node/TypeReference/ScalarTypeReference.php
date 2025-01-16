@@ -2,26 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference;
 
 /**
- * @phpstan-type ObjectNodeTypePayload array{
- *     className: class-string,
+ * @phpstan-type ScalarTypeReferencePayload array{
+ *     value: string,
  *     isValueNullable: bool,
  *     isList: bool,
  *     isListNullable: bool
  * }
  */
-final class ObjectReference implements ListableReference
+final class ScalarTypeReference implements ListableTypeReference
 {
     use ReferenceTrait;
     use ListableReferenceTrait;
 
-    /**
-     * @param class-string $className
-     */
     public function __construct(
-        public readonly string $className,
+        public readonly string $value,
         bool $isValueNullable,
         bool $isList,
         bool $isListNullable,
@@ -31,21 +28,18 @@ final class ObjectReference implements ListableReference
         $this->isListNullable = $isListNullable;
     }
 
-    /**
-     * @param class-string $className
-     */
-    public static function create(string $className): self
+    public static function create(string $value): self
     {
-        return new self($className, false, false, false);
+        return new self($value, false, false, false);
     }
 
     /**
-     * @return ObjectNodeTypePayload
+     * @return ScalarTypeReferencePayload
      */
     public function toArray(): array
     {
         return [
-            'className' => $this->className,
+            'value' => $this->value,
             'isValueNullable' => $this->isValueNullable(),
             'isList' => $this->isList(),
             'isListNullable' => $this->isListNullable(),
@@ -53,22 +47,22 @@ final class ObjectReference implements ListableReference
     }
 
     /**
-     * @param ObjectNodeTypePayload $payload
+     * @param ScalarTypeReferencePayload $payload
      */
-    public static function fromArray(array $payload): ObjectReference
+    public static function fromArray(array $payload): ScalarTypeReference
     {
         return new self(
-            $payload['className'],
+            $payload['value'],
             $payload['isValueNullable'],
             $payload['isList'],
             $payload['isListNullable'],
         );
     }
 
-    public function equals(Reference $reference): bool
+    public function equals(TypeReference $reference): bool
     {
         return $reference instanceof self
-            && $reference->className === $this->className
+            && $reference->value === $this->value
             && $reference->isValueNullable === $this->isValueNullable
             && $reference->isList === $this->isList
             && $reference->isListNullable === $this->isListNullable;

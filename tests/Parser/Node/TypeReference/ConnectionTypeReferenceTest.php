@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Test\Parser\Node\TypeReference;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use stdClass;
@@ -12,12 +12,12 @@ use stdClass;
 /**
  * @internal
  */
-final class ConnectionReferenceTest extends TestCase
+final class ConnectionTypeReferenceTest extends TestCase
 {
     #[Test]
     public function itShouldCreateBaseObject(): void
     {
-        $reference = ConnectionReference::create(stdClass::class, 10);
+        $reference = ConnectionTypeReference::create(stdClass::class, 10);
 
         self::assertSame(stdClass::class, $reference->className);
     }
@@ -25,7 +25,7 @@ final class ConnectionReferenceTest extends TestCase
     #[Test]
     public function itShouldSetValueNullable(): void
     {
-        $reference = ConnectionReference::create(stdClass::class, 10);
+        $reference = ConnectionTypeReference::create(stdClass::class, 10);
 
         self::assertFalse($reference->isValueNullable());
 
@@ -37,9 +37,9 @@ final class ConnectionReferenceTest extends TestCase
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $reference = ConnectionReference::create(stdClass::class, 10)
+        $reference = ConnectionTypeReference::create(stdClass::class, 10)
             ->setNullableValue();
 
-        self::assertEquals(ConnectionReference::fromArray($reference->toArray()), $reference);
+        self::assertEquals(ConnectionTypeReference::fromArray($reference->toArray()), $reference);
     }
 }

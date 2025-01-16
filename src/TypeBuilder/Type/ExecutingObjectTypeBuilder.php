@@ -8,15 +8,15 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
 /**
- * @implements TypeBuilder<ObjectReference>
+ * @implements TypeBuilder<ObjectTypeReference>
  */
 final readonly class ExecutingObjectTypeBuilder implements TypeBuilder
 {
@@ -28,12 +28,12 @@ final readonly class ExecutingObjectTypeBuilder implements TypeBuilder
         private iterable $objectTypeBuilders,
     ) {}
 
-    public function supports(Reference $reference): bool
+    public function supports(TypeReference $reference): bool
     {
-        return $reference instanceof ObjectReference;
+        return $reference instanceof ObjectTypeReference;
     }
 
-    public function build(Reference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
+    public function build(TypeReference $reference, ExecutingTypeBuilder $typeBuilder, Ast $ast): Type
     {
         $node = $ast->getNodeByClassName($reference->className);
 

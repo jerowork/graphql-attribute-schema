@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference;
 
-interface ListableReference extends Reference
+interface ListableTypeReference extends TypeReference
 {
     public function setList(): self;
 

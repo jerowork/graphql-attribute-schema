@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use GraphQL\Type\Definition\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 
 trait GetConnectionArgsTrait
 {
@@ -17,9 +17,9 @@ trait GetConnectionArgsTrait
      *     description: string
      * }>
      */
-    public function getConnectionArgs(Reference $reference): array
+    public function getConnectionArgs(TypeReference $reference): array
     {
-        if (!$reference instanceof ConnectionReference) {
+        if (!$reference instanceof ConnectionTypeReference) {
             return [];
         }
 

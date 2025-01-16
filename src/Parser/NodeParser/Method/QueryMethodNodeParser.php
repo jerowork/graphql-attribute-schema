@@ -8,10 +8,10 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\RetrieveNameForFieldTrait;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
@@ -23,7 +23,7 @@ use ReflectionNamedType;
 final readonly class QueryMethodNodeParser implements MethodNodeParser
 {
     use RetrieveNameForFieldTrait;
-    use GetReferenceTrait;
+    use GetTypeReferenceTrait;
     use GetAttributeTrait;
 
     public function __construct(
@@ -42,14 +42,14 @@ final readonly class QueryMethodNodeParser implements MethodNodeParser
         $attribute = $this->getAttribute($method, Query::class);
         $returnType = $method->getReturnType();
 
-        $reference = $this->getReference($returnType, $attribute);
+        $reference = $this->getTypeReference($returnType, $attribute);
 
         if ($reference === null) {
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
         // When reference is ConnectionType, the query needs to have Connection as return type
-        if ($reference instanceof ConnectionReference) {
+        if ($reference instanceof ConnectionTypeReference) {
             if (!$returnType instanceof ReflectionNamedType || $returnType->getName() !== Connection::class) {
                 throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
             }

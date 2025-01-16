@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Parser\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidScalarCursorType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidTypeWithMultipleCursors;
@@ -64,7 +64,7 @@ final class CursorNodeParserTest extends TestCase
         $cursorNode = $this->parser->parse(new ReflectionClass(TestPropertyCursorType::class));
 
         self::assertEquals(new CursorNode(
-            ScalarReference::create('string'),
+            ScalarTypeReference::create('string'),
             FieldNodeType::Property,
             null,
             'cursor',
@@ -77,7 +77,7 @@ final class CursorNodeParserTest extends TestCase
         $cursorNode = $this->parser->parse(new ReflectionClass(TestMethodCursorType::class));
 
         self::assertEquals(new CursorNode(
-            ScalarReference::create('string'),
+            ScalarTypeReference::create('string'),
             FieldNodeType::Method,
             'getCursor',
             null,

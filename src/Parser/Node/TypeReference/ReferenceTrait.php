@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Parser\Node\Reference;
+namespace Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference;
 
 trait ReferenceTrait
 {

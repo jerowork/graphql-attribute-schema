@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
-use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\GetTypeReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use ReflectionClass;
 use ReflectionMethod;
@@ -16,7 +16,7 @@ use ReflectionProperty;
 
 final readonly class CursorNodeParser
 {
-    use GetReferenceTrait;
+    use GetTypeReferenceTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
@@ -38,13 +38,13 @@ final readonly class CursorNodeParser
                 throw ParseException::multipleCursorsFound($class->getName());
             }
 
-            $reference = $this->getReference($property->getType(), $cursorAttribute);
+            $reference = $this->getTypeReference($property->getType(), $cursorAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidConnectionPropertyType($class->getName(), $property->getName());
             }
 
-            if ($reference instanceof ScalarReference && $reference->value !== 'string') {
+            if ($reference instanceof ScalarTypeReference && $reference->value !== 'string') {
                 throw ParseException::invalidConnectionPropertyType($class->getName(), $property->getName());
             }
 
@@ -67,13 +67,13 @@ final readonly class CursorNodeParser
 
             $returnType = $method->getReturnType();
 
-            $reference = $this->getReference($returnType, $cursorAttribute);
+            $reference = $this->getTypeReference($returnType, $cursorAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
             }
 
-            if ($reference instanceof ScalarReference && $reference->value !== 'string') {
+            if ($reference instanceof ScalarTypeReference && $reference->value !== 'string') {
                 throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
             }
 

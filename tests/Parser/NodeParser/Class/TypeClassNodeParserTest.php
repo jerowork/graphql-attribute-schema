@@ -10,8 +10,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
@@ -68,7 +68,7 @@ final class TypeClassNodeParserTest extends TestCase
             'Test Type',
             [
                 new FieldNode(
-                    ScalarReference::create('string')->setNullableValue(),
+                    ScalarTypeReference::create('string')->setNullableValue(),
                     'typeId',
                     null,
                     [],
@@ -78,7 +78,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ObjectReference::create(DateTimeImmutable::class),
+                    ObjectTypeReference::create(DateTimeImmutable::class),
                     'date',
                     null,
                     [],
@@ -88,7 +88,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ScalarReference::create('string')->setNullableValue(),
+                    ScalarTypeReference::create('string')->setNullableValue(),
                     'flow',
                     null,
                     [],
@@ -98,7 +98,7 @@ final class TypeClassNodeParserTest extends TestCase
                     null,
                 ),
                 new FieldNode(
-                    ScalarReference::create('string'),
+                    ScalarTypeReference::create('string'),
                     'status',
                     null,
                     [],
@@ -109,7 +109,7 @@ final class TypeClassNodeParserTest extends TestCase
                 ),
             ],
             new CursorNode(
-                ScalarReference::create('string')->setNullableValue(),
+                ScalarTypeReference::create('string')->setNullableValue(),
                 FieldNodeType::Method,
                 'flow',
                 null,

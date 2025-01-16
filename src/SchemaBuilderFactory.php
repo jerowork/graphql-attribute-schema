@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
@@ -52,7 +52,7 @@ final readonly class SchemaBuilderFactory
 
         $builtTypesRegistry = new BuiltTypesRegistry();
 
-        /** @var iterable<TypeBuilder<Reference>> $typeBuilders */
+        /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
             new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
