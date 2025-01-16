@@ -92,7 +92,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
                     ],
                     [
                         'name' => 'cursor',
-                        'type' => $cursorNode->reference->isValueNullable() ? Type::string() : Type::nonNull(Type::string()), // $typeBuilder->build($cursorNode->reference, $ast), // todo: maybe just string? as it mismatches with pageinfo obj
+                        'type' => $cursorNode->reference->isValueNullable() ? Type::string() : Type::nonNull(Type::string()),
                         'resolve' => $this->resolveCursor($node, $cursorNode, $ast),
                     ],
                 ],
