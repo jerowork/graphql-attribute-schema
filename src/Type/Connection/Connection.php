@@ -18,8 +18,8 @@ final readonly class Connection implements IteratorAggregate
      */
     public function __construct(
         public array $nodes,
-        public bool $hasPreviousPage,
-        public bool $hasNextPage,
+        public bool $hasPreviousPage = false,
+        public bool $hasNextPage = false,
         public ?string $startCursor = null,
         public ?string $endCursor = null,
     ) {}
