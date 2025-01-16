@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\NodeType\Object;
+namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Type\Object;
 
 use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
