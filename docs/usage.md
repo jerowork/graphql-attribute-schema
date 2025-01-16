@@ -16,6 +16,7 @@ The following attributes can be used:
 - [#[Arg]](#arg)
 - [#[Autowire]](#autowire)
 - [#[Scalar]](#scalar)
+- [#[Cursor]](#cursor) as part of [Connections (Pagination)](#connections-pagination)
 
 See below for more information about each attribute:
 
@@ -449,3 +450,82 @@ With this custom type, `DateTimeImmutable` can be used out-of-the-box (without a
 
 When building the `Parser` with the `ParserFactory`, this custom scalar type is already registered.
 If not, add `DateTimeType` as a `$customTypes` in the `Parser` construct. 
+
+### #[Cursor]
+See [Connections (Pagination)](#connections-pagination)
+
+## Connections (Pagination)
+*GraphQL Attribute Schema* allows pagination out of the box, following the 'Connection' specification.
+
+More information see:
+- https://graphql.org/learn/pagination
+- https://relay.dev/graphql/connections.htm
+
+A simple example:
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\ConnectionType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
+use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
+
+final readonly class UsersQuery
+{
+    #[Query(type: new ConnectionType(User::class))]
+    public function getUsers(string $status, EdgeArgs $edgeArgs) : Connection 
+    {
+        // retrieve a slice of users based on EdgeArgs and custom filters as status
+        // ...
+    
+        return new Connection($users);
+    }
+}
+
+#[Type]
+final readonly class User 
+{
+    public function __construct(
+        #[Field]
+        #[Cursor]
+        string $id,
+        // ... other fields
+    ) {}
+}
+```
+
+With this setup you can query on Users with:
+```graphql
+query {
+  users(status: "active", first: 15) {
+    edges {
+      cursor
+      node {
+        id
+        # ... other fields
+      }
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+}
+```
+
+In order to setup a Connection, the Type `ConnectionType` can be used, either as
+output type for `#[Query]` and `#[Mutation]` or as output type in `#[Type]` (methods).
+
+When using `ConnectionType`, return type `Connection` is required. 
+This is a DTO containing a list of entities (nodes) as well as pagination (`hasPreviousPage`, `hasNextPage`) 
+and slicing parameters (`startCursor`, `endCursor`).
+
+Optionally, as input argument `EdgeArgs` is available, containing input pagination (`first`, `last`) 
+and slicing arguments (`after`, `before`). Besides `EdgeArgs` it is also possible to add your own input arguments.
+
+Lastly, the 'node' needs to have a `#[Cursor]` defined. This can be a property or method.
+It will define the output for each 'edge' cursor.
+A `#[Cursor]` parameter does not need to be a `#[Field]` as well, but it is possible to use both attributes for one parameter.
