@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestResolvableInputType;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type;
 
 use GraphQL\Type\Definition\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;

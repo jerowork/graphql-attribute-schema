@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;

@@ -6,10 +6,10 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object;
 
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\GetConnectionArgsTrait;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Override;

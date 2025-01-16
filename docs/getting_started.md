@@ -23,7 +23,7 @@ Both `SchemaBuilder` and `Parser` can be created quickly with the provided facto
 ```php
 use GraphQL\Server\StandardServer;
 use GraphQL\Server\ServerConfig;
-use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
+use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 
 // PSR-11 compatible container of your choice
@@ -52,10 +52,11 @@ As a quick-start, a simple example of a GraphQL Server with Symfony
 (requiring [symfony/psr-http-message-bridge](https://github.com/symfony/psr-http-message-bridge) and a PSR-7 implementation, e.g. [guzzlehttp/psr7](https://github.com/guzzle/psr7)):
 
 _Note: any error handling is absent to keep the example simple._
+
 ```php
 use GraphQL\Server\StandardServer;
 use GraphQL\Server\ServerConfig;
-use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
+use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 use Psr\Container\ContainerInterface;
 use Symfony\Bridge\PsrHttpMessage\HttpMessageFactoryInterface;
@@ -107,7 +108,7 @@ the AST is serializable. This makes the AST cacheable.
 ```php
 use GraphQL\Server\StandardServer;
 use GraphQL\Server\ServerConfig;
-use Jerowork\GraphqlAttributeSchema\Parser\ParserFactory;
+use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 
 // 1. Create an AST based on your classes

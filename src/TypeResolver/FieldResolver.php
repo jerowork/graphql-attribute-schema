@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
-use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\AutowireNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputFieldResolver;
 use Psr\Container\ContainerInterface;

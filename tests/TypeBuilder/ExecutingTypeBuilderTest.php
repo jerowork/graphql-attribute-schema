@@ -6,12 +6,12 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder;
 
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\Type as WebonyxType;
-use Jerowork\GraphqlAttributeSchema\Parser\Ast;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\TypeReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ObjectTypeReference;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
@@ -30,7 +30,7 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Override;
 
 /**
@@ -83,7 +83,7 @@ final class ExecutingTypeBuilderTest extends TestCase
     }
 
     #[Test]
-    public function it_should_build_non_nullable_scalar_type(): void
+    public function itShouldBuildNonNullableScalarType(): void
     {
         $type = $this->builder->build(ScalarTypeReference::create('float'), new Ast());
 
