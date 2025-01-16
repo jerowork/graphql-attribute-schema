@@ -35,7 +35,7 @@ final readonly class ExecutingTypeBuilder
         }
 
         if ($builtType === null) {
-            throw BuildException::logicError('Cannot build type');
+            throw BuildException::logicError(sprintf('Cannot build type for reference: %s', $reference::class));
         }
 
         if (!$reference->isValueNullable()) {
