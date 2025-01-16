@@ -449,19 +449,31 @@ Custom scalar types:
 With this custom type, `DateTimeImmutable` can be used out-of-the-box (without any `type` option definition).
 
 When building the `Parser` with the `ParserFactory`, this custom scalar type is already registered.
-If not, add `DateTimeType` as a `$customTypes` in the `Parser` construct. 
+If not, add `DateTimeType` as a `$customTypes` in the `Parser` construct.
 
 ### #[Cursor]
+
 See [Connections (Pagination)](#connections-pagination)
 
+#### Options
+
+`#[Cursor]` attribute can be configured:
+
+| Option | Description                                                                                                                                                                                                                                                                                                |
+|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type` | Set custom return type; it can be:<br/>- A custom class implementing `ScalarType` (FQCN)<br/>- A `ScalarType::String`<br/>- A `NullableType` encapsulating any of the previous mentioned types (e.g. `new NullableType(ScalarType::String)`)<br/><br/>*All these types will resolve into a string format.* |
+
 ## Connections (Pagination)
+
 *GraphQL Attribute Schema* allows pagination out of the box, following the 'Connection' specification.
 
 More information see:
+
 - https://graphql.org/learn/pagination
 - https://relay.dev/graphql/connections.htm
 
 A simple example:
+
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
@@ -496,38 +508,41 @@ final readonly class User
 ```
 
 With this setup you can query on Users with:
+
 ```graphql
 query {
-  users(status: "active", first: 15) {
-    edges {
-      cursor
-      node {
-        id
-        # ... other fields
-      }
+    users(status: "active", first: 15) {
+        edges {
+            cursor
+            node {
+                id
+                # ... other fields
+            }
+        }
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+        }
     }
-    pageInfo {
-      hasNextPage
-      hasPreviousPage
-      startCursor
-      endCursor
-    }
-  }
 }
 ```
 
 In order to setup a Connection, the Type `ConnectionType` can be used, either as
 output type for `#[Query]` and `#[Mutation]` or as output type in `#[Type]` (methods).
 
-When using `ConnectionType`, return type `Connection` is required. 
-This is a DTO containing a list of entities (nodes) as well as pagination (`hasPreviousPage`, `hasNextPage`) 
+When using `ConnectionType`, return type `Connection` is required.
+This is a DTO containing a list of entities (nodes) as well as pagination (`hasPreviousPage`, `hasNextPage`)
 and slicing parameters (`startCursor`, `endCursor`).
 
-Optionally, as input argument `EdgeArgs` is available, containing input pagination (`first`, `last`) 
+Optionally, as input argument `EdgeArgs` is available, containing input pagination (`first`, `last`)
 and slicing arguments (`after`, `before`). Besides `EdgeArgs` it is also possible to add your own input arguments.
 
 Lastly, the 'node' needs to have a `#[Cursor]` defined. This can be a property or method.
 It will define the output for each 'edge' cursor.
-A `#[Cursor]` parameter does not need to be a `#[Field]` as well, but it is possible to use both attributes for one parameter.
+A `#[Cursor]` parameter does not need to be a `#[Field]` as well, but it is possible to use both attributes for one
+parameter.
 
-**Note:** It is possible to omit the `#[Cursor]`, this will result in an always null value when retrieving each 'edge' cursor.
+**Note:** It is possible to omit the `#[Cursor]`, this will result in an always null value when retrieving each 'edge'
+cursor.
