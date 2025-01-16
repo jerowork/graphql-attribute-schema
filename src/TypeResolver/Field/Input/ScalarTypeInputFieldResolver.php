@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
+use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class ScalarTypeInputFieldResolver implements InputFieldResolver
@@ -18,8 +19,15 @@ final readonly class ScalarTypeInputFieldResolver implements InputFieldResolver
         return ($child instanceof FieldNode || $child instanceof ArgNode) && $child->reference instanceof ScalarReference;
     }
 
+    /**
+     * @throws ResolveException
+     */
     public function resolve(FieldNode|ArgNode|EdgeArgsNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
+        if ($child instanceof EdgeArgsNode) {
+            throw ResolveException::logicError(sprintf('Invalid child %s', $child::class));
+        }
+
         return $args[$child->name];
     }
 }

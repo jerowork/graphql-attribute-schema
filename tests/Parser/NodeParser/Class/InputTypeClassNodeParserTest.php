@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use PHPUnit\Framework\Attributes\Test;
@@ -34,6 +35,7 @@ final class InputTypeClassNodeParserTest extends TestCase
             new ClassFieldNodesParser(
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),
+                    new EdgeArgsNodeParser(),
                     new ArgNodeParser(),
                 ),
             ),

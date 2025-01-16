@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ObjectReference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidMethodArgument;
@@ -33,6 +34,7 @@ final class MethodArgNodesParserTest extends TestCase
 
         $this->parser = new MethodArgumentNodesParser(
             new AutowireNodeParser(),
+            new EdgeArgsNodeParser(),
             new ArgNodeParser(),
         );
     }

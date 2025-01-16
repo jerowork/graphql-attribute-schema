@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 #[Type]
 final readonly class TestInvalidConnectionMethodType
 {
+    /**
+     * @return array<mixed>
+     */
     #[Field(type: new ConnectionType(TestType::class))]
     public function edges(): array
     {

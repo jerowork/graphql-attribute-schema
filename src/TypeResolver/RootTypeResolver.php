@@ -58,6 +58,6 @@ final readonly class RootTypeResolver
             return $resolver->resolve($child, $args, $ast, $this);
         }
 
-        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $child->name));
+        throw ResolveException::logicError(sprintf('Node %s cannot be handled', $child::class));
     }
 }

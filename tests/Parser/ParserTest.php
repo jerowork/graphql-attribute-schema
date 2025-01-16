@@ -245,6 +245,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                 ],
+                null,
             ),
         ], $ast->getNodesByNodeType(TypeNode::class));
 

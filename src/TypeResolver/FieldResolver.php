@@ -43,6 +43,14 @@ final readonly class FieldResolver
                 }
 
                 if ($argumentNode instanceof EdgeArgsNode) {
+                    /**
+                     * @var array{
+                     *     first?: null|int,
+                     *     after?: null|string,
+                     *     last?: null|int,
+                     *     before?: null|string
+                     * } $args
+                     */
                     $arguments[] = new EdgeArgs(
                         $args['first'] ?? null,
                         $args['after'] ?? null,

@@ -17,7 +17,7 @@ final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolv
 {
     public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool
     {
-        return $child->reference instanceof ObjectReference && $ast->getNodeByClassName($child->reference->className) instanceof InputTypeNode;
+        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectReference && $ast->getNodeByClassName($child->reference->className) instanceof InputTypeNode;
     }
 
     /**
@@ -25,6 +25,10 @@ final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolv
      */
     public function resolve(FieldNode|ArgNode|EdgeArgsNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
+        if ($child instanceof EdgeArgsNode) {
+            throw ResolveException::logicError(sprintf('Invalid child %s', $child::class));
+        }
+
         if (!$child->reference instanceof ObjectReference) {
             throw ResolveException::logicError('Node type must be an object type');
         }

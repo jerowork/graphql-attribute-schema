@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ConnectionReference;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\Reference;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -26,6 +27,7 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeB
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
@@ -66,6 +68,7 @@ final class ConnectionTypeBuilderTest extends TestCase
             new TypeObjectTypeBuilder($fieldResolver),
         ];
 
+        /** @var list<TypeBuilder<Reference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
             new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),

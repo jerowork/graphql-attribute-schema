@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 #[Type]
 final readonly class TestInvalidConnectionPropertyType
 {
+    /**
+     * @param array<mixed> $edges
+     */
     public function __construct(
         #[Field(type: new ConnectionType(TestType::class))]
         public array $edges,

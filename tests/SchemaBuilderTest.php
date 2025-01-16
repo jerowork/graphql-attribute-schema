@@ -15,6 +15,8 @@ use Jerowork\GraphqlAttributeSchema\Parser\Node\Reference\ScalarReference;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\CursorNodeParser;
+use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\CustomScalarClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Class\EnumClassNodeParser;
@@ -97,10 +99,11 @@ final class SchemaBuilderTest extends TestCase
                 new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldNodesParser(
                     $methodArgsNodeParser = new MethodArgumentNodesParser(
                         new AutowireNodeParser(),
+                        new EdgeArgsNodeParser(),
                         new ArgNodeParser(),
                     ),
                 )),
-                new TypeClassNodeParser($classFieldNodesParser),
+                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser()),
                 new CustomScalarClassNodeParser(),
             ],
             [

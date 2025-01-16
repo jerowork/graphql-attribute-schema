@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidScalarCursorTyp
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidTypeWithMultipleCursors;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestMethodCursorType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestPropertyCursorType;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestResolvableType;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\Parser\NodeParser\Child\CursorNodeParser;
 use PHPUnit\Framework\Attributes\Test;
@@ -55,7 +55,7 @@ final class CursorNodeParserTest extends TestCase
     #[Test]
     public function itShouldReturnNoCursor(): void
     {
-        self::assertNull($this->parser->parse(new ReflectionClass(TestType::class)));
+        self::assertNull($this->parser->parse(new ReflectionClass(TestResolvableType::class)));
     }
 
     #[Test]

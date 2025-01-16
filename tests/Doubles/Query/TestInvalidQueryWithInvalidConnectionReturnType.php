@@ -10,6 +10,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 
 final readonly class TestInvalidQueryWithInvalidConnectionReturnType
 {
+    /**
+     * @return array<mixed>
+     */
     #[Query(type: new ConnectionType(TestType::class))]
     public function __invoke(): array
     {

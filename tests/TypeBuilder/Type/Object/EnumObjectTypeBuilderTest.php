@@ -52,6 +52,7 @@ final class EnumObjectTypeBuilderTest extends TestCase
             'type',
             null,
             [],
+            null,
         )));
     }
 

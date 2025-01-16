@@ -191,7 +191,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
                     ],
                     [
                         'name' => 'pageInfo',
-                        'type' => Type::nonNull($pageInfo),
+                        'type' => Type::nonNull($pageInfo), // @phpstan-ignore-line
                         'resolve' => fn(Connection $connection) => [
                             'hasPreviousPage' => $connection->hasPreviousPage,
                             'hasNextPage' => $connection->hasNextPage,
