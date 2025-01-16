@@ -16,6 +16,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeBuilder;
@@ -57,13 +58,20 @@ final class ExecutingTypeBuilderTest extends TestCase
             )),
         ];
 
-        /** @var iterable<TypeBuilder<Reference>> $nodeTypeBuilders */
-        $nodeTypeBuilders = [
+        /** @var iterable<TypeBuilder<Reference>> $typeBuilders */
+        $typeBuilders = [
             new ScalarTypeBuilder(),
-            new ExecutingObjectTypeBuilder(new BuiltTypesRegistry(), $objectTypeBuilders),
+            new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), new FieldResolver(
+                new TestContainer(),
+                [
+                    new ScalarTypeOutputFieldResolver(),
+                    new EnumNodeOutputFieldResolver(),
+                ],
+            )),
+            new ExecutingObjectTypeBuilder($builtTypesRegistry, $objectTypeBuilders),
         ];
 
-        $this->builder = new ExecutingTypeBuilder($nodeTypeBuilders);
+        $this->builder = new ExecutingTypeBuilder($typeBuilders);
     }
 
     #[Test]

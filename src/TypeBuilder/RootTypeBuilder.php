@@ -6,12 +6,15 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Parser\Ast;
+use Jerowork\GraphqlAttributeSchema\Parser\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class RootTypeBuilder
 {
+    use GetConnectionArgsTrait;
+
     public function __construct(
         private ExecutingTypeBuilder $typeBuilder,
         private RootTypeResolver $rootTypeResolver,
@@ -32,11 +35,15 @@ final readonly class RootTypeBuilder
     public function build(QueryNode|MutationNode $node, Ast $ast): array
     {
         $args = [];
-        foreach ($node->argNodes as $argNode) {
+        foreach ($node->argumentNodes as $argumentNode) {
+            if ($argumentNode instanceof EdgeArgsNode) {
+                continue;
+            }
+
             $args[] = [
-                'name' => $argNode->name,
-                'type' => $this->typeBuilder->build($argNode->reference, $ast),
-                'description' => $argNode->description,
+                'name' => $argumentNode->name,
+                'type' => $this->typeBuilder->build($argumentNode->reference, $ast),
+                'description' => $argumentNode->description,
             ];
         }
 
@@ -44,7 +51,10 @@ final readonly class RootTypeBuilder
             'name' => $node->name,
             'type' => $this->typeBuilder->build($node->outputReference, $ast),
             'description' => $node->description,
-            'args' => $args,
+            'args' => [
+                ...$args,
+                ...$this->getConnectionArgs($node->outputReference),
+            ],
             'resolve' => $this->rootTypeResolver->resolve($node, $ast),
         ];
 

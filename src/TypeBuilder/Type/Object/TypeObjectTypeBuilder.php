@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Parser\Ast;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\Parser\Node\Node;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\GetConnectionArgsTrait;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 use Override;
 
@@ -19,6 +20,7 @@ use Override;
 final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
 {
     use BuildArgsTrait;
+    use GetConnectionArgsTrait;
 
     public function __construct(
         private FieldResolver $typeResolver,
@@ -61,7 +63,10 @@ final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
                 'name' => $fieldNode->name,
                 'type' => $typeBuilder->build($fieldNode->reference, $ast),
                 'description' => $fieldNode->description,
-                'args' => $this->buildArgs($fieldNode, $typeBuilder, $ast),
+                'args' => [
+                    ...$this->buildArgs($fieldNode, $typeBuilder, $ast),
+                    ...$this->getConnectionArgs($fieldNode->reference),
+                ],
                 'resolve' => $this->typeResolver->resolve($fieldNode, $ast),
             ];
 
