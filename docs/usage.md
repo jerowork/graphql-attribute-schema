@@ -529,3 +529,5 @@ and slicing arguments (`after`, `before`). Besides `EdgeArgs` it is also possibl
 Lastly, the 'node' needs to have a `#[Cursor]` defined. This can be a property or method.
 It will define the output for each 'edge' cursor.
 A `#[Cursor]` parameter does not need to be a `#[Field]` as well, but it is possible to use both attributes for one parameter.
+
+**Note:** It is possible to omit the `#[Cursor]`, this will result in an always null value when retrieving each 'edge' cursor.

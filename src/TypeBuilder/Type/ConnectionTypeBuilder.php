@@ -65,13 +65,9 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
     ): Type {
         $edgeName = sprintf('%sEdge', $node->name);
 
-        // Get cursor data
         $cursorNode = $node->cursorNode;
-        if ($cursorNode === null) {
-            throw BuildException::logicError(sprintf('No cursor found for connection edge type: %s', $node->name));
-        }
 
-        if ($cursorNode->reference instanceof ObjectTypeReference) {
+        if ($cursorNode !== null && $cursorNode->reference instanceof ObjectTypeReference) {
             $cursorNodeType = $ast->getNodeByClassName($cursorNode->reference->className);
 
             if (!$cursorNodeType instanceof CustomScalarNode) {
@@ -92,8 +88,8 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
                     ],
                     [
                         'name' => 'cursor',
-                        'type' => $cursorNode->reference->isValueNullable() ? Type::string() : Type::nonNull(Type::string()),
-                        'resolve' => $this->resolveCursor($node, $cursorNode, $ast),
+                        'type' => $cursorNode?->reference->isValueNullable() !== false ? Type::string() : Type::nonNull(Type::string()),
+                        'resolve' => $cursorNode !== null ? $this->resolveCursor($node, $cursorNode, $ast) : fn() => null,
                     ],
                 ],
             ]));
