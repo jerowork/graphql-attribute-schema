@@ -35,8 +35,9 @@ final class ScalarClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportScalarOnly(): void
     {
-        self::assertTrue($this->parser->supports(Scalar::class));
-        self::assertFalse($this->parser->supports(Mutation::class));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, new ReflectionClass(Mutation::class), null));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
@@ -44,19 +45,19 @@ final class ScalarClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestInvalidScalarType::class), null);
+        iterator_to_array($this->parser->parse(Scalar::class, new ReflectionClass(TestInvalidScalarType::class), null));
     }
 
     #[Test]
     public function itShouldParseScalar(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestScalarType::class), null);
+        $nodes = iterator_to_array($this->parser->parse(Scalar::class, new ReflectionClass(TestScalarType::class), null));
 
-        self::assertEquals(new ScalarNode(
+        self::assertEquals([new ScalarNode(
             TestScalarType::class,
             'TestScalar',
             null,
             DateTime::class,
-        ), $node);
+        )], $nodes);
     }
 }

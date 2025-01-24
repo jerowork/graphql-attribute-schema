@@ -34,13 +34,12 @@ final readonly class Parser
     ];
 
     /**
-     * @param iterable<NodeParser> $nodeParsers
      * @param iterable<class-string> $customTypes
      */
     public function __construct(
         private Finder $finder,
         private Reflector $reflector,
-        private iterable $nodeParsers,
+        private NodeParser $nodeParser,
         private iterable $customTypes,
     ) {}
 
@@ -73,15 +72,9 @@ final readonly class Parser
         $attribute = $this->getSupportedAttribute($class);
 
         if ($attribute !== null) {
-            foreach ($this->nodeParsers as $nodeParser) {
-                if (!$nodeParser->supports($attribute)) {
-                    continue;
-                }
+            yield from $this->nodeParser->parse($attribute, $class, null);
 
-                yield $nodeParser->parse($class, null);
-
-                return null;
-            }
+            return;
         }
 
         // Method attributes
@@ -92,13 +85,7 @@ final readonly class Parser
                 continue;
             }
 
-            foreach ($this->nodeParsers as $nodeParser) {
-                if (!$nodeParser->supports($attribute)) {
-                    continue;
-                }
-
-                yield $nodeParser->parse($class, $method);
-            }
+            yield from $this->nodeParser->parse($attribute, $class, $method);
         }
     }
 

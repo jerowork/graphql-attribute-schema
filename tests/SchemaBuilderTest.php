@@ -12,6 +12,7 @@ use GraphQL\Type\Definition\Type as WebonyxType;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ChainedNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
@@ -95,7 +96,7 @@ final class SchemaBuilderTest extends TestCase
         $parser = new Parser(
             new NativeFinder(),
             new RoaveReflector(),
-            [
+            new ChainedNodeParser([
                 new EnumClassNodeParser(),
                 new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldsNodeParser(
                     $typeReferenceDecider = new TypeReferenceDecider(),
@@ -109,7 +110,7 @@ final class SchemaBuilderTest extends TestCase
                 new ScalarClassNodeParser(),
                 new MutationMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
                 new QueryMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
-            ],
+            ]),
             [
                 DateTimeType::class,
             ],

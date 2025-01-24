@@ -7,7 +7,6 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
@@ -15,6 +14,7 @@ use ReflectionClass;
 use Override;
 use ReflectionMethod;
 use ReflectionNamedType;
+use Generator;
 
 final readonly class MutationMethodNodeParser implements NodeParser
 {
@@ -27,14 +27,12 @@ final readonly class MutationMethodNodeParser implements NodeParser
     ) {}
 
     #[Override]
-    public function supports(string $attribute): bool
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
-        return $attribute === Mutation::class;
-    }
+        if ($attribute !== Mutation::class) {
+            return;
+        }
 
-    #[Override]
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
-    {
         if ($method === null) {
             throw new ParseException('Logic: Missing ReflectionMethod');
         }
@@ -58,7 +56,7 @@ final readonly class MutationMethodNodeParser implements NodeParser
         /** @var list<ArgNode> $argumentNodes */
         $argumentNodes = $this->methodArgumentsNodeParser->parse($method);
 
-        return new MutationNode(
+        yield new MutationNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
             $attribute->description,

@@ -7,16 +7,16 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use ReflectionClass;
 use ReflectionMethod;
+use Generator;
 
 interface NodeParser
 {
     /**
      * @param class-string $attribute
-     */
-    public function supports(string $attribute): bool;
-
-    /**
+     *
      * @throws ParseException
+     *
+     * @return Generator<Node>
      */
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node;
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator;
 }

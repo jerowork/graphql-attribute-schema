@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use ReflectionClass;
 use Override;
 use ReflectionMethod;
+use Generator;
 
 final readonly class TypeClassNodeParser implements NodeParser
 {
@@ -24,17 +24,15 @@ final readonly class TypeClassNodeParser implements NodeParser
     ) {}
 
     #[Override]
-    public function supports(string $attribute): bool
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
-        return $attribute === Type::class;
-    }
+        if ($attribute !== Type::class) {
+            return;
+        }
 
-    #[Override]
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
-    {
         $attribute = $this->getAttribute($class, Type::class);
 
-        return new TypeNode(
+        yield new TypeNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
             $attribute->description,

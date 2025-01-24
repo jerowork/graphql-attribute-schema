@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema;
 
+use Jerowork\GraphqlAttributeSchema\NodeParser\ChainedNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
@@ -46,14 +47,14 @@ final readonly class ParserFactory
         return new Parser(
             new NativeFinder(),
             new RoaveReflector(),
-            [
+            new ChainedNodeParser([
                 new EnumClassNodeParser(),
                 new InputTypeClassNodeParser($classFieldNodesParser),
                 new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
                 new ScalarClassNodeParser(),
                 new MutationMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
                 new QueryMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
-            ],
+            ]),
             $customTypes,
         );
     }

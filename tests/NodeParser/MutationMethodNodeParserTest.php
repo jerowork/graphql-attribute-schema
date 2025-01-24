@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
@@ -51,8 +51,11 @@ final class MutationMethodNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportMutationOnly(): void
     {
-        self::assertTrue($this->parser->supports(Mutation::class));
-        self::assertFalse($this->parser->supports(InputType::class));
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
+
+        $nodes = iterator_to_array($this->parser->parse(Type::class, $class, $class->getMethod('mutation')));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
@@ -63,7 +66,7 @@ final class MutationMethodNodeParserTest extends TestCase
 
         $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
 
-        $this->parser->parse($class, $class->getMethod('mutation'));
+        iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('mutation')));
     }
 
     #[Test]
@@ -74,17 +77,17 @@ final class MutationMethodNodeParserTest extends TestCase
 
         $class = new ReflectionClass(TestInvalidMutationWithInvalidConnectionReturnType::class);
 
-        $this->parser->parse($class, $class->getMethod('mutation'));
+        iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('mutation')));
     }
 
     #[Test]
-    public function itShouldParseInputType(): void
+    public function itShouldParseMutation(): void
     {
         $class = new ReflectionClass(TestMutation::class);
 
-        $node = $this->parser->parse($class, $class->getMethod('testMutation'));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('testMutation')));
 
-        self::assertEquals(new MutationNode(
+        self::assertEquals([new MutationNode(
             TestMutation::class,
             'testMutation',
             'Test mutation',
@@ -105,6 +108,6 @@ final class MutationMethodNodeParserTest extends TestCase
             ScalarTypeReference::create('string'),
             'testMutation',
             null,
-        ), $node);
+        )], $nodes);
     }
 }

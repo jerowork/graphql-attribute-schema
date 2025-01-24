@@ -47,20 +47,21 @@ final class InputTypeClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportInputTypeOnly(): void
     {
-        self::assertTrue($this->parser->supports(InputType::class));
-        self::assertFalse($this->parser->supports(Mutation::class));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, new ReflectionClass(TestInputType::class), null));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
     public function itShouldParseInputType(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestInputType::class), null);
+        $nodes = iterator_to_array($this->parser->parse(InputType::class, new ReflectionClass(TestInputType::class), null));
 
-        self::assertEquals(new InputTypeNode(
+        self::assertEquals([new InputTypeNode(
             TestInputType::class,
             'TestInput',
             'Test Input',
             [],
-        ), $node);
+        )], $nodes);
     }
 }

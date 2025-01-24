@@ -6,33 +6,34 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;
 use ReflectionMethod;
+use Generator;
+use Override;
 
 final readonly class ScalarClassNodeParser implements NodeParser
 {
     use GetAttributeTrait;
     use RetrieveNameForTypeTrait;
 
-    public function supports(string $attribute): bool
-    {
-        return $attribute === Scalar::class;
-    }
-
     /**
      * @throws ParseException
      */
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
+    #[Override]
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
+        if ($attribute !== Scalar::class) {
+            return;
+        }
+
         if (!$class->implementsInterface(ScalarType::class)) {
             throw ParseException::missingImplements($class->getName(), ScalarType::class);
         }
 
         $attribute = $this->getAttribute($class, Scalar::class);
 
-        return new ScalarNode(
+        yield new ScalarNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
             $attribute->description,

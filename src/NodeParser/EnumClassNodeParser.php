@@ -8,31 +8,30 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use ReflectionClass;
 use BackedEnum;
 use Override;
 use ReflectionEnum;
 use ReflectionException;
 use ReflectionMethod;
+use Generator;
 
 final readonly class EnumClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;
 
-    public function supports(string $attribute): bool
-    {
-        return $attribute === Enum::class;
-    }
-
     /**
      * @throws ParseException
      * @throws ReflectionException
      */
     #[Override]
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
+        if ($attribute !== Enum::class) {
+            return;
+        }
+
         $className = $class->getName();
 
         if (!$class->isEnum()) {
@@ -47,7 +46,7 @@ final readonly class EnumClassNodeParser implements NodeParser
 
         $name = $this->retrieveNameForType($class, $attribute);
 
-        return new EnumNode(
+        yield new EnumNode(
             $className,
             $name,
             $attribute->description,

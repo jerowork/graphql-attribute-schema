@@ -36,8 +36,9 @@ final class EnumClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportEnumOnly(): void
     {
-        self::assertTrue($this->parser->supports(Enum::class));
-        self::assertFalse($this->parser->supports(Mutation::class));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, new ReflectionClass(TestEnumType::class), null));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
@@ -45,7 +46,7 @@ final class EnumClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestType::class), null);
+        iterator_to_array($this->parser->parse(Enum::class, new ReflectionClass(TestType::class), null));
     }
 
     #[Test]
@@ -53,15 +54,15 @@ final class EnumClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestInvalidEnumType::class), null);
+        iterator_to_array($this->parser->parse(Enum::class, new ReflectionClass(TestInvalidEnumType::class), null));
     }
 
     #[Test]
     public function itShouldParseEnum(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestEnumType::class), null);
+        $nodes = iterator_to_array($this->parser->parse(Enum::class, new ReflectionClass(TestEnumType::class), null));
 
-        self::assertEquals(new EnumNode(
+        self::assertEquals([new EnumNode(
             TestEnumType::class,
             'TestEnum',
             'Test Enum',
@@ -71,6 +72,6 @@ final class EnumClassNodeParserTest extends TestCase
                 new EnumValueNode(TestEnumType::C->value, 'Case C', null),
                 new EnumValueNode(TestEnumType::D->value, null, null),
             ],
-        ), $node);
+        )], $nodes);
     }
 }

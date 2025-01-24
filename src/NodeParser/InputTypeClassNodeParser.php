@@ -6,11 +6,11 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use ReflectionClass;
 use Override;
 use ReflectionMethod;
+use Generator;
 
 final readonly class InputTypeClassNodeParser implements NodeParser
 {
@@ -22,17 +22,15 @@ final readonly class InputTypeClassNodeParser implements NodeParser
     ) {}
 
     #[Override]
-    public function supports(string $attribute): bool
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
-        return $attribute === InputType::class;
-    }
+        if ($attribute !== InputType::class) {
+            return;
+        }
 
-    #[Override]
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
-    {
         $attribute = $this->getAttribute($class, InputType::class);
 
-        return new InputTypeNode(
+        yield new InputTypeNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
             $attribute->description,

@@ -6,7 +6,6 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
@@ -15,6 +14,7 @@ use ReflectionClass;
 use Override;
 use ReflectionMethod;
 use ReflectionNamedType;
+use Generator;
 
 final readonly class QueryMethodNodeParser implements NodeParser
 {
@@ -27,14 +27,12 @@ final readonly class QueryMethodNodeParser implements NodeParser
     ) {}
 
     #[Override]
-    public function supports(string $attribute): bool
+    public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
-        return $attribute === Query::class;
-    }
+        if ($attribute !== Query::class) {
+            return;
+        }
 
-    #[Override]
-    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
-    {
         if ($method === null) {
             throw new ParseException('Logic: Missing ReflectionMethod');
         }
@@ -58,7 +56,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
         /** @var list<ArgNode> $argumentNodes */
         $argumentNodes = $this->methodArgumentsNodeParser->parse($method);
 
-        return new QueryNode(
+        yield new QueryNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
             $attribute->description,

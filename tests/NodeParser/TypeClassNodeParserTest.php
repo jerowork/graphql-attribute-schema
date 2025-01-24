@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type as AttributeType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
@@ -55,16 +55,17 @@ final class TypeClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportTypeOnly(): void
     {
-        self::assertTrue($this->parser->supports(AttributeType::class));
-        self::assertFalse($this->parser->supports(Mutation::class));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, new ReflectionClass(TestType::class), null));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
     public function itShouldParseType(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestType::class), null);
+        $nodes = iterator_to_array($this->parser->parse(Type::class, new ReflectionClass(TestType::class), null));
 
-        self::assertEquals(new TypeNode(
+        self::assertEquals([new TypeNode(
             TestType::class,
             'Test',
             'Test Type',
@@ -116,6 +117,6 @@ final class TypeClassNodeParserTest extends TestCase
                 'flow',
                 null,
             ),
-        ), $node);
+        )], $nodes);
     }
 }

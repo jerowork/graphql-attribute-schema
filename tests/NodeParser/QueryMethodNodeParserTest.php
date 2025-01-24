@@ -51,8 +51,11 @@ final class QueryMethodNodeParserTest extends TestCase
     #[Test]
     public function itShouldSupportQueryOnly(): void
     {
-        self::assertTrue($this->parser->supports(Query::class));
-        self::assertFalse($this->parser->supports(InputType::class));
+        $class = new ReflectionClass(TestInvalidQueryWithInvalidReturnType::class);
+
+        $nodes = iterator_to_array($this->parser->parse(InputType::class, $class, $class->getMethod('__invoke')));
+
+        self::assertEmpty($nodes);
     }
 
     #[Test]
@@ -63,7 +66,7 @@ final class QueryMethodNodeParserTest extends TestCase
 
         $class = new ReflectionClass(TestInvalidQueryWithInvalidReturnType::class);
 
-        $this->parser->parse($class, $class->getMethod('__invoke'));
+        iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
     }
 
     #[Test]
@@ -74,17 +77,17 @@ final class QueryMethodNodeParserTest extends TestCase
 
         $class = new ReflectionClass(TestInvalidQueryWithInvalidConnectionReturnType::class);
 
-        $this->parser->parse($class, $class->getMethod('__invoke'));
+        iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
     }
 
     #[Test]
-    public function itShouldParseInputType(): void
+    public function itShouldParseQuery(): void
     {
         $class = new ReflectionClass(TestQuery::class);
 
-        $node = $this->parser->parse($class, $class->getMethod('__invoke'));
+        $nodes = iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
 
-        self::assertEquals(new QueryNode(
+        self::assertEquals([new QueryNode(
             TestQuery::class,
             'testQuery',
             'Test query',
@@ -105,6 +108,6 @@ final class QueryMethodNodeParserTest extends TestCase
             ScalarTypeReference::create('string'),
             '__invoke',
             null,
-        ), $node);
+        )], $nodes);
     }
 }
