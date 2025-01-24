@@ -2,17 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\NodeParser\Class;
+namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
 use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
 use BackedEnum;
 use Override;

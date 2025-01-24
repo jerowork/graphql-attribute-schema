@@ -2,15 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\NodeParser\Class;
+namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;
 use ReflectionMethod;

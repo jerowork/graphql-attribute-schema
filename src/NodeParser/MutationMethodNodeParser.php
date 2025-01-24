@@ -2,26 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\NodeParser\Method;
+namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Method\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Node\Method\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
-use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
-use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForFieldTrait;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use ReflectionClass;
 use Override;
 use ReflectionMethod;
 use ReflectionNamedType;
 
-final readonly class QueryMethodNodeParser implements NodeParser
+final readonly class MutationMethodNodeParser implements NodeParser
 {
     use RetrieveNameForFieldTrait;
     use GetTypeReferenceTrait;
@@ -34,7 +29,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
     #[Override]
     public function supports(string $attribute): bool
     {
-        return $attribute === Query::class;
+        return $attribute === Mutation::class;
     }
 
     #[Override]
@@ -44,7 +39,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
             throw new ParseException('Logic: Missing ReflectionMethod');
         }
 
-        $attribute = $this->getAttribute($method, Query::class);
+        $attribute = $this->getAttribute($method, Mutation::class);
         $returnType = $method->getReturnType();
 
         $reference = $this->getTypeReference($returnType, $attribute);
@@ -53,7 +48,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
             throw ParseException::invalidReturnType($class->getName(), $method->getName());
         }
 
-        // When reference is ConnectionType, the query needs to have Connection as return type
+        // When reference is ConnectionType, the mutation needs to have Connection as return type
         if ($reference instanceof ConnectionTypeReference) {
             if (!$returnType instanceof ReflectionNamedType || $returnType->getName() !== Connection::class) {
                 throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());
@@ -63,7 +58,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
         /** @var list<ArgNode> $argumentNodes */
         $argumentNodes = $this->methodArgumentNodesParser->parse($method, false);
 
-        return new QueryNode(
+        return new MutationNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
             $attribute->description,
