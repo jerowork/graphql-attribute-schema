@@ -10,6 +10,9 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
+/**
+ * @internal
+ */
 trait BuildArgsTrait
 {
     /**

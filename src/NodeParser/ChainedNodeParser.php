@@ -8,6 +8,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use Generator;
 
+/**
+ * @internal
+ */
 final readonly class ChainedNodeParser implements NodeParser
 {
     /**

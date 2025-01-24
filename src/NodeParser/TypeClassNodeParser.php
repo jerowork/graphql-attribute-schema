@@ -13,6 +13,9 @@ use Override;
 use ReflectionMethod;
 use Generator;
 
+/**
+ * @internal
+ */
 final readonly class TypeClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;

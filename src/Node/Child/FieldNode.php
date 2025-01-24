@@ -30,6 +30,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  * }
  *
  * @implements ArraySerializable<FieldNodePayload>
+ *
+ * @internal
  */
 final readonly class FieldNode implements ArraySerializable
 {

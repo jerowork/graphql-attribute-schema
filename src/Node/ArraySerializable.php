@@ -6,6 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
 
 /**
  * @template T of array
+ *
+ * @internal
  */
 interface ArraySerializable
 {

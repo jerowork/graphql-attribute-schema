@@ -7,6 +7,9 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\NamedAttribute;
 use ReflectionMethod;
 
+/**
+ * @internal
+ */
 trait RetrieveNameForFieldTrait
 {
     private const string PREFIX = 'get';

@@ -12,6 +12,9 @@ use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use ReflectionMethod;
 use ReflectionNamedType;
 
+/**
+ * @internal
+ */
 final readonly class MethodArgumentsNodeParser
 {
     public function __construct(

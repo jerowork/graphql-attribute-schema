@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Util\Reflector;
 
 use ReflectionClass;
 
+/**
+ * @internal
+ */
 interface Reflector
 {
     /**

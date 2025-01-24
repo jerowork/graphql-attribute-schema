@@ -16,6 +16,8 @@ use Override;
 
 /**
  * @implements ObjectTypeBuilder<InputTypeNode>
+ *
+ * @internal
  */
 final readonly class InputTypeObjectTypeBuilder implements ObjectTypeBuilder
 {

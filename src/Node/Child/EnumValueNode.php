@@ -14,6 +14,8 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
  * }
  *
  * @implements ArraySerializable<EnumValueNodePayload>
+ *
+ * @internal
  */
 final readonly class EnumValueNode implements ArraySerializable
 {

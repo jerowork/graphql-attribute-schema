@@ -14,6 +14,8 @@ use Override;
 
 /**
  * @implements TypeBuilder<ScalarTypeReference>
+ *
+ * @internal
  */
 final readonly class ScalarTypeBuilder implements TypeBuilder
 {

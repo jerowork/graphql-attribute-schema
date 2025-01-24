@@ -6,6 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
 
 /**
  * @extends ArraySerializable<array<string, mixed>>
+ *
+ * @internal
  */
 interface Node extends ArraySerializable
 {

@@ -18,6 +18,8 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
  *     fieldNodes: list<FieldNodePayload>,
  *     cursorNode: null|CursorNodePayload
  * }
+ *
+ * @internal
  */
 final readonly class TypeNode implements Node
 {

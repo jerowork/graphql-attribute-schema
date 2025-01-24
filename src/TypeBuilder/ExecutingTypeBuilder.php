@@ -10,6 +10,9 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 
+/**
+ * @internal
+ */
 final readonly class ExecutingTypeBuilder
 {
     /**

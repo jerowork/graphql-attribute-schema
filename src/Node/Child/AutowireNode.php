@@ -13,6 +13,8 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
  * }
  *
  * @implements ArraySerializable<AutowireNodePayload>
+ *
+ * @internal
  */
 final readonly class AutowireNode implements ArraySerializable
 {

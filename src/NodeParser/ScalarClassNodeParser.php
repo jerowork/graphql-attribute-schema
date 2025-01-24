@@ -12,6 +12,9 @@ use ReflectionMethod;
 use Generator;
 use Override;
 
+/**
+ * @internal
+ */
 final readonly class ScalarClassNodeParser implements NodeParser
 {
     use GetAttributeTrait;

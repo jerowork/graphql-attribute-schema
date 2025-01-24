@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Exception;
 
+/**
+ * @internal
+ */
 final class ResolveException extends Exception
 {
     public static function logicError(string $error): self

@@ -14,6 +14,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionProperty;
 
+/**
+ * @internal
+ */
 final readonly class CursorNodeParser
 {
     private const array RESERVED_METHOD_NAMES = ['__construct'];

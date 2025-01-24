@@ -16,6 +16,9 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use Generator;
 
+/**
+ * @internal
+ */
 final readonly class QueryMethodNodeParser implements NodeParser
 {
     use RetrieveNameForFieldTrait;

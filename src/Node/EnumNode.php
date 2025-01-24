@@ -16,6 +16,8 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
  *     description: null|string,
  *     cases: list<EnumValueNodePayload>
  * }
+ *
+ * @internal
  */
 final readonly class EnumNode implements Node
 {

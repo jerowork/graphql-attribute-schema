@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
 
+/**
+ * @internal
+ */
 trait ListableReferenceTrait
 {
     protected bool $isList;

@@ -15,6 +15,8 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
  *     description: null|string,
  *     fieldNodes: list<FieldNodePayload>
  * }
+ *
+ * @internal
  */
 final readonly class InputTypeNode implements Node
 {

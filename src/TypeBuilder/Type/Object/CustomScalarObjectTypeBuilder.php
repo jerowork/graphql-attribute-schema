@@ -16,6 +16,8 @@ use Override;
 
 /**
  * @implements ObjectTypeBuilder<ScalarNode>
+ *
+ * @internal
  */
 final readonly class CustomScalarObjectTypeBuilder implements ObjectTypeBuilder
 {

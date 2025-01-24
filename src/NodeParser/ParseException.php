@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Exception;
 
+/**
+ * @internal
+ */
 final class ParseException extends Exception
 {
     public static function invalidReturnType(string $class, string $method): self

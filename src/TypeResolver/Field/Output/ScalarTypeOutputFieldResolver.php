@@ -8,6 +8,9 @@ use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 
+/**
+ * @internal
+ */
 final readonly class ScalarTypeOutputFieldResolver implements OutputFieldResolver
 {
     public function supports(FieldNode $field, Ast $ast): bool

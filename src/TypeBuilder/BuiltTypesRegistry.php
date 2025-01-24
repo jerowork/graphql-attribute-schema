@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use GraphQL\Type\Definition\Type;
 
+/**
+ * @internal
+ */
 final class BuiltTypesRegistry
 {
     /**

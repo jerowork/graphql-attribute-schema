@@ -8,6 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
 
 /**
  * @extends ArraySerializable<array>
+ *
+ * @internal
  */
 interface TypeReference extends ArraySerializable
 {

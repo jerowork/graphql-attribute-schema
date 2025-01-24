@@ -11,6 +11,9 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RegexIterator;
 
+/**
+ * @internal
+ */
 final readonly class NativeFinder implements Finder
 {
     private const string REGEX_PHP_FILE = '/^.+\.php$/i';

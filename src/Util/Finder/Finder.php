@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Util\Finder;
 
 use Generator;
 
+/**
+ * @internal
+ */
 interface Finder
 {
     /**

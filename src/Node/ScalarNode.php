@@ -11,6 +11,8 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
  *     description: null|string,
  *     alias: null|class-string
  * }
+ *
+ * @internal
  */
 final readonly class ScalarNode implements Node, AliasedNode
 {

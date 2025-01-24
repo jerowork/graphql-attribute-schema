@@ -12,6 +12,9 @@ use Override;
 use ReflectionClass;
 use ReflectionException;
 
+/**
+ * @internal
+ */
 final readonly class RoaveReflector implements Reflector
 {
     /**

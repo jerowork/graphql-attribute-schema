@@ -7,6 +7,9 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\NamedAttribute;
 use ReflectionClass;
 
+/**
+ * @internal
+ */
 trait RetrieveNameForTypeTrait
 {
     private const string NAME_TYPE_SUFFIX = 'Type';

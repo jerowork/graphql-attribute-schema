@@ -16,6 +16,9 @@ use ReflectionException;
 use ReflectionMethod;
 use Generator;
 
+/**
+ * @internal
+ */
 final readonly class EnumClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;

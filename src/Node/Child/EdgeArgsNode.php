@@ -12,6 +12,8 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
  * }
  *
  * @implements ArraySerializable<EdgeArgsNodePayload>
+ *
+ * @internal
  */
 final readonly class EdgeArgsNode implements ArraySerializable
 {

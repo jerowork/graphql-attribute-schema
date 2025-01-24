@@ -14,6 +14,8 @@ use Override;
 
 /**
  * @implements ObjectTypeBuilder<EnumNode>
+ *
+ * @internal
  */
 final readonly class EnumObjectTypeBuilder implements ObjectTypeBuilder
 {

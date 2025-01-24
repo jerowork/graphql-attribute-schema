@@ -10,6 +10,8 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
  *     first: int,
  *     isValueNullable: bool
  * }
+ *
+ * @internal
  */
 final class ConnectionTypeReference implements TypeReference
 {

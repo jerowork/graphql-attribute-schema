@@ -8,6 +8,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionParameter;
 
+/**
+ * @internal
+ */
 trait GetAttributeTrait
 {
     /**

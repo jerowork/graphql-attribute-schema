@@ -13,6 +13,9 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
+/**
+ * @internal
+ */
 final readonly class CustomScalarNodeInputFieldResolver implements InputFieldResolver
 {
     public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool

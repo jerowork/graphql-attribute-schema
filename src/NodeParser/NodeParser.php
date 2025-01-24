@@ -9,6 +9,9 @@ use ReflectionClass;
 use ReflectionMethod;
 use Generator;
 
+/**
+ * @internal
+ */
 interface NodeParser
 {
     /**

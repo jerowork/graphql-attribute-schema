@@ -13,6 +13,9 @@ use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\OutputFieldResolver;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @internal
+ */
 final readonly class FieldResolver
 {
     /**

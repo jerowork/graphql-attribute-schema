@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
+/**
+ * @internal
+ */
 final readonly class EdgeArgsInputFieldResolver implements InputFieldResolver
 {
     public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool

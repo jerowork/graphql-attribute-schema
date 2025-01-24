@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionParameter;
 use ReflectionNamedType;
 
+/**
+ * @internal
+ */
 final readonly class AutowireNodeParser
 {
     use GetAttributeTrait;

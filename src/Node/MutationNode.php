@@ -27,6 +27,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     methodName: string,
  *     deprecationReason: null|string
  * }
+ *
+ * @internal
  */
 final readonly class MutationNode implements Node
 {

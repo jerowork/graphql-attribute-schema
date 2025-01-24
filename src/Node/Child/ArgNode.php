@@ -19,6 +19,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  * }
  *
  * @implements ArraySerializable<ArgNodePayload>
+ *
+ * @internal
  */
 final readonly class ArgNode implements ArraySerializable
 {

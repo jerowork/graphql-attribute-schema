@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionParameter;
 
+/**
+ * @internal
+ */
 final readonly class ArgNodeParser
 {
     use GetAttributeTrait;

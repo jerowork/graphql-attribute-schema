@@ -17,6 +17,9 @@ use ReflectionProperty;
 use ReflectionMethod;
 use ReflectionNamedType;
 
+/**
+ * @internal
+ */
 final readonly class ClassFieldsNodeParser
 {
     use RetrieveNameForFieldTrait;

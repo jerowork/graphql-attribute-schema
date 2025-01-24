@@ -8,6 +8,9 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 
+/**
+ * @internal
+ */
 trait GetConnectionArgsTrait
 {
     /**

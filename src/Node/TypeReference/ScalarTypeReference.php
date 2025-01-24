@@ -11,6 +11,8 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
  *     isList: bool,
  *     isListNullable: bool
  * }
+ *
+ * @internal
  */
 final class ScalarTypeReference implements ListableTypeReference
 {

@@ -16,6 +16,8 @@ use Override;
 
 /**
  * @implements ObjectTypeBuilder<TypeNode>
+ *
+ * @internal
  */
 final readonly class TypeObjectTypeBuilder implements ObjectTypeBuilder
 {

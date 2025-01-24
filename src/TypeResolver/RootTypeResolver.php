@@ -13,6 +13,9 @@ use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputFieldResolver;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @internal
+ */
 final readonly class RootTypeResolver
 {
     /**

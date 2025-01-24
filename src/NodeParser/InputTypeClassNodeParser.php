@@ -12,6 +12,9 @@ use Override;
 use ReflectionMethod;
 use Generator;
 
+/**
+ * @internal
+ */
 final readonly class InputTypeClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;

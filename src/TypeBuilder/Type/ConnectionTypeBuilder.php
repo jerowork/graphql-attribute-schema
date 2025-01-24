@@ -23,6 +23,8 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
 
 /**
  * @implements TypeBuilder<ConnectionTypeReference>
+ *
+ * @internal
  */
 final readonly class ConnectionTypeBuilder implements TypeBuilder
 {

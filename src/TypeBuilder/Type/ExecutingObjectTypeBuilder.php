@@ -17,6 +17,8 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
 /**
  * @implements TypeBuilder<ObjectTypeReference>
+ *
+ * @internal
  */
 final readonly class ExecutingObjectTypeBuilder implements TypeBuilder
 {

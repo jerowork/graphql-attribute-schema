@@ -6,6 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use Exception;
 
+/**
+ * @internal
+ */
 final class BuildException extends Exception
 {
     /**

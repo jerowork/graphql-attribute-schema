@@ -12,6 +12,8 @@ use GraphQL\Type\Definition\Type;
 
 /**
  * @template T of Node
+ *
+ * @internal
  */
 interface ObjectTypeBuilder
 {

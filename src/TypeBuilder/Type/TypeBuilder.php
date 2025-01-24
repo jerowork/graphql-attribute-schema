@@ -12,6 +12,8 @@ use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 
 /**
  * @template T of TypeReference
+ *
+ * @internal
  */
 interface TypeBuilder
 {

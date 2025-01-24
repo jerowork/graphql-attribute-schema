@@ -11,6 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
+/**
+ * @internal
+ */
 final readonly class RootTypeBuilder
 {
     use GetConnectionArgsTrait;
