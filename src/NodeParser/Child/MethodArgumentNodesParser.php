@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use ReflectionMethod;
-use ReflectionParameter;
 use ReflectionNamedType;
 
 final readonly class MethodArgumentNodesParser
@@ -48,29 +46,9 @@ final readonly class MethodArgumentNodesParser
                 continue;
             }
 
-            $argAttribute = $this->getAttribute($parameter, Arg::class);
-
-            $argumentNodes[] = $this->argNodeParser->parse($parameter, $argAttribute);
+            $argumentNodes[] = $this->argNodeParser->parse($parameter);
         }
 
         return $argumentNodes;
-    }
-
-    /**
-     * @template T of object
-     *
-     * @param class-string<T> $attributeName
-     *
-     * @return T
-     */
-    private function getAttribute(ReflectionParameter $parameter, string $attributeName): ?object
-    {
-        $attributes = $parameter->getAttributes($attributeName);
-
-        if ($attributes === []) {
-            return null;
-        }
-
-        return array_pop($attributes)->newInstance();
     }
 }

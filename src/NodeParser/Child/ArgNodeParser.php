@@ -17,8 +17,9 @@ final readonly class ArgNodeParser
     /**
      * @throws ParseException
      */
-    public function parse(ReflectionParameter $parameter, ?Arg $attribute): ArgNode
+    public function parse(ReflectionParameter $parameter): ArgNode
     {
+        $attribute = $this->getAttribute($parameter, Arg::class);
         $reference = $this->getTypeReference($parameter->getType(), $attribute);
 
         if ($reference === null) {
@@ -31,5 +32,23 @@ final readonly class ArgNodeParser
             $attribute?->description,
             $parameter->getName(),
         );
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $attributeName
+     *
+     * @return T
+     */
+    private function getAttribute(ReflectionParameter $parameter, string $attributeName): ?object
+    {
+        $attributes = $parameter->getAttributes($attributeName);
+
+        if ($attributes === []) {
+            return null;
+        }
+
+        return array_pop($attributes)->newInstance();
     }
 }
