@@ -66,8 +66,6 @@ final readonly class Parser
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @throws ParseException
      *
      * @return Generator<Node>
@@ -108,7 +106,7 @@ final readonly class Parser
     }
 
     /**
-     * @return Generator<ReflectionClass<object>>
+     * @return Generator<ReflectionClass>
      */
     private function getClasses(string ...$dirs): Generator
     {
@@ -118,8 +116,6 @@ final readonly class Parser
     }
 
     /**
-     * @param ReflectionClass<object>|ReflectionMethod $reflector
-     *
      * @return class-string|null
      */
     private function getSupportedAttribute(ReflectionClass|ReflectionMethod $reflector): ?string

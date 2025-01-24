@@ -17,8 +17,6 @@ interface MethodNodeParser
     public function supports(string $attribute): bool;
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @throws ParseException
      */
     public function parse(ReflectionClass $class, ReflectionMethod $method): Node;

@@ -9,7 +9,7 @@ use ReflectionClass;
 interface Reflector
 {
     /**
-     * @return list<ReflectionClass<object>>
+     * @return list<ReflectionClass>
      */
     public function getClasses(string $filePath): array;
 }

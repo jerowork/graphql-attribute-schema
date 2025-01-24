@@ -4,3 +4,6 @@ parameters:
     paths:
         - src/
         - tests/
+    ignoreErrors:
+        - '#generic class ReflectionClass but does not specify its types#'
+        - '#generic class ReflectionClass does not specify its types#'

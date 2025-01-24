@@ -13,8 +13,6 @@ trait RetrieveNameForTypeTrait
     private const string VALID_REGEX = '/^[A-Z][a-zA-Z]+$/';
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @throws ParseException
      */
     public function retrieveNameForType(ReflectionClass $class, BaseAttribute $attribute): string
@@ -28,9 +26,6 @@ trait RetrieveNameForTypeTrait
         return $name;
     }
 
-    /**
-     * @param ReflectionClass<object> $class
-     */
     private function retrieveNameFromClass(ReflectionClass $class): string
     {
         $parts = explode('\\', $class->getName());

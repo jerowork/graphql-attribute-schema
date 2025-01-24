@@ -29,8 +29,6 @@ final readonly class ClassFieldNodesParser
     ) {}
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @throws ParseException
      *
      * @return list<FieldNode>
@@ -105,8 +103,6 @@ final readonly class ClassFieldNodesParser
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @return list<array{ReflectionProperty, Field}>
      */
     private function parseProperties(ReflectionClass $class): array
@@ -127,8 +123,6 @@ final readonly class ClassFieldNodesParser
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @return list<array{ReflectionMethod, Field}>
      */
     private function parseMethods(ReflectionClass $class): array

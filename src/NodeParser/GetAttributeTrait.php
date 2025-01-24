@@ -13,7 +13,6 @@ trait GetAttributeTrait
     /**
      * @template T of BaseAttribute
      *
-     * @param ReflectionClass<object>|ReflectionMethod $reflector
      * @param class-string<T> $attributeName
      *
      * @throws ParseException

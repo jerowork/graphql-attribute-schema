@@ -21,8 +21,6 @@ final readonly class CursorNodeParser
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @throws ParseException
      */
     public function parse(ReflectionClass $class): ?CursorNode
@@ -89,8 +87,6 @@ final readonly class CursorNodeParser
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @return list<array{ReflectionProperty, Cursor}>
      */
     private function parseProperties(ReflectionClass $class): array
@@ -111,8 +107,6 @@ final readonly class CursorNodeParser
     }
 
     /**
-     * @param ReflectionClass<object> $class
-     *
      * @return list<array{ReflectionMethod, Cursor}>
      */
     private function parseMethods(ReflectionClass $class): array

@@ -17,7 +17,6 @@ use BackedEnum;
 use Override;
 use ReflectionEnum;
 use ReflectionException;
-use UnitEnum;
 
 final readonly class EnumClassNodeParser implements ClassNodeParser
 {
@@ -48,18 +47,17 @@ final readonly class EnumClassNodeParser implements ClassNodeParser
 
         $attribute = $this->getAttribute($class, Enum::class);
 
-        /** @var ReflectionClass<UnitEnum> $class */
+        $name = $this->retrieveNameForType($class, $attribute);
+
         return new EnumNode(
             $className,
-            $this->retrieveNameForType($class, $attribute),
+            $name,
             $attribute->getDescription(),
             $this->getValues($class),
         );
     }
 
     /**
-     * @param ReflectionClass<UnitEnum> $class
-     *
      * @throws ReflectionException
      *
      * @return list<EnumValueNode>
@@ -67,7 +65,9 @@ final readonly class EnumClassNodeParser implements ClassNodeParser
     private function getValues(ReflectionClass $class): array
     {
         $cases = [];
-        foreach ((new ReflectionEnum($class->getName()))->getCases() as $case) {
+        /** @var class-string<BackedEnum> $enumClassName */
+        $enumClassName = $class->getName();
+        foreach ((new ReflectionEnum($enumClassName))->getCases() as $case) {
             $enumAttributes = $case->getAttributes(EnumValue::class);
 
             /** @var EnumValue|null $enumAttribute */
