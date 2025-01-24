@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver\Field\Output;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
@@ -42,7 +42,7 @@ final class EnumNodeOutputChildResolverTest extends TestCase
                 null,
                 [],
             ),
-            new CustomScalarNode(
+            new ScalarNode(
                 TestScalarType::class,
                 'TestScalar',
                 null,

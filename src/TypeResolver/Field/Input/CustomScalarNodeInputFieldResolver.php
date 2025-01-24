@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
@@ -17,7 +17,7 @@ final readonly class CustomScalarNodeInputFieldResolver implements InputFieldRes
 {
     public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool
     {
-        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectTypeReference && $ast->getNodeByClassName($child->reference->className) instanceof CustomScalarNode;
+        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectTypeReference && $ast->getNodeByClassName($child->reference->className) instanceof ScalarNode;
     }
 
     /**

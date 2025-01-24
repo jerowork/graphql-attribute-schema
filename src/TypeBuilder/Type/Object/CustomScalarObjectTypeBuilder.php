@@ -9,20 +9,20 @@ use GraphQL\Type\Definition\CustomScalarType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;
 
 /**
- * @implements ObjectTypeBuilder<CustomScalarNode>
+ * @implements ObjectTypeBuilder<ScalarNode>
  */
 final readonly class CustomScalarObjectTypeBuilder implements ObjectTypeBuilder
 {
     #[Override]
     public function supports(Node $node): bool
     {
-        return $node instanceof CustomScalarNode;
+        return $node instanceof ScalarNode;
     }
 
     #[Override]

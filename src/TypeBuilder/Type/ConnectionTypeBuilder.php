@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
@@ -70,7 +70,7 @@ final readonly class ConnectionTypeBuilder implements TypeBuilder
         if ($cursorNode !== null && $cursorNode->reference instanceof ObjectTypeReference) {
             $cursorNodeType = $ast->getNodeByClassName($cursorNode->reference->className);
 
-            if (!$cursorNodeType instanceof CustomScalarNode) {
+            if (!$cursorNodeType instanceof ScalarNode) {
                 throw BuildException::logicError(sprintf('Invalid object type cursor connection edge type: %s (must be a CustomScalar)', $node->name));
             }
         }

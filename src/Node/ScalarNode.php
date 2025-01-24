@@ -12,7 +12,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
  *     alias: null|class-string
  * }
  */
-final readonly class CustomScalarNode implements Node, AliasedNode
+final readonly class ScalarNode implements Node, AliasedNode
 {
     /**
      * @param class-string $className
@@ -51,7 +51,7 @@ final readonly class CustomScalarNode implements Node, AliasedNode
     /**
      * @param CustomScalarNodePayload $payload
      */
-    public static function fromArray(array $payload): CustomScalarNode
+    public static function fromArray(array $payload): ScalarNode
     {
         return new self(
             $payload['className'],

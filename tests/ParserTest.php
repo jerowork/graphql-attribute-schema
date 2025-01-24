@@ -14,7 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
@@ -265,16 +265,16 @@ final class ParserTest extends TestCase
             ),
         ], $ast->getNodesByNodeType(EnumNode::class));
 
-        $nodes = $ast->getNodesByNodeType(CustomScalarNode::class);
-        usort($nodes, fn(CustomScalarNode $a, CustomScalarNode $b) => $a->name <=> $b->name);
+        $nodes = $ast->getNodesByNodeType(ScalarNode::class);
+        usort($nodes, fn(ScalarNode $a, ScalarNode $b) => $a->name <=> $b->name);
         self::assertEquals([
-            new CustomScalarNode(
+            new ScalarNode(
                 DateTimeType::class,
                 'DateTime',
                 'Date and time (ISO-8601)',
                 DateTimeImmutable::class,
             ),
-            new CustomScalarNode(
+            new ScalarNode(
                 TestScalarType::class,
                 'TestScalar',
                 null,

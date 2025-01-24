@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\CustomScalarClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
@@ -50,7 +50,7 @@ final readonly class ParserFactory
                 new EnumClassNodeParser(),
                 new InputTypeClassNodeParser($classFieldNodesParser),
                 new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
-                new CustomScalarClassNodeParser(),
+                new ScalarClassNodeParser(),
                 new MutationMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
                 new QueryMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
             ],

@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
@@ -104,7 +104,7 @@ final class ConnectionTypeBuilderTest extends TestCase
             ConnectionTypeReference::create(TestType::class, 15),
             $this->typeBuilder,
             new Ast(
-                new CustomScalarNode(
+                new ScalarNode(
                     TestType::class,
                     'Test',
                     null,

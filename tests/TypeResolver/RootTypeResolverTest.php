@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
@@ -174,7 +174,7 @@ final class RootTypeResolverTest extends TestCase
                         ),
                     ],
                 ),
-                new CustomScalarNode(
+                new ScalarNode(
                     DateTimeType::class,
                     'DateTime',
                     null,
