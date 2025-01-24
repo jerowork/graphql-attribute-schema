@@ -56,7 +56,7 @@ final readonly class QueryMethodNodeParser implements NodeParser
         }
 
         /** @var list<ArgNode> $argumentNodes */
-        $argumentNodes = $this->methodArgumentNodesParser->parse($method, false);
+        $argumentNodes = $this->methodArgumentNodesParser->parse($method);
 
         return new QueryNode(
             $class->getName(),

@@ -25,19 +25,17 @@ final readonly class MethodArgumentNodesParser
      *
      * @return list<ArgNode|AutowireNode|EdgeArgsNode>
      */
-    public function parse(ReflectionMethod $method, bool $includeAutowireNodes = true): array
+    public function parse(ReflectionMethod $method): array
     {
         $argumentNodes = [];
 
         foreach ($method->getParameters() as $parameter) {
-            if ($includeAutowireNodes) {
-                $autowireNode = $this->autowireNodeParser->parse($parameter);
+            $autowireNode = $this->autowireNodeParser->parse($parameter);
 
-                if ($autowireNode !== null) {
-                    $argumentNodes[] = $autowireNode;
+            if ($autowireNode !== null) {
+                $argumentNodes[] = $autowireNode;
 
-                    continue;
-                }
+                continue;
             }
 
             if ($parameter->getType() instanceof ReflectionNamedType && $parameter->getType()->getName() === EdgeArgs::class) {

@@ -56,7 +56,7 @@ final readonly class MutationMethodNodeParser implements NodeParser
         }
 
         /** @var list<ArgNode> $argumentNodes */
-        $argumentNodes = $this->methodArgumentNodesParser->parse($method, false);
+        $argumentNodes = $this->methodArgumentNodesParser->parse($method);
 
         return new MutationNode(
             $class->getName(),
