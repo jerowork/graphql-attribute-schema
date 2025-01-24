@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -33,10 +34,11 @@ final class InputTypeClassNodeParserTest extends TestCase
 
         $this->parser = new InputTypeClassNodeParser(
             new ClassFieldNodesParser(
+                $typeReferenceDecider = new TypeReferenceDecider(),
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),
                     new EdgeArgsNodeParser(),
-                    new ArgNodeParser(),
+                    new ArgNodeParser($typeReferenceDecider),
                 ),
             ),
         );

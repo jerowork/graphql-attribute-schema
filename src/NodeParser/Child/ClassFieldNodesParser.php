@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForFieldTrait;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
@@ -20,11 +20,11 @@ use ReflectionNamedType;
 final readonly class ClassFieldNodesParser
 {
     use RetrieveNameForFieldTrait;
-    use GetTypeReferenceTrait;
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
     public function __construct(
+        private TypeReferenceDecider $typeReferenceDecider,
         private MethodArgumentNodesParser $methodArgNodesParser,
     ) {}
 
@@ -42,7 +42,7 @@ final readonly class ClassFieldNodesParser
          * @var Field $fieldAttribute
          */
         foreach ($this->parseProperties($class) as [$property, $fieldAttribute]) {
-            $reference = $this->getTypeReference($property->getType(), $fieldAttribute);
+            $reference = $this->typeReferenceDecider->getTypeReference($property->getType(), $fieldAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidPropertyType($class->getName(), $property->getName());
@@ -74,7 +74,7 @@ final readonly class ClassFieldNodesParser
         foreach ($this->parseMethods($class) as [$method, $fieldAttribute]) {
             $returnType = $method->getReturnType();
 
-            $reference = $this->getTypeReference($returnType, $fieldAttribute);
+            $reference = $this->typeReferenceDecider->getTypeReference($returnType, $fieldAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidReturnType($class->getName(), $method->getName());

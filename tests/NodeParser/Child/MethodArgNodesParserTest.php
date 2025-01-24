@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidMethodArgument;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
@@ -35,7 +36,7 @@ final class MethodArgNodesParserTest extends TestCase
         $this->parser = new MethodArgumentNodesParser(
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
-            new ArgNodeParser(),
+            new ArgNodeParser(new TypeReferenceDecider()),
         );
     }
 

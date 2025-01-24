@@ -16,6 +16,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidConnectionReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
@@ -38,10 +39,11 @@ final class MutationMethodNodeParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new MutationMethodNodeParser(
+            $typeReferenceDecider = new TypeReferenceDecider(),
             new MethodArgumentNodesParser(
                 new AutowireNodeParser(),
                 new EdgeArgsNodeParser(),
-                new ArgNodeParser(),
+                new ArgNodeParser($typeReferenceDecider),
             ),
         );
     }

@@ -16,6 +16,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
@@ -30,12 +31,17 @@ final readonly class ParserFactory
             DateTimeType::class,
         ],
     ): Parser {
+        $typeReferenceDecider = new TypeReferenceDecider();
+
         $methodArgNodesParser = new MethodArgumentNodesParser(
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
-            new ArgNodeParser(),
+            new ArgNodeParser($typeReferenceDecider),
         );
-        $classFieldNodesParser = new ClassFieldNodesParser($methodArgNodesParser);
+        $classFieldNodesParser = new ClassFieldNodesParser(
+            $typeReferenceDecider,
+            $methodArgNodesParser,
+        );
 
         return new Parser(
             new NativeFinder(),
@@ -43,10 +49,10 @@ final readonly class ParserFactory
             [
                 new EnumClassNodeParser(),
                 new InputTypeClassNodeParser($classFieldNodesParser),
-                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser()),
+                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
                 new CustomScalarClassNodeParser(),
-                new MutationMethodNodeParser($methodArgNodesParser),
-                new QueryMethodNodeParser($methodArgNodesParser),
+                new MutationMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
+                new QueryMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
             ],
             $customTypes,
         );

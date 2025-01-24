@@ -19,10 +19,10 @@ use ReflectionNamedType;
 final readonly class MutationMethodNodeParser implements NodeParser
 {
     use RetrieveNameForFieldTrait;
-    use GetTypeReferenceTrait;
     use GetAttributeTrait;
 
     public function __construct(
+        private TypeReferenceDecider $typeReferenceDecider,
         private MethodArgumentNodesParser $methodArgumentNodesParser,
     ) {}
 
@@ -42,7 +42,7 @@ final readonly class MutationMethodNodeParser implements NodeParser
         $attribute = $this->getAttribute($method, Mutation::class);
         $returnType = $method->getReturnType();
 
-        $reference = $this->getTypeReference($returnType, $attribute);
+        $reference = $this->typeReferenceDecider->getTypeReference($returnType, $attribute);
 
         if ($reference === null) {
             throw ParseException::invalidReturnType($class->getName(), $method->getName());

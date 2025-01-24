@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionClass;
 use ReflectionMethod;
@@ -16,9 +16,11 @@ use ReflectionProperty;
 
 final readonly class CursorNodeParser
 {
-    use GetTypeReferenceTrait;
-
     private const array RESERVED_METHOD_NAMES = ['__construct'];
+
+    public function __construct(
+        private TypeReferenceDecider $typeReferenceDecider,
+    ) {}
 
     /**
      * @throws ParseException
@@ -36,7 +38,7 @@ final readonly class CursorNodeParser
                 throw ParseException::multipleCursorsFound($class->getName());
             }
 
-            $reference = $this->getTypeReference($property->getType(), $cursorAttribute);
+            $reference = $this->typeReferenceDecider->getTypeReference($property->getType(), $cursorAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidConnectionPropertyType($class->getName(), $property->getName());
@@ -65,7 +67,7 @@ final readonly class CursorNodeParser
 
             $returnType = $method->getReturnType();
 
-            $reference = $this->getTypeReference($returnType, $cursorAttribute);
+            $reference = $this->typeReferenceDecider->getTypeReference($returnType, $cursorAttribute);
 
             if ($reference === null) {
                 throw ParseException::invalidConnectionReturnType($class->getName(), $method->getName());

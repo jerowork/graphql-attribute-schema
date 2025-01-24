@@ -19,6 +19,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\TestCase;
@@ -40,13 +41,14 @@ final class TypeClassNodeParserTest extends TestCase
 
         $this->parser = new TypeClassNodeParser(
             new ClassFieldNodesParser(
+                $typeReferenceDecider = new TypeReferenceDecider(),
                 new MethodArgumentNodesParser(
                     new AutowireNodeParser(),
                     new EdgeArgsNodeParser(),
-                    new ArgNodeParser(),
+                    new ArgNodeParser($typeReferenceDecider),
                 ),
             ),
-            new CursorNodeParser(),
+            new CursorNodeParser($typeReferenceDecider),
         );
     }
 

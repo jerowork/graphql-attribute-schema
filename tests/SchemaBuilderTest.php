@@ -24,6 +24,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Parser;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuildException;
@@ -97,16 +98,17 @@ final class SchemaBuilderTest extends TestCase
             [
                 new EnumClassNodeParser(),
                 new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldNodesParser(
+                    $typeReferenceDecider = new TypeReferenceDecider(),
                     $methodArgsNodeParser = new MethodArgumentNodesParser(
                         new AutowireNodeParser(),
                         new EdgeArgsNodeParser(),
-                        new ArgNodeParser(),
+                        new ArgNodeParser($typeReferenceDecider),
                     ),
                 )),
-                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser()),
+                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
                 new CustomScalarClassNodeParser(),
-                new MutationMethodNodeParser($methodArgsNodeParser),
-                new QueryMethodNodeParser($methodArgsNodeParser),
+                new MutationMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
+                new QueryMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
             ],
             [
                 DateTimeType::class,

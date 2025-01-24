@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidScalarCursorType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidTypeWithMultipleCursors;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestMethodCursorType;
@@ -31,7 +32,7 @@ final class CursorNodeParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = new CursorNodeParser();
+        $this->parser = new CursorNodeParser(new TypeReferenceDecider());
     }
 
     #[Test]

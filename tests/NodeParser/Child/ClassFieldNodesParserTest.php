@@ -14,6 +14,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionMethodType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionPropertyType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidType;
@@ -37,10 +38,11 @@ final class ClassFieldNodesParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new ClassFieldNodesParser(
+            $typeReferenceDecider = new TypeReferenceDecider(),
             new MethodArgumentNodesParser(
                 new AutowireNodeParser(),
                 new EdgeArgsNodeParser(),
-                new ArgNodeParser(),
+                new ArgNodeParser($typeReferenceDecider),
             ),
         );
     }

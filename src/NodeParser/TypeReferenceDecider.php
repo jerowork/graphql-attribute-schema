@@ -20,7 +20,7 @@ use ReflectionNamedType;
 use ReflectionType;
 use LogicException;
 
-trait GetTypeReferenceTrait
+final readonly class TypeReferenceDecider
 {
     private const array ALLOWED_SCALAR_TYPES = ['float', 'string', 'int', 'bool'];
 

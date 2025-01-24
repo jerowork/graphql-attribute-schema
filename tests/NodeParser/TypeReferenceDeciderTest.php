@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestConnectionMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestNullableConnectionMutation;
@@ -27,14 +27,12 @@ use DateTime;
 /**
  * @internal
  */
-final class GetTypeReferenceTraitTest extends TestCase
+final class TypeReferenceDeciderTest extends TestCase
 {
     #[Test]
     public function itShouldReturnScalar(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
@@ -42,15 +40,13 @@ final class GetTypeReferenceTraitTest extends TestCase
         $type = $parameters[1]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getTypeReference($type, new Mutation())?->equals(ScalarTypeReference::create('string')->setNullableValue()));
+        self::assertTrue($decider->getTypeReference($type, new Mutation())?->equals(ScalarTypeReference::create('string')->setNullableValue()));
     }
 
     #[Test]
     public function itShouldReturnObject(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
@@ -58,22 +54,20 @@ final class GetTypeReferenceTraitTest extends TestCase
         $type = $parameters[0]->getType();
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($trait->getTypeReference($type, new Mutation())?->equals(ObjectTypeReference::create(DateTimeImmutable::class)));
+        self::assertTrue($decider->getTypeReference($type, new Mutation())?->equals(ObjectTypeReference::create(DateTimeImmutable::class)));
     }
 
     #[Test]
     public function itShouldReturnScalarFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: ScalarType::Int));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: ScalarType::Int));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')));
@@ -82,16 +76,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnObjectFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: DateTime::class));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: DateTime::class));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ObjectTypeReference::create(DateTime::class)));
@@ -100,16 +92,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullableScalarFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new NullableType(ScalarType::Int)));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new NullableType(ScalarType::Int)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')->setNullableValue()));
@@ -118,16 +108,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullableObjectFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new NullableType(DateTime::class)));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new NullableType(DateTime::class)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ObjectTypeReference::create(DateTime::class)->setNullableValue()));
@@ -136,16 +124,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnListOfScalarsFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new ListType(ScalarType::Int)));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new ListType(ScalarType::Int)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')->setList()));
@@ -154,16 +140,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnListOfNullableScalarsFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new ListType(new NullableType(ScalarType::Int))));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new ListType(new NullableType(ScalarType::Int))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')->setList()->setNullableValue()));
@@ -172,16 +156,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullableListOfScalarsFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new NullableType(new ListType(ScalarType::Int))));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new NullableType(new ListType(ScalarType::Int))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')->setList()->setNullableList()));
@@ -190,16 +172,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullableListOfNullableScalarsFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestMutation::class);
         $methods = $class->getMethod('testMutation');
         $parameters = $methods->getParameters();
         $type = $parameters[1]->getType();
 
-        $nodeType = $trait->getTypeReference($type, new Mutation(type: new NullableType(new ListType(new NullableType(ScalarType::Int)))));
+        $nodeType = $decider->getTypeReference($type, new Mutation(type: new NullableType(new ListType(new NullableType(ScalarType::Int)))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ScalarTypeReference::create('int')->setNullableValue()->setList()->setNullableList()));
@@ -208,26 +188,22 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullWhenObjectIsNull(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
-        self::assertNull($trait->getTypeReference(null, new Mutation()));
+        self::assertNull($decider->getTypeReference(null, new Mutation()));
     }
 
     #[Test]
     public function itShouldReturnConnectionFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestConnectionMutation::class);
         $methods = $class->getMethod('mutate');
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
-        $reference = $trait->getTypeReference($type, new Mutation(type: new ConnectionType(TestType::class, 12)));
+        $reference = $decider->getTypeReference($type, new Mutation(type: new ConnectionType(TestType::class, 12)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class, 12)));
@@ -236,16 +212,14 @@ final class GetTypeReferenceTraitTest extends TestCase
     #[Test]
     public function itShouldReturnNullableConnectionFromAttribute(): void
     {
-        $trait = new class {
-            use GetTypeReferenceTrait;
-        };
+        $decider = new TypeReferenceDecider();
 
         $class = new ReflectionClass(TestNullableConnectionMutation::class);
         $methods = $class->getMethod('mutate');
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
-        $reference = $trait->getTypeReference($type, new Mutation(type: new NullableType(new ConnectionType(TestType::class, 12))));
+        $reference = $decider->getTypeReference($type, new Mutation(type: new NullableType(new ConnectionType(TestType::class, 12))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class, 12)->setNullableValue()));
