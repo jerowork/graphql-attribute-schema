@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
-use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
@@ -34,10 +33,10 @@ final readonly class MethodArgumentNodesParser
 
         foreach ($method->getParameters() as $parameter) {
             if ($includeAutowireNodes) {
-                $autowireAttribute = $this->getAttribute($parameter, Autowire::class);
+                $autowireNode = $this->autowireNodeParser->parse($parameter);
 
-                if ($autowireAttribute !== null) {
-                    $argumentNodes[] = $this->autowireNodeParser->parse($parameter, $autowireAttribute);
+                if ($autowireNode !== null) {
+                    $argumentNodes[] = $autowireNode;
 
                     continue;
                 }

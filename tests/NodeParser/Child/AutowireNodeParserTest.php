@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser\Child;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestTypeWithAutowire;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -14,8 +14,8 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Override;
 use ReflectionClass;
 use stdClass;
-use ReflectionParameter;
 use DateTime;
+use ReflectionParameter;
 
 /**
  * @internal
@@ -33,20 +33,27 @@ final class AutowireNodeParserTest extends TestCase
     }
 
     #[Test]
+    public function itShouldReturnNullIfParameterHasNoAutowireAttribute(): void
+    {
+        $reflectionClass = new ReflectionClass(TestType::class);
+        $reflectionMethod = $reflectionClass->getMethod('__construct');
+        $parameters = $reflectionMethod->getParameters();
+        /** @var ReflectionParameter $parameter */
+        $parameter = array_pop($parameters);
+
+        self::assertNull($this->parser->parse($parameter));
+    }
+
+    #[Test]
     public function itShouldParseWithCustomServiceId(): void
     {
         $reflectionClass = new ReflectionClass(TestTypeWithAutowire::class);
         $reflectionMethod = $reflectionClass->getMethod('serviceWithCustomId');
         $parameters = $reflectionMethod->getParameters();
+        /** @var ReflectionParameter $parameter */
         $parameter = array_pop($parameters);
 
-        /** @var ReflectionParameter $parameter */
-        $attributes = $parameter->getAttributes(Autowire::class);
-
-        self::assertNotEmpty($attributes);
-        $attribute = array_pop($attributes)->newInstance();
-
-        $node = $this->parser->parse($parameter, $attribute);
+        $node = $this->parser->parse($parameter);
 
         self::assertEquals(new AutowireNode(
             stdClass::class,
@@ -60,17 +67,12 @@ final class AutowireNodeParserTest extends TestCase
         $reflectionClass = new ReflectionClass(TestTypeWithAutowire::class);
         $reflectionMethod = $reflectionClass->getMethod('invalidServiceWithoutCustomId');
         $parameters = $reflectionMethod->getParameters();
-        $parameter = array_pop($parameters);
-
         /** @var ReflectionParameter $parameter */
-        $attributes = $parameter->getAttributes(Autowire::class);
-
-        self::assertNotEmpty($attributes);
-        $attribute = array_pop($attributes)->newInstance();
+        $parameter = array_pop($parameters);
 
         self::expectException(ParseException::class);
 
-        $this->parser->parse($parameter, $attribute);
+        $this->parser->parse($parameter);
     }
 
     #[Test]
@@ -79,15 +81,10 @@ final class AutowireNodeParserTest extends TestCase
         $reflectionClass = new ReflectionClass(TestTypeWithAutowire::class);
         $reflectionMethod = $reflectionClass->getMethod('serviceWithoutCustomId');
         $parameters = $reflectionMethod->getParameters();
+        /** @var ReflectionParameter $parameter */
         $parameter = array_pop($parameters);
 
-        /** @var ReflectionParameter $parameter */
-        $attributes = $parameter->getAttributes(Autowire::class);
-
-        self::assertNotEmpty($attributes);
-        $attribute = array_pop($attributes)->newInstance();
-
-        $node = $this->parser->parse($parameter, $attribute);
+        $node = $this->parser->parse($parameter);
 
         self::assertEquals(new AutowireNode(
             DateTime::class,

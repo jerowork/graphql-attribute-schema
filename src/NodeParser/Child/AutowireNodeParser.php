@@ -15,8 +15,14 @@ final readonly class AutowireNodeParser
     /**
      * @throws ParseException
      */
-    public function parse(ReflectionParameter $parameter, Autowire $attribute): AutowireNode
+    public function parse(ReflectionParameter $parameter): ?AutowireNode
     {
+        $attribute = $this->getAttribute($parameter, Autowire::class);
+
+        if ($attribute === null) {
+            return null;
+        }
+
         if ($attribute->service !== null) {
             return new AutowireNode(
                 $attribute->service,
@@ -32,5 +38,23 @@ final readonly class AutowireNodeParser
             $parameter->getType()->getName(),
             $parameter->getName(),
         );
+    }
+
+    /**
+     * @template T of object
+     *
+     * @param class-string<T> $attributeName
+     *
+     * @return T
+     */
+    private function getAttribute(ReflectionParameter $parameter, string $attributeName): ?object
+    {
+        $attributes = $parameter->getAttributes($attributeName);
+
+        if ($attributes === []) {
+            return null;
+        }
+
+        return array_pop($attributes)->newInstance();
     }
 }
