@@ -52,6 +52,8 @@ final class ParserTest extends TestCase
     {
         $ast = $this->parser->parse(__DIR__ . '/Doubles/FullFeatured');
 
+        $nodes = $ast->getNodesByNodeType(MutationNode::class);
+        usort($nodes, fn(MutationNode $a, MutationNode $b) => $a->name <=> $b->name);
         self::assertEquals([
             new MutationNode(
                 FoobarMutation::class,
@@ -85,7 +87,7 @@ final class ParserTest extends TestCase
                 'second',
                 null,
             ),
-        ], $ast->getNodesByNodeType(MutationNode::class));
+        ], $nodes);
 
         self::assertEquals([
             new QueryNode(
@@ -118,6 +120,8 @@ final class ParserTest extends TestCase
             ),
         ], $ast->getNodesByNodeType(QueryNode::class));
 
+        $nodes = $ast->getNodesByNodeType(InputTypeNode::class);
+        usort($nodes, fn(InputTypeNode $a, InputTypeNode $b) => $a->name <=> $b->name);
         self::assertEquals([
             new InputTypeNode(
                 Baz::class,
@@ -193,7 +197,7 @@ final class ParserTest extends TestCase
                     ),
                 ],
             ),
-        ], $ast->getNodesByNodeType(InputTypeNode::class));
+        ], $nodes);
 
         self::assertEquals([
             new TypeNode(
@@ -261,19 +265,21 @@ final class ParserTest extends TestCase
             ),
         ], $ast->getNodesByNodeType(EnumNode::class));
 
+        $nodes = $ast->getNodesByNodeType(CustomScalarNode::class);
+        usort($nodes, fn(CustomScalarNode $a, CustomScalarNode $b) => $a->name <=> $b->name);
         self::assertEquals([
-            new CustomScalarNode(
-                TestScalarType::class,
-                'TestScalar',
-                null,
-                DateTime::class,
-            ),
             new CustomScalarNode(
                 DateTimeType::class,
                 'DateTime',
                 'Date and time (ISO-8601)',
                 DateTimeImmutable::class,
             ),
-        ], $ast->getNodesByNodeType(CustomScalarNode::class));
+            new CustomScalarNode(
+                TestScalarType::class,
+                'TestScalar',
+                null,
+                DateTime::class,
+            ),
+        ], $nodes);
     }
 }
