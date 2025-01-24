@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Node\Class;
-
-use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
+namespace Jerowork\GraphqlAttributeSchema\Node;
 
 /**
  * @phpstan-type EnumValueNodePayload array{

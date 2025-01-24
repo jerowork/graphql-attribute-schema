@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Node\Class\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;

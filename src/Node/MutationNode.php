@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Node\Method;
+namespace Jerowork\GraphqlAttributeSchema\Node;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 
 /**

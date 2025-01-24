@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
-use Jerowork\GraphqlAttributeSchema\Node\Method\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Node\Method\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
 
 final readonly class RootTypeBuilder

@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestInvalidEnumType;

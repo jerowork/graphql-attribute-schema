@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Node\Method\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Node\Class;
+namespace Jerowork\GraphqlAttributeSchema\Test\Node;
 
-use Jerowork\GraphqlAttributeSchema\Node\Class\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;

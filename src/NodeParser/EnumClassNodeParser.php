@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use ReflectionClass;
 use BackedEnum;

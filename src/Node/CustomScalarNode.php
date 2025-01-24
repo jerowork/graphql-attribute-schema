@@ -2,32 +2,27 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Node\Class;
-
-use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Node\Node;
+namespace Jerowork\GraphqlAttributeSchema\Node;
 
 /**
- * @phpstan-import-type FieldNodePayload from FieldNode
- *
- * @phpstan-type InputTypeNodePayload array{
+ * @phpstan-type CustomScalarNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
- *     fieldNodes: list<FieldNodePayload>
+ *     alias: null|class-string
  * }
  */
-final readonly class InputTypeNode implements Node
+final readonly class CustomScalarNode implements Node, AliasedNode
 {
     /**
      * @param class-string $className
-     * @param list<FieldNode> $fieldNodes
+     * @param class-string|null $alias
      */
     public function __construct(
         public string $className,
         public string $name,
         public ?string $description,
-        public array $fieldNodes,
+        public ?string $alias,
     ) {}
 
     public function getClassName(): string
@@ -35,8 +30,13 @@ final readonly class InputTypeNode implements Node
         return $this->className;
     }
 
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
     /**
-     * @return InputTypeNodePayload
+     * @return CustomScalarNodePayload
      */
     public function toArray(): array
     {
@@ -44,20 +44,20 @@ final readonly class InputTypeNode implements Node
             'className' => $this->className,
             'name' => $this->name,
             'description' => $this->description,
-            'fieldNodes' => array_map(fn($fieldNode) => $fieldNode->toArray(), $this->fieldNodes),
+            'alias' => $this->alias,
         ];
     }
 
     /**
-     * @param InputTypeNodePayload $payload
+     * @param CustomScalarNodePayload $payload
      */
-    public static function fromArray(array $payload): InputTypeNode
+    public static function fromArray(array $payload): CustomScalarNode
     {
         return new self(
             $payload['className'],
             $payload['name'],
             $payload['description'],
-            array_map(fn($fieldNodePayload) => FieldNode::fromArray($fieldNodePayload), $payload['fieldNodes']),
+            $payload['alias'],
         );
     }
 }

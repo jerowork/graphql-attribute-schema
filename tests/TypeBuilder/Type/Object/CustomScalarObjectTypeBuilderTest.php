@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Type\Object;
 
 use GraphQL\Type\Definition\CustomScalarType;
 use Jerowork\GraphqlAttributeSchema\Ast;
-use Jerowork\GraphqlAttributeSchema\Node\Class\CustomScalarNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\CustomScalarNode;
+use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;

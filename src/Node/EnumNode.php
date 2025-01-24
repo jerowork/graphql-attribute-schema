@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Node\Class;
+namespace Jerowork\GraphqlAttributeSchema\Node;
 
-use Jerowork\GraphqlAttributeSchema\Node\Node;
 use BackedEnum;
 
 /**

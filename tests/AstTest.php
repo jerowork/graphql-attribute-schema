@@ -6,12 +6,12 @@ namespace Jerowork\GraphqlAttributeSchema\Test;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\InputTypeNode;
-use Jerowork\GraphqlAttributeSchema\Node\Method\MutationNode;
-use Jerowork\GraphqlAttributeSchema\Node\Method\QueryNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
+use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestAnotherEnumType;

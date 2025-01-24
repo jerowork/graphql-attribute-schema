@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output;
 use BackedEnum;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 

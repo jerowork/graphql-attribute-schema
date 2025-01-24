@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
-use Jerowork\GraphqlAttributeSchema\Node\Class\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
 use ReflectionClass;

@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;

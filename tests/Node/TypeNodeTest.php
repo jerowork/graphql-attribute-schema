@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Node\Class;
+namespace Jerowork\GraphqlAttributeSchema\Test\Node;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Node\Class\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -18,13 +19,13 @@ use stdClass;
 /**
  * @internal
  */
-final class InputTypeNodeTest extends TestCase
+final class TypeNodeTest extends TestCase
 {
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $inputTypeNode = new InputTypeNode(
-            TestInputType::class,
+        $typeNode = new TypeNode(
+            TestType::class,
             'name',
             'description',
             [
@@ -52,8 +53,14 @@ final class InputTypeNodeTest extends TestCase
                     'deprecated',
                 ),
             ],
+            new CursorNode(
+                ScalarTypeReference::create('string'),
+                FieldNodeType::Property,
+                null,
+                'property',
+            ),
         );
 
-        self::assertEquals(InputTypeNode::fromArray($inputTypeNode->toArray()), $inputTypeNode);
+        self::assertEquals(TypeNode::fromArray($typeNode->toArray()), $typeNode);
     }
 }
