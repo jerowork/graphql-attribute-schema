@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionParameter;
@@ -13,13 +14,19 @@ use ReflectionParameter;
 final readonly class ArgNodeParser
 {
     use GetTypeReferenceTrait;
+    use GetAttributeTrait;
 
     /**
      * @throws ParseException
      */
     public function parse(ReflectionParameter $parameter): ArgNode
     {
-        $attribute = $this->getAttribute($parameter, Arg::class);
+        try {
+            $attribute = $this->getAttribute($parameter, Arg::class);
+        } catch (ParseException) {
+            $attribute = null;
+        }
+
         $reference = $this->getTypeReference($parameter->getType(), $attribute);
 
         if ($reference === null) {
@@ -32,23 +39,5 @@ final readonly class ArgNodeParser
             $attribute?->description,
             $parameter->getName(),
         );
-    }
-
-    /**
-     * @template T of object
-     *
-     * @param class-string<T> $attributeName
-     *
-     * @return T
-     */
-    private function getAttribute(ReflectionParameter $parameter, string $attributeName): ?object
-    {
-        $attributes = $parameter->getAttributes($attributeName);
-
-        if ($attributes === []) {
-            return null;
-        }
-
-        return array_pop($attributes)->newInstance();
     }
 }

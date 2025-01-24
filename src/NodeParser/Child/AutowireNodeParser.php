@@ -6,20 +6,23 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionParameter;
 use ReflectionNamedType;
 
 final readonly class AutowireNodeParser
 {
+    use GetAttributeTrait;
+
     /**
      * @throws ParseException
      */
     public function parse(ReflectionParameter $parameter): ?AutowireNode
     {
-        $attribute = $this->getAttribute($parameter, Autowire::class);
-
-        if ($attribute === null) {
+        try {
+            $attribute = $this->getAttribute($parameter, Autowire::class);
+        } catch (ParseException) {
             return null;
         }
 
@@ -38,23 +41,5 @@ final readonly class AutowireNodeParser
             $parameter->getType()->getName(),
             $parameter->getName(),
         );
-    }
-
-    /**
-     * @template T of object
-     *
-     * @param class-string<T> $attributeName
-     *
-     * @return T
-     */
-    private function getAttribute(ReflectionParameter $parameter, string $attributeName): ?object
-    {
-        $attributes = $parameter->getAttributes($attributeName);
-
-        if ($attributes === []) {
-            return null;
-        }
-
-        return array_pop($attributes)->newInstance();
     }
 }
