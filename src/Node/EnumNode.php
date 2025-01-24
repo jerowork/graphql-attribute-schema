@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Node;
 
 use BackedEnum;
+use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 
 /**
  * @phpstan-import-type EnumValueNodePayload from EnumValueNode

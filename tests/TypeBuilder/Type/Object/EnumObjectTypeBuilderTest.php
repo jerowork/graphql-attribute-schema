@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\TypeBuilder\Type\Object;
 use GraphQL\Type\Definition\EnumType;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
-use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;

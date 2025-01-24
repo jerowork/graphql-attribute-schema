@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Node;
+namespace Jerowork\GraphqlAttributeSchema\Test\Node\Child;
 
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use PHPUnit\Framework\Attributes\Test;
 
 /**

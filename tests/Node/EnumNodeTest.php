@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Node;
 
-use Jerowork\GraphqlAttributeSchema\Node\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
