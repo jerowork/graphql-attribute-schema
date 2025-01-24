@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ObjectType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
-use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type as OptionType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
@@ -114,7 +114,7 @@ final readonly class TypeReferenceDecider
         return $reflectionType->allowsNull() ? $type->setNullableValue() : $type;
     }
 
-    private function getReferenceFromAttribute(string|OptionType|ScalarType $type): TypeReference
+    private function getReferenceFromAttribute(string|Type|ScalarType $type): TypeReference
     {
         if ($type instanceof ScalarType) {
             return ScalarTypeReference::create($type->value);

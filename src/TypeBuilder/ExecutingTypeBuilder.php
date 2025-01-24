@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
-use GraphQL\Type\Definition\Type as WebonyxType;
+use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
@@ -25,7 +25,7 @@ final readonly class ExecutingTypeBuilder
     /**
      * @throws BuildException
      */
-    public function build(TypeReference $reference, Ast $ast): WebonyxType
+    public function build(TypeReference $reference, Ast $ast): Type
     {
         $builtType = null;
 
@@ -42,14 +42,14 @@ final readonly class ExecutingTypeBuilder
         }
 
         if (!$reference->isValueNullable()) {
-            $builtType = WebonyxType::nonNull($builtType); // @phpstan-ignore-line
+            $builtType = Type::nonNull($builtType); // @phpstan-ignore-line
         }
 
         if ($reference instanceof ListableTypeReference && $reference->isList()) {
-            $builtType = WebonyxType::listOf($builtType);
+            $builtType = Type::listOf($builtType);
 
             if (!$reference->isListNullable()) {
-                $builtType = WebonyxType::nonNull($builtType);
+                $builtType = Type::nonNull($builtType);
             }
         }
 
