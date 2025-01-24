@@ -10,9 +10,9 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionMethodType;
@@ -28,18 +28,18 @@ use DateTimeImmutable;
 /**
  * @internal
  */
-final class ClassFieldNodesParserTest extends TestCase
+final class ClassFieldsNodeParserTest extends TestCase
 {
-    private ClassFieldNodesParser $parser;
+    private ClassFieldsNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new ClassFieldNodesParser(
+        $this->parser = new ClassFieldsNodeParser(
             $typeReferenceDecider = new TypeReferenceDecider(),
-            new MethodArgumentNodesParser(
+            new MethodArgumentsNodeParser(
                 new AutowireNodeParser(),
                 new EdgeArgsNodeParser(),
                 new ArgNodeParser($typeReferenceDecider),

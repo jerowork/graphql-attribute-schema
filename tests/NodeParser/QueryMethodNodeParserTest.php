@@ -14,7 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
@@ -40,7 +40,7 @@ final class QueryMethodNodeParserTest extends TestCase
 
         $this->parser = new QueryMethodNodeParser(
             $typeReferenceDecider = new TypeReferenceDecider(),
-            new MethodArgumentNodesParser(
+            new MethodArgumentsNodeParser(
                 new AutowireNodeParser(),
                 new EdgeArgsNodeParser(),
                 new ArgNodeParser($typeReferenceDecider),

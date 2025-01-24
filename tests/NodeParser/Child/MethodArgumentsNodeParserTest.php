@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidMethodArgument;
@@ -24,16 +24,16 @@ use DateTimeImmutable;
 /**
  * @internal
  */
-final class MethodArgNodesParserTest extends TestCase
+final class MethodArgumentsNodeParserTest extends TestCase
 {
-    private MethodArgumentNodesParser $parser;
+    private MethodArgumentsNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new MethodArgumentNodesParser(
+        $this->parser = new MethodArgumentsNodeParser(
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
             new ArgNodeParser(new TypeReferenceDecider()),

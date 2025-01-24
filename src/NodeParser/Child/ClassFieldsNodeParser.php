@@ -17,7 +17,7 @@ use ReflectionProperty;
 use ReflectionMethod;
 use ReflectionNamedType;
 
-final readonly class ClassFieldNodesParser
+final readonly class ClassFieldsNodeParser
 {
     use RetrieveNameForFieldTrait;
 
@@ -25,7 +25,7 @@ final readonly class ClassFieldNodesParser
 
     public function __construct(
         private TypeReferenceDecider $typeReferenceDecider,
-        private MethodArgumentNodesParser $methodArgNodesParser,
+        private MethodArgumentsNodeParser $methodArgumentsNodeParser,
     ) {}
 
     /**
@@ -91,7 +91,7 @@ final readonly class ClassFieldNodesParser
                 $reference,
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
-                $this->methodArgNodesParser->parse($method),
+                $this->methodArgumentsNodeParser->parse($method),
                 FieldNodeType::Method,
                 $method->getName(),
                 null,

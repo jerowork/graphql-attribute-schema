@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use ReflectionClass;
 use Override;
@@ -23,7 +23,7 @@ final readonly class MutationMethodNodeParser implements NodeParser
 
     public function __construct(
         private TypeReferenceDecider $typeReferenceDecider,
-        private MethodArgumentNodesParser $methodArgumentNodesParser,
+        private MethodArgumentsNodeParser $methodArgumentsNodeParser,
     ) {}
 
     #[Override]
@@ -56,7 +56,7 @@ final readonly class MutationMethodNodeParser implements NodeParser
         }
 
         /** @var list<ArgNode> $argumentNodes */
-        $argumentNodes = $this->methodArgumentNodesParser->parse($method);
+        $argumentNodes = $this->methodArgumentsNodeParser->parse($method);
 
         return new MutationNode(
             $class->getName(),

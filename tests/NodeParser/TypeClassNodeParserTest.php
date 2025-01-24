@@ -14,10 +14,10 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -40,9 +40,9 @@ final class TypeClassNodeParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new TypeClassNodeParser(
-            new ClassFieldNodesParser(
+            new ClassFieldsNodeParser(
                 $typeReferenceDecider = new TypeReferenceDecider(),
-                new MethodArgumentNodesParser(
+                new MethodArgumentsNodeParser(
                     new AutowireNodeParser(),
                     new EdgeArgsNodeParser(),
                     new ArgNodeParser($typeReferenceDecider),

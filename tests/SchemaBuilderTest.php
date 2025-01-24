@@ -14,10 +14,10 @@ use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
@@ -97,9 +97,9 @@ final class SchemaBuilderTest extends TestCase
             new RoaveReflector(),
             [
                 new EnumClassNodeParser(),
-                new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldNodesParser(
+                new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldsNodeParser(
                     $typeReferenceDecider = new TypeReferenceDecider(),
-                    $methodArgsNodeParser = new MethodArgumentNodesParser(
+                    $methodArgsNodeParser = new MethodArgumentsNodeParser(
                         new AutowireNodeParser(),
                         new EdgeArgsNodeParser(),
                         new ArgNodeParser($typeReferenceDecider),

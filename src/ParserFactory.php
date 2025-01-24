@@ -6,10 +6,10 @@ namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
@@ -33,12 +33,12 @@ final readonly class ParserFactory
     ): Parser {
         $typeReferenceDecider = new TypeReferenceDecider();
 
-        $methodArgNodesParser = new MethodArgumentNodesParser(
+        $methodArgNodesParser = new MethodArgumentsNodeParser(
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
             new ArgNodeParser($typeReferenceDecider),
         );
-        $classFieldNodesParser = new ClassFieldNodesParser(
+        $classFieldNodesParser = new ClassFieldsNodeParser(
             $typeReferenceDecider,
             $methodArgNodesParser,
         );
