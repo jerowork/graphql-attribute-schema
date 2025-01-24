@@ -10,11 +10,13 @@ use Jerowork\GraphqlAttributeSchema\Node\Class\TypeNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
 use Override;
+use ReflectionMethod;
 
-final readonly class TypeClassNodeParser implements ClassNodeParser
+final readonly class TypeClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;
@@ -31,7 +33,7 @@ final readonly class TypeClassNodeParser implements ClassNodeParser
     }
 
     #[Override]
-    public function parse(ReflectionClass $class): Node
+    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
     {
         $attribute = $this->getAttribute($class, Type::class);
 

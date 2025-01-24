@@ -44,13 +44,13 @@ final class CustomScalarClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestInvalidScalarType::class));
+        $this->parser->parse(new ReflectionClass(TestInvalidScalarType::class), null);
     }
 
     #[Test]
     public function itShouldParseScalar(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestScalarType::class));
+        $node = $this->parser->parse(new ReflectionClass(TestScalarType::class), null);
 
         self::assertEquals(new CustomScalarNode(
             TestScalarType::class,

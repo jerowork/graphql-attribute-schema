@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\NodeParser\Class;
+namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use ReflectionClass;
+use ReflectionMethod;
 
-interface ClassNodeParser
+interface NodeParser
 {
     /**
      * @param class-string $attribute
@@ -18,5 +18,5 @@ interface ClassNodeParser
     /**
      * @throws ParseException
      */
-    public function parse(ReflectionClass $class): Node;
+    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node;
 }

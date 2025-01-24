@@ -11,8 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Class\ClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Method\MethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Finder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Reflector;
@@ -35,15 +34,13 @@ final readonly class Parser
     ];
 
     /**
-     * @param iterable<ClassNodeParser> $classNodeParsers
-     * @param iterable<MethodNodeParser> $methodNodeParsers
+     * @param iterable<NodeParser> $nodeParsers
      * @param iterable<class-string> $customTypes
      */
     public function __construct(
         private Finder $finder,
         private Reflector $reflector,
-        private iterable $classNodeParsers,
-        private iterable $methodNodeParsers,
+        private iterable $nodeParsers,
         private iterable $customTypes,
     ) {}
 
@@ -76,12 +73,12 @@ final readonly class Parser
         $attribute = $this->getSupportedAttribute($class);
 
         if ($attribute !== null) {
-            foreach ($this->classNodeParsers as $nodeParser) {
+            foreach ($this->nodeParsers as $nodeParser) {
                 if (!$nodeParser->supports($attribute)) {
                     continue;
                 }
 
-                yield $nodeParser->parse($class);
+                yield $nodeParser->parse($class, null);
 
                 return null;
             }
@@ -95,7 +92,7 @@ final readonly class Parser
                 continue;
             }
 
-            foreach ($this->methodNodeParsers as $nodeParser) {
+            foreach ($this->nodeParsers as $nodeParser) {
                 if (!$nodeParser->supports($attribute)) {
                     continue;
                 }

@@ -45,8 +45,6 @@ final readonly class ParserFactory
                 new InputTypeClassNodeParser($classFieldNodesParser),
                 new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser()),
                 new CustomScalarClassNodeParser(),
-            ],
-            [
                 new MutationMethodNodeParser($methodArgNodesParser),
                 new QueryMethodNodeParser($methodArgNodesParser),
             ],

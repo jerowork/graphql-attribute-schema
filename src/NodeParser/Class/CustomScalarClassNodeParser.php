@@ -8,12 +8,14 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\Class\CustomScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use ReflectionClass;
+use ReflectionMethod;
 
-final readonly class CustomScalarClassNodeParser implements ClassNodeParser
+final readonly class CustomScalarClassNodeParser implements NodeParser
 {
     use GetAttributeTrait;
     use RetrieveNameForTypeTrait;
@@ -26,7 +28,7 @@ final readonly class CustomScalarClassNodeParser implements ClassNodeParser
     /**
      * @throws ParseException
      */
-    public function parse(ReflectionClass $class): Node
+    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
     {
         if (!$class->implementsInterface(ScalarType::class)) {
             throw ParseException::missingImplements($class->getName(), ScalarType::class);

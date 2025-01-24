@@ -52,7 +52,7 @@ final class InputTypeClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldParseInputType(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestInputType::class));
+        $node = $this->parser->parse(new ReflectionClass(TestInputType::class), null);
 
         self::assertEquals(new InputTypeNode(
             TestInputType::class,

@@ -60,7 +60,7 @@ final class TypeClassNodeParserTest extends TestCase
     #[Test]
     public function itShouldParseType(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestType::class));
+        $node = $this->parser->parse(new ReflectionClass(TestType::class), null);
 
         self::assertEquals(new TypeNode(
             TestType::class,

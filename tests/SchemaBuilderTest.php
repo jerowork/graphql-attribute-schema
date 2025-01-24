@@ -105,8 +105,6 @@ final class SchemaBuilderTest extends TestCase
                 )),
                 new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser()),
                 new CustomScalarClassNodeParser(),
-            ],
-            [
                 new MutationMethodNodeParser($methodArgsNodeParser),
                 new QueryMethodNodeParser($methodArgsNodeParser),
             ],

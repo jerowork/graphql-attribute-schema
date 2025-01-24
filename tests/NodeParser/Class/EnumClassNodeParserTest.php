@@ -45,7 +45,7 @@ final class EnumClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestType::class));
+        $this->parser->parse(new ReflectionClass(TestType::class), null);
     }
 
     #[Test]
@@ -53,13 +53,13 @@ final class EnumClassNodeParserTest extends TestCase
     {
         self::expectException(ParseException::class);
 
-        $this->parser->parse(new ReflectionClass(TestInvalidEnumType::class));
+        $this->parser->parse(new ReflectionClass(TestInvalidEnumType::class), null);
     }
 
     #[Test]
     public function itShouldParseEnum(): void
     {
-        $node = $this->parser->parse(new ReflectionClass(TestEnumType::class));
+        $node = $this->parser->parse(new ReflectionClass(TestEnumType::class), null);
 
         self::assertEquals(new EnumNode(
             TestEnumType::class,

@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Class\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Class\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use ReflectionClass;
@@ -17,8 +18,9 @@ use BackedEnum;
 use Override;
 use ReflectionEnum;
 use ReflectionException;
+use ReflectionMethod;
 
-final readonly class EnumClassNodeParser implements ClassNodeParser
+final readonly class EnumClassNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;
@@ -33,7 +35,7 @@ final readonly class EnumClassNodeParser implements ClassNodeParser
      * @throws ReflectionException
      */
     #[Override]
-    public function parse(ReflectionClass $class): Node
+    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
     {
         $className = $class->getName();
 

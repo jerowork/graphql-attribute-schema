@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentNodesParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetTypeReferenceTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForFieldTrait;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
@@ -20,7 +21,7 @@ use Override;
 use ReflectionMethod;
 use ReflectionNamedType;
 
-final readonly class QueryMethodNodeParser implements MethodNodeParser
+final readonly class QueryMethodNodeParser implements NodeParser
 {
     use RetrieveNameForFieldTrait;
     use GetTypeReferenceTrait;
@@ -37,8 +38,12 @@ final readonly class QueryMethodNodeParser implements MethodNodeParser
     }
 
     #[Override]
-    public function parse(ReflectionClass $class, ReflectionMethod $method): Node
+    public function parse(ReflectionClass $class, ?ReflectionMethod $method): Node
     {
+        if ($method === null) {
+            throw new ParseException('Logic: Missing ReflectionMethod');
+        }
+
         $attribute = $this->getAttribute($method, Query::class);
         $returnType = $method->getReturnType();
 
