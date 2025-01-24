@@ -61,7 +61,7 @@ final readonly class QueryMethodNodeParser implements MethodNodeParser
         return new QueryNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
-            $attribute->getDescription(),
+            $attribute->description,
             $argumentNodes,
             $reference,
             $method->getName(),

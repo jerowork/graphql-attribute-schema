@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final readonly class Scalar implements BaseAttribute
+final readonly class Scalar implements NamedAttribute
 {
     /**
      * @param class-string|null $alias
@@ -21,10 +21,5 @@ final readonly class Scalar implements BaseAttribute
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 }

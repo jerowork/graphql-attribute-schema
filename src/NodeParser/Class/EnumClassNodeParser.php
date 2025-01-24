@@ -52,7 +52,7 @@ final readonly class EnumClassNodeParser implements ClassNodeParser
         return new EnumNode(
             $className,
             $name,
-            $attribute->getDescription(),
+            $attribute->description,
             $this->getValues($class),
         );
     }

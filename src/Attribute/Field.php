@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 
 #[Attribute(Attribute::TARGET_PROPERTY|Attribute::TARGET_METHOD)]
-final readonly class Field implements BaseAttribute, TypedAttribute
+final readonly class Field implements NamedAttribute, TypedAttribute
 {
     /**
      * @param class-string|Type|ScalarType|null $type
@@ -24,11 +24,6 @@ final readonly class Field implements BaseAttribute, TypedAttribute
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 
     public function getType(): string|Type|ScalarType|null

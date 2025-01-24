@@ -37,7 +37,7 @@ final readonly class CustomScalarClassNodeParser implements ClassNodeParser
         return new CustomScalarNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
-            $attribute->getDescription(),
+            $attribute->description,
             $attribute->alias,
         );
     }

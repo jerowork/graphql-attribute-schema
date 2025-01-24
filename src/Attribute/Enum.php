@@ -7,7 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Attribute;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final readonly class Enum implements BaseAttribute
+final readonly class Enum implements NamedAttribute
 {
     public function __construct(
         public ?string $name = null,
@@ -17,10 +17,5 @@ final readonly class Enum implements BaseAttribute
     public function getName(): ?string
     {
         return $this->name;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
     }
 }

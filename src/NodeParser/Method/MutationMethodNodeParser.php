@@ -61,7 +61,7 @@ final readonly class MutationMethodNodeParser implements MethodNodeParser
         return new MutationNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
-            $attribute->getDescription(),
+            $attribute->description,
             $argumentNodes,
             $reference,
             $method->getName(),

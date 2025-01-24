@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\BaseAttribute;
+use Jerowork\GraphqlAttributeSchema\Attribute\NamedAttribute;
 use ReflectionClass;
 
 trait RetrieveNameForTypeTrait
@@ -15,7 +15,7 @@ trait RetrieveNameForTypeTrait
     /**
      * @throws ParseException
      */
-    public function retrieveNameForType(ReflectionClass $class, BaseAttribute $attribute): string
+    public function retrieveNameForType(ReflectionClass $class, NamedAttribute $attribute): string
     {
         $name = $attribute->getName() ?? $this->retrieveNameFromClass($class);
 
