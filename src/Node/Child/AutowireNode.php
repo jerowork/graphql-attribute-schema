@@ -4,25 +4,24 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
-
 /**
  * @phpstan-type AutowireNodePayload array{
  *     service: string|class-string,
  *     propertyName: string,
  * }
  *
- * @implements ArraySerializable<AutowireNodePayload>
- *
  * @internal
  */
-final readonly class AutowireNode implements ArraySerializable
+final readonly class AutowireNode implements ArgumentNode
 {
     public function __construct(
         public string $service,
         public string $propertyName,
     ) {}
 
+    /**
+     * @return AutowireNodePayload
+     */
     public function toArray(): array
     {
         return [
@@ -31,6 +30,9 @@ final readonly class AutowireNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param AutowireNodePayload $payload
+     */
     public static function fromArray(array $payload): AutowireNode
     {
         return new self(

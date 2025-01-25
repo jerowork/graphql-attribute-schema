@@ -5,19 +5,17 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Node;
 
 /**
- * @template T of array
- *
  * @internal
  */
 interface ArraySerializable
 {
     /**
-     * @return T
+     * @return array<string, mixed>
      */
     public function toArray(): array;
 
     /**
-     * @param T $payload
+     * @param array<string, mixed> $payload
      */
-    public static function fromArray(array $payload): self; // @phpstan-ignore-line
+    public static function fromArray(array $payload): self;
 }

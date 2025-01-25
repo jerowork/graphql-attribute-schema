@@ -18,8 +18,6 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     propertyName: null|string
  * }
  *
- * @implements ArraySerializable<CursorNodePayload>
- *
  * @internal
  */
 final readonly class CursorNode implements ArraySerializable
@@ -31,9 +29,11 @@ final readonly class CursorNode implements ArraySerializable
         public ?string $propertyName,
     ) {}
 
+    /**
+     * @return CursorNodePayload
+     */
     public function toArray(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'reference' => [
                 'type' => $this->reference::class,
@@ -45,6 +45,9 @@ final readonly class CursorNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param CursorNodePayload $payload
+     */
     public static function fromArray(array $payload): CursorNode
     {
         /** @var class-string<TypeReference> $referenceClass */

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
@@ -64,6 +65,7 @@ final readonly class FieldResolver
                     continue;
                 }
 
+                /** @var ArgNode $argumentNode */
                 $arguments[] = $args[$argumentNode->name] ?? null;
             }
 

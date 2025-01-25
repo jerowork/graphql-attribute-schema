@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Node;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 
@@ -17,7 +18,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     name: string,
  *     description: null|string,
  *     argumentNodes: list<array{
- *          node: class-string<ArgNode|EdgeArgsNode>,
+ *          node: class-string<ArgumentNode>,
  *          payload: ArgNodePayload|EdgeArgsNodePayload
  *     }>,
  *     outputReference: array{
@@ -34,7 +35,7 @@ final readonly class QueryNode implements Node
 {
     /**
      * @param class-string $className
-     * @param list<ArgNode|EdgeArgsNode> $argumentNodes
+     * @param list<ArgumentNode> $argumentNodes
      */
     public function __construct(
         public string $className,

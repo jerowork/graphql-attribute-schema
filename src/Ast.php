@@ -9,12 +9,12 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 
 /**
- * @implements ArraySerializable<array{
+ * @phpstan-type AstPayload array{
  *     nodes: list<array{
  *          node: class-string,
  *          payload: array<string, mixed>
  *     }>
- * }>
+ * }
  */
 final readonly class Ast implements ArraySerializable
 {
@@ -69,6 +69,9 @@ final readonly class Ast implements ArraySerializable
         return null;
     }
 
+    /**
+     * @return AstPayload
+     */
     public function toArray(): array
     {
         $nodes = [];
@@ -84,6 +87,9 @@ final readonly class Ast implements ArraySerializable
         ];
     }
 
+    /**
+     * @param AstPayload $payload
+     */
     public static function fromArray(array $payload): Ast
     {
         $nodes = [];

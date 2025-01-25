@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
-use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
@@ -16,7 +16,7 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
  */
 final readonly class EdgeArgsInputFieldResolver implements InputFieldResolver
 {
-    public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool
+    public function supports(FieldNode|ArgumentNode $child, Ast $ast): bool
     {
         return $child instanceof EdgeArgsNode;
     }
@@ -29,7 +29,7 @@ final readonly class EdgeArgsInputFieldResolver implements InputFieldResolver
      *     before?: string
      * } $args
      */
-    public function resolve(FieldNode|ArgNode|EdgeArgsNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
+    public function resolve(FieldNode|ArgumentNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
         return new EdgeArgs(
             $args['first'] ?? null,

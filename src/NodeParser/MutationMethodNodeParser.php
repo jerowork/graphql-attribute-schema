@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
@@ -56,14 +55,11 @@ final readonly class MutationMethodNodeParser implements NodeParser
             }
         }
 
-        /** @var list<ArgNode> $argumentNodes */
-        $argumentNodes = $this->methodArgumentsNodeParser->parse($method);
-
         yield new MutationNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
             $attribute->description,
-            $argumentNodes,
+            array_values([...$this->methodArgumentsNodeParser->parse($method)]),
             $reference,
             $method->getName(),
             $attribute->deprecationReason,

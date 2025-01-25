@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 
-use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Generator;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use ReflectionMethod;
@@ -26,30 +25,26 @@ final readonly class MethodArgumentsNodeParser
     /**
      * @throws ParseException
      *
-     * @return list<ArgNode|AutowireNode|EdgeArgsNode>
+     * @return Generator<ArgumentNode>
      */
-    public function parse(ReflectionMethod $method): array
+    public function parse(ReflectionMethod $method): Generator
     {
-        $argumentNodes = [];
-
         foreach ($method->getParameters() as $parameter) {
             $autowireNode = $this->autowireNodeParser->parse($parameter);
 
             if ($autowireNode !== null) {
-                $argumentNodes[] = $autowireNode;
+                yield $autowireNode;
 
                 continue;
             }
 
             if ($parameter->getType() instanceof ReflectionNamedType && $parameter->getType()->getName() === EdgeArgs::class) {
-                $argumentNodes[]  = $this->edgeArgsNodeParser->parse($parameter);
+                yield $this->edgeArgsNodeParser->parse($parameter);
 
                 continue;
             }
 
-            $argumentNodes[] = $this->argNodeParser->parse($parameter);
+            yield $this->argNodeParser->parse($parameter);
         }
-
-        return $argumentNodes;
     }
 }

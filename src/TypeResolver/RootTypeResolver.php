@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\TypeResolver;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
-use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
@@ -51,7 +50,7 @@ final readonly class RootTypeResolver
      *
      * @throws ResolveException
      */
-    public function resolveField(ArgNode|FieldNode|EdgeArgsNode $child, array $args, Ast $ast): mixed
+    public function resolveField(FieldNode|ArgumentNode $child, array $args, Ast $ast): mixed
     {
         foreach ($this->inputResolvers as $resolver) {
             if (!$resolver->supports($child, $ast)) {

@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
-
 /**
  * @phpstan-type EdgeArgsNodePayload array{
  *     propertyName: string,
  * }
  *
- * @implements ArraySerializable<EdgeArgsNodePayload>
- *
  * @internal
  */
-final readonly class EdgeArgsNode implements ArraySerializable
+final readonly class EdgeArgsNode implements ArgumentNode
 {
     public function __construct(
         public string $propertyName,
     ) {}
 
+    /**
+     * @return EdgeArgsNodePayload
+     */
     public function toArray(): array
     {
         return [
@@ -28,6 +27,9 @@ final readonly class EdgeArgsNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param EdgeArgsNodePayload $payload
+     */
     public static function fromArray(array $payload): EdgeArgsNode
     {
         return new self(

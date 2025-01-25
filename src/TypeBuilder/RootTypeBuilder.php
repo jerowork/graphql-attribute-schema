@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
@@ -39,7 +39,7 @@ final readonly class RootTypeBuilder
     {
         $args = [];
         foreach ($node->argumentNodes as $argumentNode) {
-            if ($argumentNode instanceof EdgeArgsNode) {
+            if (!$argumentNode instanceof ArgNode) {
                 continue;
             }
 

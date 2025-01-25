@@ -94,7 +94,7 @@ final readonly class ClassFieldsNodeParser
                 $reference,
                 $this->retrieveNameForField($method, $fieldAttribute),
                 $fieldAttribute->description,
-                $this->methodArgumentsNodeParser->parse($method),
+                array_values([...$this->methodArgumentsNodeParser->parse($method)]),
                 FieldNodeType::Method,
                 $method->getName(),
                 null,

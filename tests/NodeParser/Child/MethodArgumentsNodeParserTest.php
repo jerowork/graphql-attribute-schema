@@ -47,7 +47,7 @@ final class MethodArgumentsNodeParserTest extends TestCase
 
         self::expectException(ParseException::class);
 
-        $this->parser->parse($class->getMethod('__invoke'));
+        iterator_to_array($this->parser->parse($class->getMethod('__invoke')));
     }
 
     #[Test]
@@ -55,7 +55,7 @@ final class MethodArgumentsNodeParserTest extends TestCase
     {
         $class = new ReflectionClass(TestMutation::class);
 
-        $argNodes = $this->parser->parse($class->getMethod('testMutation'));
+        $argNodes = iterator_to_array($this->parser->parse($class->getMethod('testMutation')));
 
         self::assertEquals([
             new ArgNode(

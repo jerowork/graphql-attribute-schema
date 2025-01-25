@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
@@ -18,17 +18,19 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
  */
 final readonly class InputTypeNodeInputFieldResolver implements InputFieldResolver
 {
-    public function supports(FieldNode|ArgNode|EdgeArgsNode $child, Ast $ast): bool
+    public function supports(FieldNode|ArgumentNode $child, Ast $ast): bool
     {
-        return !$child instanceof EdgeArgsNode && $child->reference instanceof ObjectTypeReference && $ast->getNodeByClassName($child->reference->className) instanceof InputTypeNode;
+        return ($child instanceof FieldNode || $child instanceof ArgNode)
+            && $child->reference instanceof ObjectTypeReference
+            && $ast->getNodeByClassName($child->reference->className) instanceof InputTypeNode;
     }
 
     /**
      * @throws ResolveException
      */
-    public function resolve(FieldNode|ArgNode|EdgeArgsNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
+    public function resolve(FieldNode|ArgumentNode $child, array $args, Ast $ast, RootTypeResolver $rootTypeResolver): mixed
     {
-        if ($child instanceof EdgeArgsNode) {
+        if (!$child instanceof FieldNode && !$child instanceof ArgNode) {
             throw ResolveException::logicError(sprintf('Invalid child %s', $child::class));
         }
 

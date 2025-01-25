@@ -20,7 +20,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     name: string,
  *     description: null|string,
  *     argumentNodes: list<array{
- *          node: class-string<ArgNode|AutowireNode|EdgeArgsNode>,
+ *          node: class-string<ArgumentNode>,
  *          payload: ArgNodePayload|AutowireNodePayload|EdgeArgsNodePayload
  *     }>,
  *     fieldType: string,
@@ -29,14 +29,12 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     deprecationReason: null|string
  * }
  *
- * @implements ArraySerializable<FieldNodePayload>
- *
  * @internal
  */
 final readonly class FieldNode implements ArraySerializable
 {
     /**
-     * @param list<ArgNode|AutowireNode|EdgeArgsNode> $argumentNodes
+     * @param list<ArgumentNode> $argumentNodes
      */
     public function __construct(
         public TypeReference $reference,
@@ -49,6 +47,9 @@ final readonly class FieldNode implements ArraySerializable
         public ?string $deprecationReason,
     ) {}
 
+    /**
+     * @return FieldNodePayload
+     */
     public function toArray(): array
     {
         $argumentNodes = [];
@@ -75,6 +76,9 @@ final readonly class FieldNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param FieldNodePayload $payload
+     */
     public static function fromArray(array $payload): FieldNode
     {
         $argumentNodes = [];

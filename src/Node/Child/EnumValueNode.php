@@ -13,8 +13,6 @@ use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
  *     deprecationReason: null|string
  * }
  *
- * @implements ArraySerializable<EnumValueNodePayload>
- *
  * @internal
  */
 final readonly class EnumValueNode implements ArraySerializable
@@ -25,6 +23,9 @@ final readonly class EnumValueNode implements ArraySerializable
         public ?string $deprecationReason,
     ) {}
 
+    /**
+     * @return EnumValueNodePayload
+     */
     public function toArray(): array
     {
         return [
@@ -34,6 +35,9 @@ final readonly class EnumValueNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param EnumValueNodePayload $payload
+     */
     public static function fromArray(array $payload): EnumValueNode
     {
         return new self(

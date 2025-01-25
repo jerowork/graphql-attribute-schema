@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Node\Child;
 
-use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 
 /**
@@ -18,11 +17,9 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     propertyName: string
  * }
  *
- * @implements ArraySerializable<ArgNodePayload>
- *
  * @internal
  */
-final readonly class ArgNode implements ArraySerializable
+final readonly class ArgNode implements ArgumentNode
 {
     public function __construct(
         public TypeReference $reference,
@@ -31,9 +28,11 @@ final readonly class ArgNode implements ArraySerializable
         public string $propertyName,
     ) {}
 
+    /**
+     * @return ArgNodePayload
+     */
     public function toArray(): array
     {
-        // @phpstan-ignore-next-line
         return [
             'reference' => [
                 'type' => $this->reference::class,
@@ -45,6 +44,9 @@ final readonly class ArgNode implements ArraySerializable
         ];
     }
 
+    /**
+     * @param ArgNodePayload $payload
+     */
     public static function fromArray(array $payload): ArgNode
     {
         /** @var class-string<TypeReference> $reference */
