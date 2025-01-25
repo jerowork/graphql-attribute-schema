@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
-use DateTimeImmutable;
-use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
-use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidConnectionReturnType;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidReturnType;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidConnectionReturnType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidReturnType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Override;
+use ReflectionClass;
+use DateTimeImmutable;
 
 /**
  * @internal
  */
-final class QueryMethodNodeParserTest extends TestCase
+final class MutationNodeParserTest extends TestCase
 {
-    private QueryMethodNodeParser $parser;
+    private MutationNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new QueryMethodNodeParser(
+        $this->parser = new MutationNodeParser(
             $typeReferenceDecider = new TypeReferenceDecider(),
             new MethodArgumentsNodeParser(
                 new AutowireNodeParser(),
@@ -49,11 +49,11 @@ final class QueryMethodNodeParserTest extends TestCase
     }
 
     #[Test]
-    public function itShouldSupportQueryOnly(): void
+    public function itShouldSupportMutationOnly(): void
     {
-        $class = new ReflectionClass(TestInvalidQueryWithInvalidReturnType::class);
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
 
-        $nodes = iterator_to_array($this->parser->parse(InputType::class, $class, $class->getMethod('__invoke')));
+        $nodes = iterator_to_array($this->parser->parse(Type::class, $class, $class->getMethod('mutation')));
 
         self::assertEmpty($nodes);
     }
@@ -64,9 +64,9 @@ final class QueryMethodNodeParserTest extends TestCase
         self::expectException(ParseException::class);
         self::expectExceptionMessage('Invalid return type');
 
-        $class = new ReflectionClass(TestInvalidQueryWithInvalidReturnType::class);
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidReturnType::class);
 
-        iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
+        iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('mutation')));
     }
 
     #[Test]
@@ -75,22 +75,22 @@ final class QueryMethodNodeParserTest extends TestCase
         self::expectException(ParseException::class);
         self::expectExceptionMessage('Invalid return type for connection');
 
-        $class = new ReflectionClass(TestInvalidQueryWithInvalidConnectionReturnType::class);
+        $class = new ReflectionClass(TestInvalidMutationWithInvalidConnectionReturnType::class);
 
-        iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
+        iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('mutation')));
     }
 
     #[Test]
-    public function itShouldParseQuery(): void
+    public function itShouldParseMutation(): void
     {
-        $class = new ReflectionClass(TestQuery::class);
+        $class = new ReflectionClass(TestMutation::class);
 
-        $nodes = iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
+        $nodes = iterator_to_array($this->parser->parse(Mutation::class, $class, $class->getMethod('testMutation')));
 
-        self::assertEquals([new QueryNode(
-            TestQuery::class,
-            'testQuery',
-            'Test query',
+        self::assertEquals([new MutationNode(
+            TestMutation::class,
+            'testMutation',
+            'Test mutation',
             [
                 new ArgNode(
                     ObjectTypeReference::create(DateTimeImmutable::class),
@@ -99,14 +99,14 @@ final class QueryMethodNodeParserTest extends TestCase
                     'date',
                 ),
                 new ArgNode(
-                    ScalarTypeReference::create('string'),
-                    'id',
-                    null,
+                    ScalarTypeReference::create('string')->setNullableValue(),
+                    'mutationId',
+                    'Mutation ID',
                     'id',
                 ),
             ],
             ScalarTypeReference::create('string'),
-            '__invoke',
+            'testMutation',
             null,
         )], $nodes);
     }

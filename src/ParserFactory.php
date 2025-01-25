@@ -11,12 +11,12 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
@@ -48,12 +48,12 @@ final readonly class ParserFactory
             new NativeFinder(),
             new RoaveReflector(),
             new ChainedNodeParser([
-                new EnumClassNodeParser(),
-                new InputTypeClassNodeParser($classFieldNodesParser),
-                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
-                new ScalarClassNodeParser(),
-                new MutationMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
-                new QueryMethodNodeParser($typeReferenceDecider, $methodArgNodesParser),
+                new EnumNodeParser(),
+                new InputTypeNodeParser($classFieldNodesParser),
+                new TypeNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
+                new ScalarNodeParser(),
+                new MutationNodeParser($typeReferenceDecider, $methodArgNodesParser),
+                new QueryNodeParser($typeReferenceDecider, $methodArgNodesParser),
             ]),
             $customTypes,
         );

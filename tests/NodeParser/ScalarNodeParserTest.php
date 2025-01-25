@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestInvalidScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
 use Override;
 use ReflectionClass;
 use DateTime;
@@ -20,16 +20,16 @@ use DateTime;
 /**
  * @internal
  */
-final class ScalarClassNodeParserTest extends TestCase
+final class ScalarNodeParserTest extends TestCase
 {
-    private ScalarClassNodeParser $parser;
+    private ScalarNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new ScalarClassNodeParser();
+        $this->parser = new ScalarNodeParser();
     }
 
     #[Test]

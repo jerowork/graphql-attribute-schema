@@ -16,7 +16,7 @@ use Generator;
 /**
  * @internal
  */
-final readonly class TypeClassNodeParser implements NodeParser
+final readonly class TypeNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;

@@ -15,7 +15,7 @@ use Override;
 /**
  * @internal
  */
-final readonly class ScalarClassNodeParser implements NodeParser
+final readonly class ScalarNodeParser implements NodeParser
 {
     use GetAttributeTrait;
     use RetrieveNameForTypeTrait;

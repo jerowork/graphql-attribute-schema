@@ -16,23 +16,23 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
 use Override;
 use ReflectionClass;
 
 /**
  * @internal
  */
-final class InputTypeClassNodeParserTest extends TestCase
+final class InputTypeNodeParserTest extends TestCase
 {
-    private InputTypeClassNodeParser $parser;
+    private InputTypeNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new InputTypeClassNodeParser(
+        $this->parser = new InputTypeNodeParser(
             new ClassFieldsNodeParser(
                 $typeReferenceDecider = new TypeReferenceDecider(),
                 new MethodArgumentsNodeParser(

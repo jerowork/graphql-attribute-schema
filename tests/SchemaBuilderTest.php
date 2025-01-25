@@ -19,12 +19,12 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\MutationMethodNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\QueryMethodNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Parser;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
@@ -97,8 +97,8 @@ final class SchemaBuilderTest extends TestCase
             new NativeFinder(),
             new RoaveReflector(),
             new ChainedNodeParser([
-                new EnumClassNodeParser(),
-                new InputTypeClassNodeParser($classFieldNodesParser = new ClassFieldsNodeParser(
+                new EnumNodeParser(),
+                new InputTypeNodeParser($classFieldNodesParser = new ClassFieldsNodeParser(
                     $typeReferenceDecider = new TypeReferenceDecider(),
                     $methodArgsNodeParser = new MethodArgumentsNodeParser(
                         new AutowireNodeParser(),
@@ -106,10 +106,10 @@ final class SchemaBuilderTest extends TestCase
                         new ArgNodeParser($typeReferenceDecider),
                     ),
                 )),
-                new TypeClassNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
-                new ScalarClassNodeParser(),
-                new MutationMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
-                new QueryMethodNodeParser($typeReferenceDecider, $methodArgsNodeParser),
+                new TypeNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
+                new ScalarNodeParser(),
+                new MutationNodeParser($typeReferenceDecider, $methodArgsNodeParser),
+                new QueryNodeParser($typeReferenceDecider, $methodArgsNodeParser),
             ]),
             [
                 DateTimeType::class,

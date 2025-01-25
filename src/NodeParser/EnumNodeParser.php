@@ -19,7 +19,7 @@ use Generator;
 /**
  * @internal
  */
-final readonly class EnumClassNodeParser implements NodeParser
+final readonly class EnumNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;

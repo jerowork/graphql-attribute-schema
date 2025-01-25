@@ -14,23 +14,23 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestInvalidEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\EnumClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
 use Override;
 use ReflectionClass;
 
 /**
  * @internal
  */
-final class EnumClassNodeParserTest extends TestCase
+final class EnumNodeParserTest extends TestCase
 {
-    private EnumClassNodeParser $parser;
+    private EnumNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new EnumClassNodeParser();
+        $this->parser = new EnumNodeParser();
     }
 
     #[Test]

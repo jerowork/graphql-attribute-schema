@@ -18,7 +18,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeClassNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
@@ -30,16 +30,16 @@ use DateTimeImmutable;
 /**
  * @internal
  */
-final class TypeClassNodeParserTest extends TestCase
+final class TypeNodeParserTest extends TestCase
 {
-    private TypeClassNodeParser $parser;
+    private TypeNodeParser $parser;
 
     #[Override]
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->parser = new TypeClassNodeParser(
+        $this->parser = new TypeNodeParser(
             new ClassFieldsNodeParser(
                 $typeReferenceDecider = new TypeReferenceDecider(),
                 new MethodArgumentsNodeParser(
