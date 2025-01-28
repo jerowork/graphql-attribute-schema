@@ -8,7 +8,7 @@ The following attributes can be used:
 
 - [#[Mutation]](#mutation-and-query)
 - [#[Query]](#mutation-and-query)
-- [#[Type]](#type)
+- [#[Type]](#type) (including [Inheritance and interfaces](#inheritance-and-interfaces))
 - [#[InputType]](#inputtype)
 - [#[Enum]](#enum)
     - [#[EnumValue]](#enum)
@@ -148,6 +148,48 @@ final readonly class YourType
     
     #[Field]
     public function getFoobar(int $status, ?string $baz) : EnumStatusType {}
+}
+```
+
+#### Inheritance and interfaces
+GraphQL supports inheritance with interfaces. In order to configure interfaces, just add `#[Type]` to a PHP interface:
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+interface UserType
+{
+    // When using PHP 8.4, you can define fields with property hooks
+    #[Field]
+    public int $id { get; }
+    
+    // All below PHP 8.4
+    #[Field]
+    public function getName() : ?string
+}
+```
+
+Each implementation inherits all fields from the interface, as well as its own fields:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+final readonly class AgentType implements UserType
+{
+    public function __construct(
+        #[Field]
+        public string $status,
+        public int $id, // No need to copy #[Field] from interface
+    ) {}
+    
+    // No need to copy #[Field] from interface
+    public function getName() : ?string
+    {
+        return '';
+    }
 }
 ```
 

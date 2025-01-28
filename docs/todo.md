@@ -8,5 +8,5 @@ This library is still work in progress, and misses some valuable features:
 - ~~Handle `DateTime` and `DateTimeImmutable`~~
 - ~~Inject autowiring services~~
 - ~~Connection, edge, nodes (see https://relay.dev/graphql/connections.htm)~~
-- GraphQL interfaces, inheritance
+- ~~GraphQL interfaces, inheritance~~
 - Subscriptions
