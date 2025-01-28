@@ -16,7 +16,9 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
  *     name: string,
  *     description: null|string,
  *     fieldNodes: list<FieldNodePayload>,
- *     cursorNode: null|CursorNodePayload
+ *     cursorNode: null|CursorNodePayload,
+ *     isInterface: bool,
+ *     implementsInterfaces: list<class-string>
  * }
  *
  * @internal
@@ -26,6 +28,7 @@ final readonly class TypeNode implements Node
     /**
      * @param class-string $className
      * @param list<FieldNode> $fieldNodes
+     * @param list<class-string> $implementsInterfaces
      */
     public function __construct(
         public string $className,
@@ -33,6 +36,8 @@ final readonly class TypeNode implements Node
         public ?string $description,
         public array $fieldNodes,
         public ?CursorNode $cursorNode,
+        public bool $isInterface,
+        public array $implementsInterfaces,
     ) {}
 
     public function getClassName(): string
@@ -51,6 +56,8 @@ final readonly class TypeNode implements Node
             'description' => $this->description,
             'fieldNodes' => array_map(fn($fieldNode) => $fieldNode->toArray(), $this->fieldNodes),
             'cursorNode' => $this->cursorNode?->toArray(),
+            'isInterface' => $this->isInterface,
+            'implementsInterfaces' => $this->implementsInterfaces,
         ];
     }
 
@@ -65,6 +72,8 @@ final readonly class TypeNode implements Node
             $payload['description'],
             array_map(fn($fieldNodePayload) => FieldNode::fromArray($fieldNodePayload), $payload['fieldNodes']),
             $payload['cursorNode'] !== null ? CursorNode::fromArray($payload['cursorNode']) : null,
+            $payload['isInterface'],
+            $payload['implementsInterfaces'],
         );
     }
 }

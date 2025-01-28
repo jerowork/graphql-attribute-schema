@@ -22,11 +22,13 @@ use Jerowork\GraphqlAttributeSchema\Parser;
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\FoobarQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AgentType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\Baz;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateFoobarInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -114,7 +116,7 @@ final class ParserTest extends TestCase
                         'values',
                     ),
                 ],
-                ScalarTypeReference::create('string')->setList(),
+                ObjectTypeReference::create(UserType::class)->setList(),
                 '__invoke',
                 null,
             ),
@@ -199,7 +201,49 @@ final class ParserTest extends TestCase
             ),
         ], $nodes);
 
+        $nodes = $ast->getNodesByNodeType(TypeNode::class);
+        usort($nodes, fn(TypeNode $a, TypeNode $b) => $a->name <=> $b->name);
         self::assertEquals([
+            new TypeNode(
+                AgentType::class,
+                'Agent',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'name',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'name',
+                        null,
+                    ),
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'number',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'number',
+                        null,
+                    ),
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'other',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getOther',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                false,
+                [UserType::class],
+            ),
             new TypeNode(
                 FoobarType::class,
                 'Foobar',
@@ -250,8 +294,30 @@ final class ParserTest extends TestCase
                     ),
                 ],
                 null,
+                false,
+                [],
             ),
-        ], $ast->getNodesByNodeType(TypeNode::class));
+            new TypeNode(
+                UserType::class,
+                'User',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'userId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getId',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                true,
+                [],
+            ),
+        ], $nodes);
 
         self::assertEquals([
             new EnumNode(

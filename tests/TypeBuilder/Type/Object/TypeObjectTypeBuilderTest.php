@@ -51,6 +51,7 @@ final class TypeObjectTypeBuilderTest extends TestCase
         parent::setUp();
 
         $this->builder = new TypeObjectTypeBuilder(
+            new BuiltTypesRegistry(),
             new FieldResolver(
                 new TestContainer(),
                 [
@@ -70,6 +71,8 @@ final class TypeObjectTypeBuilderTest extends TestCase
             null,
             [],
             null,
+            false,
+            [],
         )));
 
         self::assertFalse($this->builder->supports(new EnumNode(
@@ -88,19 +91,22 @@ final class TypeObjectTypeBuilderTest extends TestCase
             new CustomScalarObjectTypeBuilder(),
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder($fieldResolver = new FieldResolver(
-                new TestContainer(),
-                [
-                    new ScalarTypeOutputFieldResolver(),
-                    new EnumNodeOutputFieldResolver(),
-                ],
-            )),
+            new TypeObjectTypeBuilder(
+                $builtTypesRegistry = new BuiltTypesRegistry(),
+                $fieldResolver = new FieldResolver(
+                    new TestContainer(),
+                    [
+                        new ScalarTypeOutputFieldResolver(),
+                        new EnumNodeOutputFieldResolver(),
+                    ],
+                ),
+            ),
         ];
 
         /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
-            new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), $fieldResolver),
+            new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
             new ExecutingObjectTypeBuilder($builtTypesRegistry, $objectTypeBuilders),
         ];
 
@@ -139,6 +145,8 @@ final class TypeObjectTypeBuilderTest extends TestCase
                     ),
                 ],
                 null,
+                false,
+                [],
             ),
             new ExecutingTypeBuilder($typeBuilders),
             new Ast(
@@ -153,6 +161,8 @@ final class TypeObjectTypeBuilderTest extends TestCase
                         null,
                         'property',
                     ),
+                    false,
+                    [],
                 ),
             ),
         );

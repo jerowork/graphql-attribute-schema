@@ -20,6 +20,8 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestExtendsInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\TestCase;
@@ -117,6 +119,97 @@ final class TypeNodeParserTest extends TestCase
                 'flow',
                 null,
             ),
+            false,
+            [],
+        )], $nodes);
+    }
+
+    #[Test]
+    public function itShouldParseInterfaceType(): void
+    {
+        $nodes = iterator_to_array($this->parser->parse(Type::class, new ReflectionClass(TestInterfaceType::class), null));
+
+        self::assertEquals([new TypeNode(
+            TestInterfaceType::class,
+            'TestInterface',
+            null,
+            [
+                new FieldNode(
+                    ScalarTypeReference::create('int'),
+                    'ID',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getId',
+                    null,
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('string')->setNullableValue(),
+                    'name',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getName',
+                    null,
+                    null,
+                ),
+            ],
+            new CursorNode(
+                ScalarTypeReference::create('string')->setNullableValue(),
+                FieldNodeType::Method,
+                'cursor',
+                null,
+            ),
+            true,
+            [],
+        )], $nodes);
+    }
+
+    #[Test]
+    public function itShouldParseTypeExtendingInterface(): void
+    {
+        $nodes = iterator_to_array($this->parser->parse(Type::class, new ReflectionClass(TestExtendsInterfaceType::class), null));
+
+        self::assertEquals([new TypeNode(
+            TestExtendsInterfaceType::class,
+            'TestExtendsInterface',
+            'Test Type with extends',
+            [
+                new FieldNode(
+                    ObjectTypeReference::create(DateTimeImmutable::class),
+                    'date',
+                    null,
+                    [],
+                    FieldNodeType::Property,
+                    null,
+                    'date',
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('int'),
+                    'ID',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getId',
+                    null,
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('string'),
+                    'status',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getStatus',
+                    null,
+                    null,
+                ),
+            ],
+            null,
+            false,
+            [TestInterfaceType::class],
         )], $nodes);
     }
 }

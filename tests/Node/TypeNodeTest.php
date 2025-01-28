@@ -59,6 +59,8 @@ final class TypeNodeTest extends TestCase
                 null,
                 'property',
             ),
+            false,
+            [],
         );
 
         self::assertEquals(TypeNode::fromArray($typeNode->toArray()), $typeNode);

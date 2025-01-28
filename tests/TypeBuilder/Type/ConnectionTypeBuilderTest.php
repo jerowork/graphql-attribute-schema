@@ -65,7 +65,7 @@ final class ConnectionTypeBuilderTest extends TestCase
             new CustomScalarObjectTypeBuilder(),
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder($fieldResolver),
+            new TypeObjectTypeBuilder($builtTypesRegistry, $fieldResolver),
         ];
 
         /** @var list<TypeBuilder<TypeReference>> $typeBuilders */
@@ -132,6 +132,8 @@ final class ConnectionTypeBuilderTest extends TestCase
                         null,
                         'property',
                     ),
+                    false,
+                    [],
                 ),
             ),
         );

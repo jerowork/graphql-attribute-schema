@@ -7,8 +7,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test;
 use GraphQL\Type\Definition\CustomScalarType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\InputObjectType;
+use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type as WebonyxType;
+use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
@@ -125,17 +126,29 @@ final class SchemaBuilderTest extends TestCase
             'fields' => [
                 [
                     'name' => 'getFoobar',
-                    'type' => WebonyxType::nonNull(WebonyxType::listOf(WebonyxType::nonNull(WebonyxType::string()))),
+                    'type' => Type::nonNull(Type::listOf(Type::nonNull(new InterfaceType([
+                        'name' => 'User',
+                        'description' => null,
+                        'fields' => [
+                            [
+                                'name' => 'userId',
+                                'type' => Type::nonNull(Type::int()),
+                                'description' => null,
+                                'args' => [],
+                                'resolve' => fn() => true,
+                            ],
+                        ],
+                    ])))),
                     'description' => 'Get a Foobar',
                     'args' => [
                         [
                             'name' => 'id',
-                            'type' => WebonyxType::int(),
+                            'type' => Type::int(),
                             'description' => null,
                         ],
                         [
                             'name' => 'date',
-                            'type' => WebonyxType::nonNull(new CustomScalarType([
+                            'type' => Type::nonNull(new CustomScalarType([
                                 'name' => 'DateTime',
                                 'serialize' => fn() => true,
                                 'parseValue' => fn() => true,
@@ -146,7 +159,7 @@ final class SchemaBuilderTest extends TestCase
                         ],
                         [
                             'name' => 'values',
-                            'type' => WebonyxType::nonNull(WebonyxType::listOf(WebonyxType::nonNull(WebonyxType::boolean()))),
+                            'type' => Type::nonNull(Type::listOf(Type::nonNull(Type::boolean()))),
                             'description' => 'List of values',
                         ],
                     ],
@@ -160,13 +173,13 @@ final class SchemaBuilderTest extends TestCase
             'fields' => [
                 [
                     'name' => 'first',
-                    'type' => WebonyxType::nonNull(new ObjectType([
+                    'type' => Type::nonNull(new ObjectType([
                         'name' => 'Foobar',
                         'description' => 'A foobar',
                         'fields' => [
                             [
                                 'name' => 'foobarId',
-                                'type' => WebonyxType::nonNull(WebonyxType::string()),
+                                'type' => Type::nonNull(Type::string()),
                                 'description' => 'A foobar ID',
                                 'args' => [],
                                 'resolve' => fn() => true,
@@ -205,12 +218,12 @@ final class SchemaBuilderTest extends TestCase
                                     [
                                         'name' => 'limiting',
                                         'description' => null,
-                                        'type' => WebonyxType::nonNull(WebonyxType::string()),
+                                        'type' => Type::nonNull(Type::string()),
                                     ],
                                     [
                                         'name' => 'value',
                                         'description' => 'The value',
-                                        'type' => WebonyxType::int(),
+                                        'type' => Type::int(),
                                     ],
                                 ],
                                 'resolve' => fn() => true,
@@ -221,37 +234,37 @@ final class SchemaBuilderTest extends TestCase
                     'args' => [
                         [
                             'name' => 'input',
-                            'type' => WebonyxType::nonNull(new InputObjectType([
+                            'type' => Type::nonNull(new InputObjectType([
                                 'name' => 'MutateFoobar',
                                 'description' => null,
                                 'fields' => [
                                     [
                                         'name' => 'id',
-                                        'type'=> WebonyxType::nonNull(WebonyxType::int()),
+                                        'type'=> Type::nonNull(Type::int()),
                                         'args' => [],
                                         'description' => null,
                                     ],
                                     [
                                         'name' => 'value',
-                                        'type' => WebonyxType::string(),
+                                        'type' => Type::string(),
                                         'args' => [],
                                         'description' => null,
                                     ],
                                     [
                                         'name' => 'baz',
-                                        'type' => WebonyxType::nonNull(new InputObjectType([
+                                        'type' => Type::nonNull(new InputObjectType([
                                             'name' => 'Baz',
                                             'description' => null,
                                             'fields' => [
                                                 [
                                                     'name' => 'bazId',
-                                                    'type'=> WebonyxType::nonNull(WebonyxType::string()),
+                                                    'type'=> Type::nonNull(Type::string()),
                                                     'description' => 'A baz ID',
                                                     'args' => [],
                                                 ],
                                                 [
                                                     'name' => 'status',
-                                                    'type' => WebonyxType::nonNull(new EnumType([
+                                                    'type' => Type::nonNull(new EnumType([
                                                         'name' => 'FoobarStatus',
                                                         'description' => 'Foobar status',
                                                         'values' => [
@@ -294,12 +307,12 @@ final class SchemaBuilderTest extends TestCase
                 ],
                 [
                     'name' => 'second',
-                    'type' => WebonyxType::nonNull(WebonyxType::string()),
+                    'type' => Type::nonNull(Type::string()),
                     'description' => 'Mutate a second foobar',
                     'args' => [
                         [
                             'name' => 'value',
-                            'type' => WebonyxType::nonNull(WebonyxType::string()),
+                            'type' => Type::nonNull(Type::string()),
                             'description' => null,
                         ],
                     ],

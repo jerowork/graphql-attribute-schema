@@ -53,6 +53,8 @@ final class CustomScalarObjectTypeBuilderTest extends TestCase
             null,
             [],
             null,
+            false,
+            [],
         )));
     }
 

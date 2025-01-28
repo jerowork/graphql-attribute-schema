@@ -49,19 +49,22 @@ final class ExecutingTypeBuilderTest extends TestCase
         $objectTypeBuilders = [
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder(new FieldResolver(
-                new TestContainer(),
-                [
-                    new ScalarTypeOutputFieldResolver(),
-                    new EnumNodeOutputFieldResolver(),
-                ],
-            )),
+            new TypeObjectTypeBuilder(
+                $builtTypesRegistry = new BuiltTypesRegistry(),
+                new FieldResolver(
+                    new TestContainer(),
+                    [
+                        new ScalarTypeOutputFieldResolver(),
+                        new EnumNodeOutputFieldResolver(),
+                    ],
+                ),
+            ),
         ];
 
         /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
-            new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), new FieldResolver(
+            new ConnectionTypeBuilder($builtTypesRegistry, new FieldResolver(
                 new TestContainer(),
                 [
                     new ScalarTypeOutputFieldResolver(),

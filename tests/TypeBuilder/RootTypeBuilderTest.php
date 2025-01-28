@@ -67,13 +67,16 @@ final class RootTypeBuilderTest extends TestCase
         $objectTypeBuilders = [
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder($fieldResolver),
+            new TypeObjectTypeBuilder(
+                $builtTypesRegistry = new BuiltTypesRegistry(),
+                $fieldResolver,
+            ),
         ];
 
         /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [
             new ScalarTypeBuilder(),
-            new ConnectionTypeBuilder($builtTypesRegistry = new BuiltTypesRegistry(), $fieldResolver),
+            new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
             new ExecutingObjectTypeBuilder($builtTypesRegistry, $objectTypeBuilders),
         ];
 
@@ -160,6 +163,8 @@ final class RootTypeBuilderTest extends TestCase
                     null,
                     [],
                     new CursorNode(ScalarTypeReference::create('string'), FieldNodeType::Property, null, 'property'),
+                    false,
+                    [],
                 ),
             ),
         );

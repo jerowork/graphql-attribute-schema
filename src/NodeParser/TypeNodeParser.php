@@ -41,6 +41,8 @@ final readonly class TypeNodeParser implements NodeParser
             $attribute->description,
             $this->classFieldsNodeParser->parse($class),
             $this->cursorNodeParser->parse($class),
+            $class->isInterface(),
+            $class->getInterfaceNames(),
         );
     }
 }

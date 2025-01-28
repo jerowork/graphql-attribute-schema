@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Node;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InterfaceObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
@@ -42,15 +43,16 @@ final readonly class SchemaBuilderFactory
             ],
         );
 
+        $builtTypesRegistry = new BuiltTypesRegistry();
+
         /** @var iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders */
         $objectTypeBuilders = [
             new EnumObjectTypeBuilder(),
             new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder($fieldResolver),
+            new TypeObjectTypeBuilder($builtTypesRegistry, $fieldResolver),
+            new InterfaceObjectTypeBuilder($fieldResolver),
             new CustomScalarObjectTypeBuilder(),
         ];
-
-        $builtTypesRegistry = new BuiltTypesRegistry();
 
         /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
         $typeBuilders = [

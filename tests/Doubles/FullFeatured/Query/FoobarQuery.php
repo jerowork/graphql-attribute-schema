@@ -9,15 +9,16 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use DateTimeImmutable;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
 
 final readonly class FoobarQuery
 {
     /**
      * @param list<bool> $values
      *
-     * @return list<string>
+     * @return list<UserType>
      */
-    #[Query(name: 'getFoobar', description: 'Get a Foobar', type: new ListType(ScalarType::String))]
+    #[Query(name: 'getFoobar', description: 'Get a Foobar', type: new ListType(UserType::class))]
     public function __invoke(
         ?int $id,
         DateTimeImmutable $date,

@@ -55,6 +55,8 @@ final class AstTest extends TestCase
                 null,
                 [],
                 null,
+                false,
+                [],
             ),
             $this->enumNode2 =new EnumNode(
                 TestAnotherEnumType::class,

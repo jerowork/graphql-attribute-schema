@@ -19,6 +19,14 @@ final class BuildException extends Exception
         return new self(sprintf('Invalid type %s for field %s', $type, $field));
     }
 
+    /**
+     * @param class-string $type
+     */
+    public static function implementedTypeIsNotAnInterface(string $type): self
+    {
+        return new self(sprintf('Implemented type %s is not an interface', $type));
+    }
+
     public static function logicError(string $error): self
     {
         return new self(sprintf('Logic error: %s', $error));
