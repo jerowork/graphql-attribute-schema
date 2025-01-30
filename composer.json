@@ -1,6 +1,6 @@
 {
     "name": "jerowork/graphql-attribute-schema",
-    "description": "Build your GraphQL Schema (for webonyx/graphql-php) based on attributes",
+    "description": "Easily build your GraphQL schema for webonyx/graphql-php using PHP attributes instead of large configuration arrays.",
     "license": "MIT",
     "type": "library",
     "keywords": [
