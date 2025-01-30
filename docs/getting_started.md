@@ -1,24 +1,28 @@
-# Getting started
+# 🚀 Getting Started
 
-## Requirements
-*GraphQL Attribute Schema* is a standalone library. However, it needs a couple of other libraries to work:
+## ✅ Requirements
 
-- The main GraphQL library [webonyx/graphql-php](https://github.com/webonyx/graphql-php)
-- A [psr/container](https://github.com/php-fig/container) compatible container (PSR-11), e.g.:
-    - [php-di/php-di](https://github.com/PHP-DI/PHP-DI)
-    - [symfony/dependency-injection](https://github.com/symfony/dependency-injection), by default included in the Symfony framework 
+*GraphQL Attribute Schema* is a **standalone** library, but it depends on a few essential packages:
 
-## Installation
-Install via composer:
+- **GraphQL library**: [webonyx/graphql-php](https://github.com/webonyx/graphql-php)
+- **PSR-11 compatible container**, such as:
+  - [PHP-DI](https://github.com/PHP-DI/PHP-DI)
+  - [Symfony Dependency Injection](https://github.com/symfony/dependency-injection) (included by default in Symfony)
+
+## 📦 Installation
+
+Install the package via Composer:
+
 ```bash
 composer require jerowork/graphql-attribute-schema
 ```
 
-## Integration with webonyx/graphql-php
-In order to create a `Schema` for webonyx/graphql-php, a `SchemaBuilder` is provided in this library.
-This `SchemaBuilder` requires an 'Abstract Syntax Tree' (or AST), which can be created with the `Parser`.
+## 🔧 Integrating with webonyx/graphql-php
 
-Both `SchemaBuilder` and `Parser` can be created quickly with the provided factories:
+To generate a **GraphQL Schema** for `webonyx/graphql-php`, this library provides a `SchemaBuilder`.  
+It requires an **Abstract Syntax Tree (AST)**, which is created using the `Parser`.
+
+You can quickly set up both using the provided factories:
 
 ```php
 use GraphQL\Server\StandardServer;
@@ -26,32 +30,31 @@ use GraphQL\Server\ServerConfig;
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 
-// PSR-11 compatible container of your choice
+// 1. Set up your PSR-11 compatible container
 $container = new YourPsr11Container();
 
-// 1. Create an AST based on your classes
+// 2. Create an AST from your GraphQL classes
 $ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
 
-// with $ast->toArray(), the AST is cacheable (see Cache section)
-
-// 2. Create the schema configuration
+// 3. Build the schema from the AST
 $schema = SchemaBuilderFactory::create($container)->build($ast);
 
-// 3. Add schema to e.g. webonyx StandardServer
+// 4. Add the schema to Webonyx StandardServer
 $server = new StandardServer(ServerConfig::create([
     'schema' => $schema,
 ]));
 ```
 
-*GraphQL Attribute Schema* does not create a GraphQL Server for you.
-How to create a GraphQL Server, please check e.g. https://webonyx.github.io/graphql-php/executing-queries/#using-server
+📌 *This library does not create a GraphQL server for you.*  
 
-### Example GraphQL Server with Symfony
+To learn how to set up a server, check the [webonyx documentation](https://webonyx.github.io/graphql-php/executing-queries/#using-server).
 
-As a quick-start, a simple example of a GraphQL Server with Symfony 
-(requiring [symfony/psr-http-message-bridge](https://github.com/symfony/psr-http-message-bridge) and a PSR-7 implementation, e.g. [guzzlehttp/psr7](https://github.com/guzzle/psr7)):
+## ⚡ Example: GraphQL Server with Symfony
 
-_Note: any error handling is absent to keep the example simple._
+For a quick start, here’s an example of a **GraphQL server in Symfony**.  
+(Requires [symfony/psr-http-message-bridge](https://github.com/symfony/psr-http-message-bridge) and a PSR-7 implementation like [guzzlehttp/psr7](https://github.com/guzzle/psr7).)
+
+*This example omits error handling for simplicity.*
 
 ```php
 use GraphQL\Server\StandardServer;
@@ -77,51 +80,61 @@ final readonly class GraphQLServerController
     #[Route('/graphql', name: 'graphql.server', methods: Request::METHOD_POST)]
     public function __invoke(Request $request): Response
     {
+        // 1. Parse GraphQL schema
         $ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
-        $schema = SchemaBuilderFactory::create($container)->build($ast);
+        $schema = SchemaBuilderFactory::create($this->container)->build($ast);
         
+        // 2. Create GraphQL server
         $server = new StandardServer(ServerConfig::create([
             'schema' => $schema,
         ]));
         
+        // 3. Handle request
         $result = $server->executePsrRequest(
             $this->httpMessageFactory
                 ->createRequest($request)
-                ->withParsedBody(json_decode($request->getContent(), true, flags: JSON_THROW_ON_ERROR)),
+                ->withParsedBody(json_decode($request->getContent(), true, flags: JSON_THROW_ON_ERROR))
         );
-        
-        // Batch requests
+
+        // 4. Handle batch requests
         if (is_array($result)) {
-            return new JsonResponse(array_map(fn($result) => $result->toArray(), $result));        
+            return new JsonResponse(array_map(fn($res) => $res->toArray(), $result));        
         }
         
-        // Single request
+        // 5. Return response
         return new JsonResponse($result->toArray());
     }
 }
 ```
 
-## Caching
-To save parsing time (involving reflection of all classes and attributes),
-the AST is serializable. This makes the AST cacheable.
+## 🏎️ Caching for Performance
+
+Parsing GraphQL classes and attributes **can be expensive** because it involves reflection.  
+To improve performance, **cache the AST** (Abstract Syntax Tree) using serialization.
+
+### Storing AST in Cache
 
 ```php
-use GraphQL\Server\StandardServer;
-use GraphQL\Server\ServerConfig;
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
-use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 
-// 1. Create an AST based on your classes
+// 1. Generate AST
 $ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
 
-// Add to cache
+// 2. Store in cache
 $someCache->set('graphql-attribute-schema.ast', json_encode($ast->toArray(), JSON_THROW_ON_ERROR));
+```
 
-// ...
+### Retrieving AST from Cache
 
-// Get from cache
-$ast = Ast::fromArray(json_decode($someCache->get('graphql-attribute-schema.ast'), true, flags: JSON_THROW_ON_ERROR));
+```php
+use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
+use Jerowork\GraphqlAttributeSchema\ParserFactory;
+use Jerowork\GraphqlAttributeSchema\Ast;
 
-// 2. Create the schema configuration
+// 1. Retrieve from cache
+$astArray = json_decode($someCache->get('graphql-attribute-schema.ast'), true, flags: JSON_THROW_ON_ERROR);
+$ast = Ast::fromArray($astArray);
+
+// 2. Build schema
 $schema = SchemaBuilderFactory::create($container)->build($ast);
 ```

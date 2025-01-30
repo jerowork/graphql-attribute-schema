@@ -1,5 +1,5 @@
-# Todo
-This library is still work in progress, and misses some valuable features:
+# TODO list
+This library is still work in progress:
 
 - ~~Introduction of `#[Deprecated]` attribute~~
 - ~~Overwrite type via attributes~~

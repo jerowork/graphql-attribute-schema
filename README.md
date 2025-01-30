@@ -1,20 +1,21 @@
 # GraphQL Attribute Schema
+
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 [![PHP Version](https://img.shields.io/badge/php-%5E8.3-8892BF.svg?style=flat)](http://www.php.net)
 
-Build your GraphQL Schema (for [webonyx/graphql-php](https://github.com/webonyx/graphql-php)) based on attributes.
+Easily build your GraphQL schema for [webonyx/graphql-php](https://github.com/webonyx/graphql-php) using **PHP attributes** instead of large configuration arrays.
 
-**Note:** this library is still work in progress, and misses some valuable features (see [todo](docs/todo.md))
+⚠️ **Note:** This library is still a work in progress. Check out the [TODO list](docs/todo.md) for details.
 
-## Why this library?
-[webonyx/graphql-php](https://github.com/webonyx/graphql-php) requires a `Schema` in order to create a GraphQL Server.
-This schema configuration is based on (large) PHP arrays.
+## Why use this library?
 
-Wouldn't it be nice to have a library in between which can read your mutation, query and type classes instead, and create
-that schema configuration for you? 
+The [webonyx/graphql-php](https://github.com/webonyx/graphql-php) package requires a **schema** to run a GraphQL server. Normally, this schema is defined using large and complex PHP arrays, making it harder to manage and maintain.
 
-This is where *GraphQL Attribute Schema* comes into place. By adding attributes to your classes,
-*GraphQL Attribute Schema* will create the schema configuration for you.
+Wouldn’t it be great if there was a **simpler, more structured way** to define your schema?
 
-## Documentation
+That’s exactly what **GraphQL Attribute Schema** does! 🚀
+
+By adding attributes (`#[Mutation]`, `#[Query]`, `#[Type]`, etc.) directly to your classes, this library **automatically generates** the GraphQL schema for you; **cleaner, faster, and easier to maintain**.
+
+## 📖 Documentation
 Documentation is available in the [docs](docs/index.md) directory.

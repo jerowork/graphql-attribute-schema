@@ -1,10 +1,10 @@
-# Usage
+# Usage Guide
 
-At minimum, a query and mutation needs to be defined to build a valid schema.
+At a minimum, you need to define a query and a mutation to build a valid schema.
 
 ## Attributes
 
-The following attributes can be used:
+You can use the following attributes:
 
 - [#[Mutation]](#mutation-and-query)
 - [#[Query]](#mutation-and-query)
@@ -16,68 +16,166 @@ The following attributes can be used:
 - [#[Arg]](#arg)
 - [#[Autowire]](#autowire)
 - [#[Scalar]](#scalar)
-- [#[Cursor]](#cursor) as part of [Connections (Pagination)](#connections-pagination)
+- [#[Cursor]](#cursor) (as part of [Connections (Pagination)](#connections-pagination))
 
-See below for more information about each attribute:
+More details on each attribute are provided below.
 
 ### #[Mutation] and #[Query]
 
-Mutations and queries can be defined with `#[Mutation]` and `#[Query]`. In order to configure your class as mutation or
-query, just add these attributes on method level:
+You can define mutations and queries using `#[Mutation]` and `#[Query]`.  
+Simply add these attributes at the method level:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 
-final readonly YourMutation
+final readonly class YourMutation
 {
     #[Mutation]
     public function mutationName(SomeInputType $input): OutputType {}
 }
 
-final readonly YourQuery
+final readonly class YourQuery
 {
     #[Query]
-    public function queryName(string $id, int $status) : string {}
+    public function queryName(string $id, int $status): string {}
 }
 ```
 
 #### Automatic schema creation
 
-*GraphQL Attribute Schema* will read the available method's signature: input arguments and output type. These
-will be automatically configured in the schema (this can be overwritten by using `#[Arg]`, see [Arg](#arg) section).
+*GraphQL Attribute Schema* automatically reads the method signature, including input arguments and output type.  
+These will be configured in the schema without additional setup (though you can override this using `#[Arg]`, see
+the [Arg](#arg) section).
 
-Input and output can be both scalars or objects.
-When using objects, make sure these are defined as well with `#[InputType]` for input or `#[Type]` for output.
-`#[Enum]` can be used for both input and output.
+Both input and output types can be scalars or objects. When using objects, make sure they're properly defined using
+`#[InputType]` for input or `#[Type]` for output. You can also use `#[Enum]` for both input and output.
 
-Also, the name of the mutation or query will be automatically read from the method name (this can be overwritten, see
-options).
+By default, the mutation or query name is taken from the method name, but you can override it (see options below).
 
 #### Requirements
 
-Mutations and queries:
+Mutations and queries must:
 
-- must be in the namespace as defined at `Parser` creation (
-  see [Getting started > Integration with webonyx/graphql-php](../docs/getting_started.md#integration-with-webonyxgraphql-php)),
-- must be retrievable from the container (`get()`); especially for Symfony users, these should be set to public (e.g.
-  with `#[Autoconfigure(public: true)]`).
+- Be within the namespace defined when creating the `Parser` (
+  see [Getting Started > Integration with webonyx/graphql-php](../docs/getting_started.md#integration-with-webonyxgraphql-php)).
+- Be retrievable from the (PSR-11) container via `get()`.  
+  For Symfony users, make sure they're set to public (e.g., with `#[Autoconfigure(public: true)]`).
 
 #### Options
 
-Both `#[Mutation]` and `#[Query]` attribute can be configured:
+You can configure both `#[Mutation]` and `#[Query]` attributes:
 
-| Option              | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | Set custom name of mutation or query (instead of based on method)                                                                                                                                                                                                                                                                                                                      |
-| `description`       | Set description of the mutation or query, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                               |
-| `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
-| `deprecationReason` | If set, deprecates the mutation or query                                                                                                                                                                                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                                                                          |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                             |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`              | Custom name for the mutation or query (instead of using the method name).                                                                                                                                                                                                                                                                                                               |
+| `description`       | Description of the mutation or query, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                    |
+| `type`              | Custom return type, which can be:<br/> - A Type (FQCN)<br/> - A `ScalarType` (e.g., `ScalarType::Int`)<br/> - A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/> - A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/> - A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`) |
+| `deprecationReason` | Marks the mutation or query as deprecated if set.                                                                                                                                                                                                                                                                                                                                       |
+
+### #[Type]
+
+You can define types using `#[Type]`. To configure a class as a type, simply add this attribute at the class level:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+final readonly class YourType
+{
+    public function __construct(
+        #[Field]
+        public int $id,
+        #[Field]
+        public ?string $name,
+        #[Field]
+        public AnotherType $anotherType,
+        #[Field]
+        public EnumType $enumType,
+    ) {}
+    
+    #[Field]
+    public function getStatus(): EnumStatusType {}
+    
+    #[Field]
+    public function getFoobar(int $status, ?string $baz): EnumStatusType {}
+}
+```
+
+#### Inheritance and Interfaces
+
+GraphQL supports inheritance using interfaces. To configure an interface, simply add `#[Type]` to a PHP interface:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+interface UserType
+{
+    // With PHP 8.4, you can define fields using property hooks
+    #[Field]
+    public int $id { get; }
+    
+    // For PHP versions below 8.4
+    #[Field]
+    public function getName(): ?string;
+}
+```
+
+Each implementation inherits all fields from the interface, in addition to its own fields:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+final readonly class AgentType implements UserType
+{
+    public function __construct(
+        #[Field]
+        public string $status,
+        public int $id, // No need to reapply #[Field] from interface
+    ) {}
+    
+    // No need to reapply #[Field] from interface
+    public function getName(): ?string
+    {
+        return '';
+    }
+}
+```
+
+#### Automatic schema creation
+
+*GraphQL Attribute Schema* automatically reads the `__construct` signature and detects input arguments,  
+as well as method return types.
+
+- Any argument marked with `#[Field]` will be included in the schema by default (you can override this, see
+  the [Field](#field) section).
+- Any method marked with `#[Field]` will be added to the schema.
+    - The return type is considered the field type.
+    - Method arguments are treated as filter arguments (you can override this using `#[Arg]`, see [Arg](#arg)).
+
+Like input types, types can be scalars or objects. If you're using objects, ensure they're properly defined with
+`#[InputType]` or `#[Enum]`.
+
+By default, the type name is taken from the class name, but you can override it (see options below).
+
+#### Options
+
+You can configure the `#[Type]` attribute:
+
+| Option        | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| `name`        | Custom name for the type (instead of using the class name). |
+| `description` | Description of the type, visible in the GraphQL schema.     |
 
 ### #[InputType]
 
-Input types can be defined with `#[InputType]`.
-In order to configure your class as input type, just add this attribute on class level:
+You can define input types using `#[InputType]`. To configure a class as an input type, simply add this attribute at the
+class level:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
@@ -101,129 +199,27 @@ final readonly class YourInputType
 
 #### Automatic schema creation
 
-*GraphQL Attribute Schema* will read the `__construct` signature: input arguments.
-Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
-see [Field](#field) section).
+*GraphQL Attribute Schema* automatically reads the `__construct` signature and detects input arguments.  
+Any argument marked with `#[Field]` will be included in the schema by default (you can override this, see
+the [Field](#field) section).
 
-Input can be both scalars or objects.
-When using objects, make sure these are defined as well with `#[InputType]` or `#[Enum]`.
+Input values can be scalars or objects. If you're using objects, ensure they're properly defined using `#[InputType]` or
+`#[Enum]`.
 
-Also, the name of the input type will be automatically read from the class name (this can be overwritten, see
-options).
+By default, the input type name is taken from the class name, but you can override it (see options below).
 
 #### Options
 
-`#[InputType]` attribute can be configured:
+You can configure the `#[InputType]` attribute:
 
 | Option        | Description                                                       |
 |---------------|-------------------------------------------------------------------|
-| `name`        | Set custom name of input type (instead of based on class)         |
-| `description` | Set description of the input type, readable in the GraphQL schema |
-
-### #[Type]
-
-Types can be defined with `#[Type]`.
-In order to configure your class as type, just add this attribute on class level:
-
-```php
-use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-
-#[Type]
-final readonly class YourType
-{
-    public function __construct(
-        #[Field]
-        public int $id,
-        #[Field]
-        public ?string $name,
-        #[Field]
-        public AnotherType $anotherType,
-        #[Field]
-        public EnumType $enumType,
-    ) {}
-    
-    #[Field]
-    public function getStatus() : EnumStatusType {}
-    
-    #[Field]
-    public function getFoobar(int $status, ?string $baz) : EnumStatusType {}
-}
-```
-
-#### Inheritance and interfaces
-GraphQL supports inheritance with interfaces. In order to configure interfaces, just add `#[Type]` to a PHP interface:
-```php
-use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-
-#[Type]
-interface UserType
-{
-    // When using PHP 8.4, you can define fields with property hooks
-    #[Field]
-    public int $id { get; }
-    
-    // All below PHP 8.4
-    #[Field]
-    public function getName() : ?string
-}
-```
-
-Each implementation inherits all fields from the interface, as well as its own fields:
-
-```php
-use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-
-#[Type]
-final readonly class AgentType implements UserType
-{
-    public function __construct(
-        #[Field]
-        public string $status,
-        public int $id, // No need to copy #[Field] from interface
-    ) {}
-    
-    // No need to copy #[Field] from interface
-    public function getName() : ?string
-    {
-        return '';
-    }
-}
-```
-
-#### Automatic schema creation
-
-*GraphQL Attribute Schema* will both read the `__construct` signature: input arguments, as well as read all methods.
-
-Any input argument with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
-see [Field](#field) section).
-
-Any method with a defined `#[Field]` will be automatically configured in the schema (this can be overwritten,
-see [Field](#field) section).
-The return type is seen as field type, any method input arguments are seen as filter arguments (this can be overwritten
-by using `#[Arg]`, see [Arg](#arg) section)..
-
-Input can be both scalars or objects.
-When using objects, make sure these are defined as well with `#[InputType]` or `#[Enum]`.
-
-Also, the name of the type will be automatically read from the class name (this can be overwritten, see
-options).
-
-#### Options
-
-`#[Type]` attribute can be configured:
-
-| Option        | Description                                                 |
-|---------------|-------------------------------------------------------------|
-| `name`        | Set custom name of type (instead of based on class)         |
-| `description` | Set description of the type, readable in the GraphQL schema |
+| `name`        | Custom name for the input type (instead of using the class name). |
+| `description` | Description of the input type, visible in the GraphQL schema.     |
 
 ### #[Enum]
 
-Enums can be defined with `#[Enum]`.
-In order to configure your enum class as enum, just add this attribute on class level:
+You can define enums using `#[Enum]`. To configure an enum class, simply add this attribute at the class level:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
@@ -234,6 +230,7 @@ enum YourEnumType: string
 {
     case Foo = 'FOO';
     case Bar = 'BAR';
+    
     #[EnumValue(description: 'A description for case Baz')]
     case Baz = 'BAZ';
 }
@@ -241,45 +238,38 @@ enum YourEnumType: string
 
 #### Automatic schema creation
 
-*GraphQL Attribute Schema* will read the enum signature.
+*GraphQL Attribute Schema* automatically detects enum values from the PHP `enum`,  
+using the string version of each case.
 
-The values for the enum will be automatically read from the PHP `enum`; it uses the string version.
-
-The name of the enum will be automatically read from the class name (this can be overwritten, see options).
+By default, the enum name is taken from the class name, but you can override it (see options below).
 
 #### Requirements
 
-Enums:
-
-- must be of the PHP native `enum` type (no classes with public constants)
-- The PHP `enum` type must be a `BackedEnum`
+- Enums must be defined using PHP's native `enum` type (no class-based constants).
+- The PHP `enum` must be a `BackedEnum`.
 
 #### Options
 
-`#[Enum]` attribute can be configured:
+You can configure the `#[Enum]` attribute:
 
 | Option        | Description                                                 |
 |---------------|-------------------------------------------------------------|
-| `name`        | Set custom name of enum (instead of based on class)         |
-| `description` | Set description of the enum, readable in the GraphQL schema |
+| `name`        | Custom name for the enum (instead of using the class name). |
+| `description` | Description of the enum, visible in the GraphQL schema.     |
 
-Each case in the `enum` type can be configured as well, with the `#[EnumValue]` attribute on case level.
+Each enum case can also be configured using `#[EnumValue]`:
 
-`#[EnumValue]` attribute can be configured:
-
-| Option              | Description                                                      |
-|---------------------|------------------------------------------------------------------|
-| `description`       | Set description of the enum case, readable in the GraphQL schema |
-| `deprecationReason` | If set, deprecates the case                                      |                                                                                                                                                                                                                                                                                                                                                          |
+| Option              | Description                                                  |
+|---------------------|--------------------------------------------------------------|
+| `description`       | Description of the enum case, visible in the GraphQL schema. |
+| `deprecationReason` | Marks the case as deprecated if set.                         |
 
 ### #[Field]
 
-In `#[Type]` and `#[InputType]`, to define fields, the `#[Field]` attribute can be used.
-In order to configure any fields this can be set on constructor property (for `#[InputType]` or `#[Type]`) or
-on method (for `#[Type]` only).
+The `#[Field]` attribute is used in `#[Type]` and `#[InputType]` to define fields.  
+You can apply it to constructor properties (for `#[InputType]` and `#[Type]`) or methods (for `#[Type]` only).
 
-The advantage to set on methods for `#[Type]` is that the method can have input arguments as well (e.g. filtering,
-injected services).
+Using `#[Field]` on methods in `#[Type]` allows you to add input arguments (e.g., for filtering or injecting services).
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
@@ -289,7 +279,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 #[InputType]
 final readonly class YourInputType
 {
-    // Only set on __construct
+    // Applied to constructor properties
     public function __construct(
         #[Field]
         public int $id,
@@ -299,9 +289,9 @@ final readonly class YourInputType
 }
 
 #[Type]
-final readonly class YourInputType
+final readonly class YourType
 {
-    // Set on __construct
+    // Applied to constructor properties
     public function __construct(
         #[Field]
         public int $id,
@@ -309,7 +299,7 @@ final readonly class YourInputType
         public ?string $status,
     ) {}
     
-    // Or set on methods
+    // Applied to methods
     #[Field]
     public function getFoobar(): string {}
     
@@ -320,21 +310,21 @@ final readonly class YourInputType
 
 #### Options
 
-`#[Field]` attribute can be configured:
+You can configure the `#[Field]` attribute:
 
-| Option              | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | Set custom name of field (instead of based on class)                                                                                                                                                                                                                                                                                                                                   |
-| `description`       | Set description of the field, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                           |
-| `type`              | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
-| `deprecationReason` | If set, deprecates the field (`#[Type]` only)                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                                                                                                                                                                                                                          |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                        |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`              | Custom name for the field (instead of using the property/method name).                                                                                                                                                                                                                                                                                                             |
+| `description`       | Description of the field, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                           |
+| `type`              | Custom return type, which can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g., `ScalarType::Int`)<br/>- A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/>- A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`) |
+| `deprecationReason` | Marks the field as deprecated (only applicable in `#[Type]`).                                                                                                                                                                                                                                                                                                                      |
 
 ### #[Arg]
 
-For `#[Mutation]`, `#[Query]` and `#[Type]` methods defined with `#[Field]`, input arguments are read
-automatically from the signature.
+When using `#[Mutation]`, `#[Query]`, or methods in `#[Type]` that are marked with `#[Field]`,  
+input arguments are automatically read from the method signature.
 
-However, to overwrite e.g. name, `#[Arg]` can be used.
+However, if you need to customize an argument (e.g., rename it), you can use `#[Arg]`.
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
@@ -379,21 +369,21 @@ final readonly class YourType
 
 #### Options
 
-`#[Arg]` attribute can be configured:
+You can configure the `#[Arg]` attribute:
 
-| Option        | Description                                                                                                                                                                                                                                                                                                                                                                            |
-|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`        | Set custom name of argument (instead of based on class)                                                                                                                                                                                                                                                                                                                                |
-| `description` | Set description of the argument, readable in the GraphQL schema                                                                                                                                                                                                                                                                                                                        |
-| `type`        | Set custom return type; it can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g. `ScalarType::Int`)<br/>- A `ListType` (e.g. `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g. `new NullableType(SomeType::class)`)<br/>- A combination of `ListType` and `NullableType` and a Type FQCN or `ScalarType` <br/>(e.g. `new NullableType(new ListType(ScalarType::String))`) |
+| Option        | Description                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`        | Custom name for the argument (instead of using the parameter name).                                                                                                                                                                                                                                                                                                                   |
+| `description` | Description of the argument, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                           |
+| `type`        | Custom argument type, which can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g., `ScalarType::Int`)<br/>- A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/>- A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`). |
 
 ### #[Autowire]
 
-`#[Type]` objects are typically modeled like DTO's. They are often not defined in any DI container.
-Using other services inside a `#[Type]` is therefore not so easy.
+Objects in `#[Type]` are usually structured like DTOs and are often **not** defined in the DI container.  
+This can make injecting services into a `#[Type]` challenging.
 
-This is where `#[Autowire]` comes into play. `#[Type]` methods defined with `#[Field]` can inject services by parameter
-by autowiring, with `#[Autowire]`.
+That's where `#[Autowire]` comes in. You can use it inside `#[Type]` methods (marked with `#[Field]`) to automatically
+inject services via parameters.
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
@@ -411,41 +401,39 @@ final readonly class YourType
         #[Autowire]
         SomeService $service,
     ) {
-        // .. use injected $service
+        // Use the injected $service
     }
 }
 ```
 
-#### Automatic schema creation
+#### Automatic service injection
 
-Which service to inject, is automatically defined by the type of the parameter.
-This can be overwritten by the option `service`, see options section below.
+By default, the service to inject is determined by the parameter type. If needed, you can override this using the
+`service` option (see below).
 
 #### Requirements
 
-Autowired services:
-
-- must be retrievable from the container (`get()`); especially for Symfony users, these should be set to public (e.g.
-  with `#[Autoconfigure(public: true)]`),
+- The service must be retrievable from the DI container (`get()`).
+- If you're using Symfony, make sure the service is public (e.g., with `#[Autoconfigure(public: true)]`).
 
 #### Options
 
-| Option    | Description                                                                     |
-|-----------|---------------------------------------------------------------------------------|
-| `service` | (optional) Set custom service identifier to retrieve from DI Container (PSR-11) |
+| Option    | Description                                                                        |
+|-----------|------------------------------------------------------------------------------------|
+| `service` | *(Optional)* Custom service identifier to retrieve from the DI container (PSR-11). |
 
 ### #[Scalar]
 
-Webonyx/graphql-php supports 4 native scalar types:
+Webonyx/graphql-php comes with four built-in scalar types:
 
-- string
-- integer
-- boolean
-- float
+- **string**
+- **integer**
+- **boolean**
+- **float**
 
-Note: Scalar types can be used for input and output.
+💡 **Tip:** Scalar types work for both input and output.
 
-You can create your own custom scalar types with the attribute `#[Scalar]`.
+If you need something custom, you can define your own scalar type using `#[Scalar]`:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
@@ -466,55 +454,54 @@ final readonly class CustomScalar implements ScalarType
 }
 ```
 
-This custom scalar type can then be defined as type with option `type` within other attributes (e.g. `#[Field]`,
-`#[Mutation]`).
-The `type` option can be omitted when using `alias` in `#[Scalar]`, see options section below.
+Once defined, you can use your custom scalar type in attributes like `#[Field]` and `#[Mutation]`.  
+If you use the `alias` option in `#[Scalar]`, the `type` option becomes optional (see below).
 
 #### Requirements
 
-Custom scalar types:
+Custom scalar types must:
 
-- must implement `ScalarType`.
+- Implement the `ScalarType` interface.
 
 #### Options
 
-| Option        | Description                                                                       |
-|---------------|-----------------------------------------------------------------------------------|
-| `name`        | Set custom name of scalar type (instead of based on class)                        |
-| `description` | Set description of the scalar type, readable in the GraphQL schema                |
-| `alias`       | Map scalar type to another class, which removes the need to use the `type` option |
+| Option        | Description                                                         |
+|---------------|---------------------------------------------------------------------|
+| `name`        | Custom name for the scalar type (defaults to class name).           |
+| `description` | Description of the scalar type, visible in the GraphQL schema.      |
+| `alias`       | Maps this scalar to another class, eliminating the need for `type`. |
 
-#### Custom ScalarType: DateTimeImmutable
+### Built-in custom scalar: DateTimeImmutable
 
-*GraphQL Attribute Schema* already has a custom scalar type built-in: [DateTimeType](../src/Type/DateTimeType.php).
+*GraphQL Attribute Schema* includes a built-in custom scalar: **[DateTimeType](../src/Type/DateTimeType.php)**.  
+This allows you to use `DateTimeImmutable` out of the box—no extra `type` definition needed!
 
-With this custom type, `DateTimeImmutable` can be used out-of-the-box (without any `type` option definition).
-
-When building the `Parser` with the `ParserFactory`, this custom scalar type is already registered.
-If not, add `DateTimeType` as a `$customTypes` in the `Parser` construct.
+If you're building the `Parser` with `ParserFactory`, this type is registered automatically.  
+Otherwise, you can manually add `DateTimeType` to the `$customTypes` array in the `Parser` constructor.
 
 ### #[Cursor]
 
-See [Connections (Pagination)](#connections-pagination)
+See **[Connections (Pagination)](#connections-pagination)** for details.
 
 #### Options
 
-`#[Cursor]` attribute can be configured:
+You can configure the `#[Cursor]` attribute:
 
-| Option | Description                                                                                                                                                                                                                                                                                                |
-|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `type` | Set custom return type; it can be:<br/>- A custom class implementing `ScalarType` (FQCN)<br/>- A `ScalarType::String`<br/>- A `NullableType` encapsulating any of the previous mentioned types (e.g. `new NullableType(ScalarType::String)`)<br/><br/>*All these types will resolve into a string format.* |
+| Option | Description                                                                                                                                                                                                                                                          |
+|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `type` | Defines a custom return type. It can be:<br/>- A class implementing `ScalarType` (FQCN)<br/>- `ScalarType::String`<br/>- A `NullableType` wrapping one of the above (e.g., `new NullableType(ScalarType::String)`)<br/><br/>*All cursor values resolve to a string.* |
 
 ## Connections (Pagination)
 
-*GraphQL Attribute Schema* allows pagination out of the box, following the 'Connection' specification.
+*GraphQL Attribute Schema* provides **built-in pagination** following
+the **Relay Connection** specification.
 
-More information see:
+For more details, check out:
 
-- https://graphql.org/learn/pagination
-- https://relay.dev/graphql/connections.htm
+- [GraphQL Pagination](https://graphql.org/learn/pagination)
+- [Relay Connections](https://relay.dev/graphql/connections.htm)
 
-A simple example:
+### Example
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
@@ -530,7 +517,7 @@ final readonly class UsersQuery
     #[Query(type: new ConnectionType(User::class))]
     public function getUsers(string $status, EdgeArgs $edgeArgs) : Connection 
     {
-        // retrieve a slice of users based on EdgeArgs and custom filters as status
+        // Retrieve a slice of users based on EdgeArgs and filters like status
         // ...
     
         return new Connection($users);
@@ -549,7 +536,7 @@ final readonly class User
 }
 ```
 
-With this setup you can query on Users with:
+With this setup, you can query paginated users like this:
 
 ```graphql
 query {
@@ -571,20 +558,32 @@ query {
 }
 ```
 
-In order to setup a Connection, the Type `ConnectionType` can be used, either as
-output type for `#[Query]` and `#[Mutation]` or as output type in `#[Type]` (methods).
+### How Connections Work
 
-When using `ConnectionType`, return type `Connection` is required.
-This is a DTO containing a list of entities (nodes) as well as pagination (`hasPreviousPage`, `hasNextPage`)
-and slicing parameters (`startCursor`, `endCursor`).
+To set up a connection, use `ConnectionType`:
 
-Optionally, as input argument `EdgeArgs` is available, containing input pagination (`first`, `last`)
-and slicing arguments (`after`, `before`). Besides `EdgeArgs` it is also possible to add your own input arguments.
+- It can be used as an **output type** for `#[Query]` and `#[Mutation]`.
+- It can also be used for **return types** in `#[Type]` methods.
 
-Lastly, the 'node' needs to have a `#[Cursor]` defined. This can be a property or method.
-It will define the output for each 'edge' cursor.
-A `#[Cursor]` parameter does not need to be a `#[Field]` as well, but it is possible to use both attributes for one
-parameter.
+If you use `ConnectionType`, the return type **must** be `Connection`.  
+This is a **DTO** that contains a list of entities (nodes) and pagination details:
 
-**Note:** It is possible to omit the `#[Cursor]`, this will result in an always null value when retrieving each 'edge'
-cursor.
+- `hasPreviousPage`
+- `hasNextPage`
+- `startCursor`
+- `endCursor`
+
+### Handling Pagination Arguments
+
+For pagination input, use **EdgeArgs**:
+
+- `first`, `last`; number of records to fetch.
+- `after`, `before`; cursors for slicing.
+
+You can also define additional custom input arguments if needed.
+
+### Cursor Requirement
+
+Each 'node' in a connection must have a `#[Cursor]` attribute. You can add this on a **property** or a **method**. This defines the cursor output for each "edge."
+
+💡 **Note:** If you **don't** define a `#[Cursor]`, the cursor will always be `null` when querying.
