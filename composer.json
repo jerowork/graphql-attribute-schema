@@ -28,6 +28,7 @@
         "phpunit/phpunit": "^11.5",
         "rector/rector": "^2.0",
         "rregeer/phpunit-coverage-check": "^0.3",
+        "scrutinizer/ocular": "^1.9",
         "shipmonk/composer-dependency-analyser": "^1.8"
     },
     "autoload": {
