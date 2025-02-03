@@ -32,7 +32,7 @@ use Psr\Container\ContainerInterface;
 
 final readonly class SchemaBuilderFactory
 {
-    public static function create(
+    public function create(
         ContainerInterface $container,
     ): SchemaBuilder {
         $fieldResolver = new FieldResolver(

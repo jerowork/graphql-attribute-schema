@@ -27,7 +27,7 @@ final readonly class ParserFactory
     /**
      * @param list<class-string> $customTypes
      */
-    public static function create(
+    public function create(
         array $customTypes = [
             DateTimeType::class,
         ],

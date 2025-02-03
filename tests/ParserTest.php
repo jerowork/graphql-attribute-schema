@@ -46,7 +46,7 @@ final class ParserTest extends TestCase
     {
         parent::setUp();
 
-        $this->parser = ParserFactory::create();
+        $this->parser = (new ParserFactory())->create();
     }
 
     #[Test]

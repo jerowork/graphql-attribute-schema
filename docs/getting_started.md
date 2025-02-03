@@ -34,10 +34,10 @@ use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 $container = new YourPsr11Container();
 
 // 2. Create an AST from your GraphQL classes
-$ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
+$ast = (new ParserFactory())->create()->parse(__DIR__ . '/Path/To/GraphQL');
 
 // 3. Build the schema from the AST
-$schema = SchemaBuilderFactory::create($container)->build($ast);
+$schema = (new SchemaBuilderFactory())->create($container)->build($ast);
 
 // 4. Add the schema to Webonyx StandardServer
 $server = new StandardServer(ServerConfig::create([
@@ -75,14 +75,16 @@ final readonly class GraphQLServerController
     public function __construct(
         private ContainerInterface $container,
         private HttpMessageFactoryInterface $httpMessageFactory,
+        private ParserFactory $parserFactory,
+        private SchemaBuilderFactory $schemaBuilderFactory,
     ) {}
 
     #[Route('/graphql', name: 'graphql.server', methods: Request::METHOD_POST)]
     public function __invoke(Request $request): Response
     {
         // 1. Parse GraphQL schema
-        $ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
-        $schema = SchemaBuilderFactory::create($this->container)->build($ast);
+        $ast = $this->parserFactory->create()->parse(__DIR__ . '/Path/To/GraphQL');
+        $schema = $this->schemaBuilderFactory->create($this->container)->build($ast);
         
         // 2. Create GraphQL server
         $server = new StandardServer(ServerConfig::create([
@@ -118,7 +120,7 @@ To improve performance, **cache the AST** (Abstract Syntax Tree) using serializa
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
 
 // 1. Generate AST
-$ast = ParserFactory::create()->parse(__DIR__ . '/Path/To/GraphQL');
+$ast = (new ParserFactory())->create()->parse(__DIR__ . '/Path/To/GraphQL');
 
 // 2. Store in cache
 $someCache->set('graphql-attribute-schema.ast', json_encode($ast->toArray(), JSON_THROW_ON_ERROR));
@@ -136,5 +138,5 @@ $astArray = json_decode($someCache->get('graphql-attribute-schema.ast'), true, f
 $ast = Ast::fromArray($astArray);
 
 // 2. Build schema
-$schema = SchemaBuilderFactory::create($container)->build($ast);
+$schema = (new SchemaBuilderFactory())->create($container)->build($ast);
 ```

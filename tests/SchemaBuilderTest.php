@@ -55,7 +55,7 @@ final class SchemaBuilderTest extends TestCase
     {
         parent::setUp();
 
-        $this->schemaBuilder = SchemaBuilderFactory::create($this->container = new TestContainer());
+        $this->schemaBuilder = (new SchemaBuilderFactory())->create($this->container = new TestContainer());
     }
 
     #[Test]
