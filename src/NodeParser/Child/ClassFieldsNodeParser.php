@@ -8,14 +8,14 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForFieldTrait;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
 use ReflectionClass;
-use ReflectionProperty;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionProperty;
 
 /**
  * @internal

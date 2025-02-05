@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\TypeResolver;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
@@ -20,10 +21,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestResolvableTypeWithEnum
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
-use DateTimeImmutable;
 
 /**
  * @internal

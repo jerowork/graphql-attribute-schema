@@ -20,14 +20,15 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Parser;
+use Jerowork\GraphqlAttributeSchema\SchemaBuilder;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuildException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
@@ -37,10 +38,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\SchemaBuilder;
-use Override;
 
 /**
  * @internal

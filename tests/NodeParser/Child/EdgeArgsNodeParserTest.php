@@ -7,9 +7,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestTypeWithAutowire;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Override;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionParameter;
 

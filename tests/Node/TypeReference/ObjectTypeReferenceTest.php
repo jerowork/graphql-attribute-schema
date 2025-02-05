@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Node\TypeReference;
 
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**

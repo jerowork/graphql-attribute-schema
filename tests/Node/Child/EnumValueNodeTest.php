@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Node\Child;
 
-use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal

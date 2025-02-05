@@ -23,6 +23,8 @@ return (new PhpCsFixer\Config())
             'import_functions' => null,
         ],
         'multiline_whitespace_before_semicolons' => false,
+        'ordered_attributes' => true,
+        'ordered_imports' => true,
         'phpdoc_align' => ['align' => 'left'],
         'phpdoc_order' => true,
         'phpdoc_to_comment' => false,

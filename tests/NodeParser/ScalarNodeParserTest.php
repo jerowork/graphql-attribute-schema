@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
+use DateTime;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestInvalidScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
-use Override;
 use ReflectionClass;
-use DateTime;
 
 /**
  * @internal

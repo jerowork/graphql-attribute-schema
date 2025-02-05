@@ -7,10 +7,10 @@ namespace Jerowork\GraphqlAttributeSchema\Test;
 use DateTime;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
@@ -30,9 +30,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateF
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
 
 /**
  * @internal

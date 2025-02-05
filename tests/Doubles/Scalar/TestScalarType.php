@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar;
 
+use DateTime;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
-use DateTime;
 
 /**
  * @implements ScalarType<mixed>

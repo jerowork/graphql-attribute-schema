@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test;
 
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
@@ -20,9 +20,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Test;
 use Override;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal

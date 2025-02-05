@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ConnectionType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 

@@ -25,9 +25,9 @@ use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputF
 use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\ResolveException;
 use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
 
 /**
  * @internal

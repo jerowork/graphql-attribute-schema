@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation;
 
-use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
-use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use DateTimeImmutable;
 use DateTimeInterface;
+use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 
 final readonly class TestMutation
 {

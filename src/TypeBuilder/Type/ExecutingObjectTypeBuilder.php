@@ -8,12 +8,12 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
 
 /**
  * @implements TypeBuilder<ObjectTypeReference>

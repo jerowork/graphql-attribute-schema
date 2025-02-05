@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Type;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-use DateTimeImmutable;
 
 #[Type]
 final readonly class TestInvalidType

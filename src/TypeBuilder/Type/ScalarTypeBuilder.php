@@ -6,8 +6,8 @@ namespace Jerowork\GraphqlAttributeSchema\TypeBuilder\Type;
 
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
-use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuildException;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
 use Override;

@@ -7,11 +7,11 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestAnother;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
-use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**

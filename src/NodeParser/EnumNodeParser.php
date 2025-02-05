@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use BackedEnum;
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\EnumValue;
-use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
-use ReflectionClass;
-use BackedEnum;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Override;
+use ReflectionClass;
 use ReflectionEnum;
 use ReflectionException;
 use ReflectionMethod;
-use Generator;
 
 /**
  * @internal

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
@@ -24,10 +25,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestExtendsInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use DateTimeImmutable;
 
 /**
  * @internal

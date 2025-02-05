@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Node\Child;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**

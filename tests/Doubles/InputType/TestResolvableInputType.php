@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
-use DateTimeImmutable;
 
 #[InputType]
 final readonly class TestResolvableInputType

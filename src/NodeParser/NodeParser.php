@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
 use ReflectionClass;
 use ReflectionMethod;
-use Generator;
 
 /**
  * @internal

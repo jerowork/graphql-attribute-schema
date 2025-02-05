@@ -12,12 +12,12 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
-use Override;
 use ReflectionClass;
 
 /**

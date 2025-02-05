@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Type\Connection;
 
+use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
-use ArrayIterator;
 
 /**
  * @implements IteratorAggregate<mixed>

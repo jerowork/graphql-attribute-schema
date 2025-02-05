@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Type;
 
+use DateTime;
 use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use stdClass;
-use DateTime;
 
 #[Type]
 final readonly class TestTypeWithAutowire

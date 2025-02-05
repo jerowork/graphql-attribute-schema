@@ -8,8 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
-use ReflectionParameter;
 use ReflectionNamedType;
+use ReflectionParameter;
 
 /**
  * @internal

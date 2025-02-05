@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\Connection;
-use ReflectionClass;
 use Override;
+use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
-use Generator;
 
 /**
  * @internal

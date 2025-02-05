@@ -15,16 +15,16 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidConnectionReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use Override;
 
 /**
  * @internal

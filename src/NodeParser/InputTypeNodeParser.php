@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
-use ReflectionClass;
 use Override;
+use ReflectionClass;
 use ReflectionMethod;
-use Generator;
 
 /**
  * @internal

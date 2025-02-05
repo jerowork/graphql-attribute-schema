@@ -16,9 +16,9 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use LogicException;
 use ReflectionNamedType;
 use ReflectionType;
-use LogicException;
 
 /**
  * @internal

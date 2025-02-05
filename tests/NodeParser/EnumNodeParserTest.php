@@ -6,16 +6,16 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
-use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
+use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
+use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestInvalidEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
-use Override;
 use ReflectionClass;
 
 /**

@@ -8,9 +8,9 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
-use PHPUnit\Framework\TestCase;
 use Jerowork\GraphqlAttributeSchema\TypeBuilder\GetConnectionArgsTrait;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @internal

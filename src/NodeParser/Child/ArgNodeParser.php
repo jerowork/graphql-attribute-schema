@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\GetAttributeTrait;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
+use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use ReflectionParameter;
 
 /**

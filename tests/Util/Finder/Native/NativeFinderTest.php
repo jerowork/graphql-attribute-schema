@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Util\Finder\Native;
 
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
 
 /**
  * @internal

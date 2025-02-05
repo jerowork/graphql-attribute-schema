@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
+use Override;
 use ReflectionClass;
 use ReflectionMethod;
-use Generator;
-use Override;
 
 /**
  * @internal

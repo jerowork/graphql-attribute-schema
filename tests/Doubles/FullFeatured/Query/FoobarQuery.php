@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Arg;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
-use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
 
 final readonly class FoobarQuery

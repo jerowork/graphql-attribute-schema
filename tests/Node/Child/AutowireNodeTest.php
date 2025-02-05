@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use stdClass;
 
 /**

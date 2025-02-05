@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
@@ -15,7 +16,6 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\NodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Finder;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Reflector;
-use Generator;
 use ReflectionClass;
 use ReflectionMethod;
 

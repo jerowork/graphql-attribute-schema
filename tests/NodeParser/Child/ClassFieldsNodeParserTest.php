@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser\Child;
 
+use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
@@ -19,11 +20,10 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionMetho
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidConnectionPropertyType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
 use ReflectionClass;
-use DateTimeImmutable;
 
 /**
  * @internal

@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Util\Reflector\Roave;
 
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
+use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Override;
 
 /**
  * @internal

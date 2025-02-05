@@ -7,8 +7,8 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForFieldTrait;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**

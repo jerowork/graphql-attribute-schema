@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
-use ReflectionClass;
 use Override;
+use ReflectionClass;
 use ReflectionMethod;
-use Generator;
 
 /**
  * @internal

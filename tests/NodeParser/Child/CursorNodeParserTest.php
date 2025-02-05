@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser\Child;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidScalarCursorType;
@@ -14,10 +15,9 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInvalidTypeWithMultipl
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestMethodCursorType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestPropertyCursorType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestResolvableType;
-use PHPUnit\Framework\TestCase;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
-use PHPUnit\Framework\Attributes\Test;
 use Override;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
