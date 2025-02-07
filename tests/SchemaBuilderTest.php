@@ -13,31 +13,21 @@ use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ChainedNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
-use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Parser;
+use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilder;
 use Jerowork\GraphqlAttributeSchema\SchemaBuilderFactory;
 use Jerowork\GraphqlAttributeSchema\SchemaBuildException;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\FoobarMutation;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\FoobarQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\BasicMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\BasicQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\DeprecatedQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithConnectionOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObjectQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
-use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
-use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
-use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -48,6 +38,7 @@ use PHPUnit\Framework\TestCase;
 final class SchemaBuilderTest extends TestCase
 {
     private TestContainer $container;
+    private Parser $parser;
     private SchemaBuilder $schemaBuilder;
 
     #[Override]
@@ -56,6 +47,7 @@ final class SchemaBuilderTest extends TestCase
         parent::setUp();
 
         $this->schemaBuilder = (new SchemaBuilderFactory())->create($this->container = new TestContainer());
+        $this->parser = (new ParserFactory())->create();
     }
 
     #[Test]
@@ -91,33 +83,16 @@ final class SchemaBuilderTest extends TestCase
     #[Test]
     public function itShouldBuildSchema(): void
     {
-        $this->container->set(FoobarMutation::class, new FoobarMutation());
-        $this->container->set(FoobarQuery::class, new FoobarQuery());
+        $this->container->set(BasicMutation::class, new BasicMutation());
+        $this->container->set(BasicQuery::class, new BasicQuery());
+        $this->container->set(DeprecatedQuery::class, new DeprecatedQuery());
+        $this->container->set(WithConnectionOutputQuery::class, new WithConnectionOutputQuery());
+        $this->container->set(WithInputObjectQuery::class, new WithInputObjectQuery());
+        $this->container->set(WithInterfaceOutputQuery::class, new WithInterfaceOutputQuery());
+        $this->container->set(WithListOutputQuery::class, new WithListOutputQuery());
+        $this->container->set(WithOverwrittenTypeQuery::class, new WithOverwrittenTypeQuery());
 
-        $parser = new Parser(
-            new NativeFinder(),
-            new RoaveReflector(),
-            new ChainedNodeParser([
-                new EnumNodeParser(),
-                new InputTypeNodeParser($classFieldNodesParser = new ClassFieldsNodeParser(
-                    $typeReferenceDecider = new TypeReferenceDecider(),
-                    $methodArgsNodeParser = new MethodArgumentsNodeParser(
-                        new AutowireNodeParser(),
-                        new EdgeArgsNodeParser(),
-                        new ArgNodeParser($typeReferenceDecider),
-                    ),
-                )),
-                new TypeNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
-                new ScalarNodeParser(),
-                new MutationNodeParser($typeReferenceDecider, $methodArgsNodeParser),
-                new QueryNodeParser($typeReferenceDecider, $methodArgsNodeParser),
-            ]),
-            [
-                DateTimeType::class,
-            ],
-        );
-
-        $ast = $parser->parse(__DIR__ . '/Doubles/FullFeatured');
+        $ast = $this->parser->parse(__DIR__ . '/Doubles/FullFeatured');
 
         $schema = $this->schemaBuilder->build($ast);
 
@@ -125,8 +100,50 @@ final class SchemaBuilderTest extends TestCase
             'name' => 'Query',
             'fields' => [
                 [
-                    'name' => 'getFoobar',
-                    'type' => Type::nonNull(Type::listOf(Type::nonNull(new InterfaceType([
+                    'name' => 'basicName',
+                    'type' => Type::nonNull(Type::string()),
+                    'description' => 'A description',
+                    'args' => [
+                        [
+                            'name' => 'id',
+                            'type' => Type::nonNull(Type::int()),
+                            'description' => null,
+                        ],
+                        [
+                            'name' => 'name',
+                            'type' => Type::string(),
+                            'description' => null,
+                        ],
+                        [
+                            'name' => 'isTrue',
+                            'type' => Type::nonNull(Type::boolean()),
+                            'description' => null,
+                        ],
+                        [
+                            'name' => 'status',
+                            'type' => Type::nonNull(new EnumType([
+                                'name' => 'FoobarStatus',
+                                'description' => 'Foobar status',
+                                'values' => [
+                                    'open' => [
+                                        'value' => 'open',
+                                        'description' => null,
+                                    ],
+                                    'closed' => [
+                                        'value' => 'closed',
+                                        'description' => 'Foobar status Closed',
+                                        'deprecationReason' => 'Its deprecated',
+                                    ],
+                                ],
+                            ])),
+                            'description' => null,
+                        ],
+                    ],
+                    'resolve' => fn() => true,
+                ],
+                [
+                    'name' => 'withInterface',
+                    'type' => Type::nonNull(new InterfaceType([
                         'name' => 'User',
                         'description' => null,
                         'fields' => [
@@ -138,31 +155,209 @@ final class SchemaBuilderTest extends TestCase
                                 'resolve' => fn() => true,
                             ],
                         ],
-                    ])))),
-                    'description' => 'Get a Foobar',
+                    ])),
+                    'description' => null,
+                    'args' => [],
+                    'resolve' => fn() => true,
+                ],
+                [
+                    'name' => 'doSomeWork',
+                    'type' => Type::string(),
+                    'description' => null,
+                    'args' => [],
+                    'resolve' => fn() => true,
+                    'deprecationReason' => 'This is deprecated.',
+                ],
+                [
+                    'name' => 'withConnectionOutput',
+                    'type' => Type::nonNull(new ObjectType([
+                        'name' => 'UserConnection',
+                        'fields' => [
+                            [
+                                'name' => 'edges',
+                                'type' => Type::nonNull(Type::listOf(Type::nonNull(new ObjectType([
+                                    'name' => 'UserEdge',
+                                    'fields' => [
+                                        [
+                                            'name' => 'node',
+                                            'type' => Type::nonNull(new InterfaceType([
+                                                'name' => 'User',
+                                                'description' => null,
+                                                'fields' => [
+                                                    [
+                                                        'name' => 'userId',
+                                                        'type' => Type::nonNull(Type::int()),
+                                                        'description' => null,
+                                                        'args' => [],
+                                                        'resolve' => fn() => true,
+                                                    ],
+                                                ],
+                                            ])),
+                                            'resolve' => fn() => true,
+                                        ],
+                                        [
+                                            'name' => 'cursor',
+                                            'type' => Type::string(),
+                                            'resolve' => fn() => true,
+                                        ],
+                                    ],
+                                ])))),
+                                'resolve' => fn() => true,
+                            ],
+                            [
+                                'name' => 'pageInfo',
+                                'type' => Type::nonNull(new ObjectType([
+                                    'name' => 'PageInfo',
+                                    'fields' => [
+                                        [
+                                            'name' => 'hasPreviousPage',
+                                            'type' => Type::nonNull(Type::boolean()),
+                                        ],
+                                        [
+                                            'name' => 'hasNextPage',
+                                            'type' => Type::nonNull(Type::boolean()),
+                                        ],
+                                        [
+                                            'name' => 'startCursor',
+                                            'type' => Type::string(),
+                                        ],
+                                        [
+                                            'name' => 'endCursor',
+                                            'type' => Type::string(),
+                                        ],
+                                    ],
+                                ])),
+                                'resolve' => fn() => true,
+                            ],
+                        ],
+                    ])),
+                    'description' => null,
                     'args' => [
                         [
-                            'name' => 'id',
-                            'type' => Type::int(),
-                            'description' => null,
-                        ],
-                        [
-                            'name' => 'date',
-                            'type' => Type::nonNull(new CustomScalarType([
-                                'name' => 'DateTime',
-                                'serialize' => fn() => true,
-                                'parseValue' => fn() => true,
-                                'parseLiteral' => fn() => true,
-                                'description' => 'Date and time (ISO-8601)',
+                            'name' => 'status',
+                            'type' => Type::nonNull(new EnumType([
+                                'name' => 'FoobarStatus',
+                                'description' => 'Foobar status',
+                                'values' => [
+                                    'open' => [
+                                        'value' => 'open',
+                                        'description' => null,
+                                    ],
+                                    'closed' => [
+                                        'value' => 'closed',
+                                        'description' => 'Foobar status Closed',
+                                        'deprecationReason' => 'Its deprecated',
+                                    ],
+                                ],
                             ])),
                             'description' => null,
                         ],
                         [
-                            'name' => 'values',
-                            'type' => Type::nonNull(Type::listOf(Type::nonNull(Type::boolean()))),
-                            'description' => 'List of values',
+                            'name' => 'first',
+                            'type' => Type::int(),
+                            'description' => 'Connection: return the first # items',
+                            'defaultValue' => 10,
+                        ],
+                        [
+                            'name' => 'after',
+                            'type' => Type::string(),
+                            'description' => 'Connection: return items after cursor',
+                        ],
+                        [
+                            'name' => 'last',
+                            'type' => Type::int(),
+                            'description' => 'Connection: return the last # items',
+                        ],
+                        [
+                            'name' => 'before',
+                            'type' => Type::string(),
+                            'description' => 'Connection: return items before cursor',
                         ],
                     ],
+                    'resolve' => fn() => true,
+                ],
+                [
+                    'name' => 'query',
+                    'type' => Type::nonNull(new EnumType([
+                        'name' => 'FoobarStatus',
+                        'description' => 'Foobar status',
+                        'values' => [
+                            'open' => [
+                                'value' => 'open',
+                                'description' => null,
+                            ],
+                            'closed' => [
+                                'value' => 'closed',
+                                'description' => 'Foobar status Closed',
+                                'deprecationReason' => 'Its deprecated',
+                            ],
+                        ],
+                    ])),
+                    'description' => null,
+                    'args' => [
+                        [
+                            'name' => 'input',
+                            'type' => Type::nonNull(new InputObjectType([
+                                'name' => 'QueryInput',
+                                'description' => null,
+                                'fields' => [
+                                    [
+                                        'name' => 'queryId',
+                                        'description' => 'Query id',
+                                        'type' => Type::nonNull(Type::string()),
+                                        'args' => [],
+                                    ],
+                                    [
+                                        'name' => 'status',
+                                        'description' => null,
+                                        'type' => Type::nonNull(new EnumType([
+                                            'name' => 'FoobarStatus',
+                                            'description' => 'Foobar status',
+                                            'values' => [
+                                                'open' => [
+                                                    'value' => 'open',
+                                                    'description' => null,
+                                                ],
+                                                'closed' => [
+                                                    'value' => 'closed',
+                                                    'description' => 'Foobar status Closed',
+                                                    'deprecationReason' => 'Its deprecated',
+                                                ],
+                                            ],
+                                        ])),
+                                        'args' => [],
+                                    ],
+                                ],
+                            ])),
+                            'description' => null,
+                        ],
+                    ],
+                    'resolve' => fn() => true,
+                ],
+                [
+                    'name' => 'withListOutput',
+                    'type' => Type::listOf(Type::nonNull(new InterfaceType([
+                        'name' => 'User',
+                        'description' => null,
+                        'fields' => [
+                            [
+                                'name' => 'userId',
+                                'type' => Type::nonNull(Type::int()),
+                                'description' => null,
+                                'args' => [],
+                                'resolve' => fn() => true,
+                            ],
+                        ],
+                    ]))),
+                    'description' => null,
+                    'args' => [],
+                    'resolve' => fn() => true,
+                ],
+                [
+                    'name' => 'withOverwrittenType',
+                    'type' => Type::boolean(),
+                    'description' => null,
+                    'args' => [],
                     'resolve' => fn() => true,
                 ],
             ],
@@ -196,7 +391,8 @@ final class SchemaBuilderTest extends TestCase
                                         ],
                                         'closed' => [
                                             'value' => 'closed',
-                                            'description' => null,
+                                            'description' => 'Foobar status Closed',
+                                            'deprecationReason' => 'Its deprecated',
                                         ],
                                     ],
                                 ]),
@@ -217,20 +413,206 @@ final class SchemaBuilderTest extends TestCase
                                 'args' => [
                                     [
                                         'name' => 'limiting',
-                                        'description' => null,
                                         'type' => Type::nonNull(Type::string()),
+                                        'description' => null,
                                     ],
                                     [
                                         'name' => 'value',
-                                        'description' => 'The value',
                                         'type' => Type::int(),
+                                        'description' => 'The value',
                                     ],
                                 ],
+                                'resolve' => fn() => true,
+                            ],
+                            [
+                                'name' => 'users',
+                                'type' => new ObjectType([
+                                    'name' => 'AgentConnection',
+                                    'fields' => [
+                                        [
+                                            'name' => 'edges',
+                                            'type' => Type::nonNull(Type::listOf(Type::nonNull(new ObjectType([
+                                                'name' => 'AgentEdge',
+                                                'fields' => [
+                                                    [
+                                                        'name' => 'node',
+                                                        'type' => Type::nonNull(new ObjectType([
+                                                            'name' => 'Agent',
+                                                            'description' => null,
+                                                            'fields' => [
+                                                                [
+                                                                    'name' => 'userId',
+                                                                    'type' => Type::nonNull(Type::int()),
+                                                                    'description' => null,
+                                                                    'args' => [],
+                                                                    'resolve' => fn() => true,
+                                                                ],
+                                                                [
+                                                                    'name' => 'name',
+                                                                    'type' => Type::nonNull(Type::string()),
+                                                                    'description' => null,
+                                                                    'args' => [],
+                                                                    'resolve' => fn() => true,
+                                                                ],
+                                                                [
+                                                                    'name' => 'number',
+                                                                    'type' => Type::nonNull(Type::int()),
+                                                                    'description' => null,
+                                                                    'args' => [],
+                                                                    'resolve' => fn() => true,
+                                                                ],
+                                                                [
+                                                                    'name' => 'other',
+                                                                    'type' => Type::nonNull(Type::string()),
+                                                                    'description' => null,
+                                                                    'args' => [],
+                                                                    'resolve' => fn() => true,
+                                                                ],
+                                                            ],
+                                                            'interfaces' => [
+                                                                new InterfaceType([
+                                                                    'name' => 'User',
+                                                                    'description' => null,
+                                                                    'fields' => [
+                                                                        [
+                                                                            'name' => 'userId',
+                                                                            'type' => Type::nonNull(Type::int()),
+                                                                            'description' => null,
+                                                                            'args' => [],
+                                                                            'resolve' => fn() => true,
+                                                                        ],
+                                                                    ],
+                                                                ]),
+                                                            ],
+                                                        ])),
+                                                        'resolve' => fn() => true,
+                                                    ],
+                                                    [
+                                                        'name' => 'cursor',
+                                                        'type' => Type::string(),
+                                                        'resolve' => fn() => true,
+                                                    ],
+                                                ],
+                                            ])))),
+                                            'resolve' => fn() => true,
+                                        ],
+                                        [
+                                            'name' => 'pageInfo',
+                                            'type' => Type::nonNull(new ObjectType([
+                                                'name' => 'PageInfo',
+                                                'fields' => [
+                                                    [
+                                                        'name' => 'hasPreviousPage',
+                                                        'type' => Type::nonNull(Type::boolean()),
+                                                    ],
+                                                    [
+                                                        'name' => 'hasNextPage',
+                                                        'type' => Type::nonNull(Type::boolean()),
+                                                    ],
+                                                    [
+                                                        'name' => 'startCursor',
+                                                        'type' => Type::string(),
+                                                    ],
+                                                    [
+                                                        'name' => 'endCursor',
+                                                        'type' => Type::string(),
+                                                    ],
+                                                ],
+                                            ])),
+                                            'resolve' => fn() => true,
+                                        ],
+                                    ],
+                                ]),
+                                'description' => null,
+                                'args' => [
+                                    [
+                                        'name' => 'status',
+                                        'type' => Type::string(),
+                                        'description' => null,
+                                    ],
+                                    [
+                                        'name' => 'first',
+                                        'type' => Type::int(),
+                                        'description' => 'Connection: return the first # items',
+                                        'defaultValue' => 10,
+                                    ],
+                                    [
+                                        'name' => 'after',
+                                        'type' => Type::string(),
+                                        'description' => 'Connection: return items after cursor',
+                                    ],
+                                    [
+                                        'name' => 'last',
+                                        'type' => Type::int(),
+                                        'description' => 'Connection: return the last # items',
+                                    ],
+                                    [
+                                        'name' => 'before',
+                                        'type' => Type::string(),
+                                        'description' => 'Connection: return items before cursor',
+                                    ],
+                                ],
+                                'resolve' => fn() => true,
+                            ],
+                            [
+                                'name' => 'usersList',
+                                'type' => Type::listOf(Type::nonNull(new ObjectType([
+                                    'name' => 'Agent',
+                                    'description' => null,
+                                    'fields' => [
+                                        [
+                                            'name' => 'userId',
+                                            'type' => Type::nonNull(Type::int()),
+                                            'description' => null,
+                                            'args' => [],
+                                            'resolve' => fn() => true,
+                                        ],
+                                        [
+                                            'name' => 'name',
+                                            'type' => Type::nonNull(Type::string()),
+                                            'description' => null,
+                                            'args' => [],
+                                            'resolve' => fn() => true,
+                                        ],
+                                        [
+                                            'name' => 'number',
+                                            'type' => Type::nonNull(Type::int()),
+                                            'description' => null,
+                                            'args' => [],
+                                            'resolve' => fn() => true,
+                                        ],
+                                        [
+                                            'name' => 'other',
+                                            'type' => Type::nonNull(Type::string()),
+                                            'description' => null,
+                                            'args' => [],
+                                            'resolve' => fn() => true,
+                                        ],
+                                    ],
+                                    'interfaces' => [
+                                        new InterfaceType([
+                                            'name' => 'User',
+                                            'description' => null,
+                                            'fields' => [
+                                                [
+                                                    'name' => 'userId',
+                                                    'type' => Type::nonNull(Type::int()),
+                                                    'description' => null,
+                                                    'args' => [],
+                                                    'resolve' => fn() => true,
+                                                ],
+                                            ],
+                                        ]),
+                                    ],
+                                ]))),
+                                'description' => null,
+                                'args' => [],
                                 'resolve' => fn() => true,
                             ],
                         ],
                     ])),
                     'description' => 'Mutate a foobar',
+                    'resolve' => fn() => true,
                     'args' => [
                         [
                             'name' => 'input',
@@ -240,15 +622,15 @@ final class SchemaBuilderTest extends TestCase
                                 'fields' => [
                                     [
                                         'name' => 'id',
-                                        'type'=> Type::nonNull(Type::int()),
-                                        'args' => [],
+                                        'type' => Type::nonNull(Type::int()),
                                         'description' => null,
+                                        'args' => [],
                                     ],
                                     [
                                         'name' => 'value',
                                         'type' => Type::string(),
-                                        'args' => [],
                                         'description' => null,
+                                        'args' => [],
                                     ],
                                     [
                                         'name' => 'baz',
@@ -258,7 +640,7 @@ final class SchemaBuilderTest extends TestCase
                                             'fields' => [
                                                 [
                                                     'name' => 'bazId',
-                                                    'type'=> Type::nonNull(Type::string()),
+                                                    'type' => Type::nonNull(Type::string()),
                                                     'description' => 'A baz ID',
                                                     'args' => [],
                                                 ],
@@ -274,7 +656,8 @@ final class SchemaBuilderTest extends TestCase
                                                             ],
                                                             'closed' => [
                                                                 'value' => 'closed',
-                                                                'description' => null,
+                                                                'description' => 'Foobar status Closed',
+                                                                'deprecationReason' => 'Its deprecated',
                                                             ],
                                                         ],
                                                     ])),
@@ -283,8 +666,8 @@ final class SchemaBuilderTest extends TestCase
                                                 ],
                                             ],
                                         ])),
-                                        'args' => [],
                                         'description' => null,
+                                        'args' => [],
                                     ],
                                     [
                                         'name' => 'date',
@@ -295,20 +678,21 @@ final class SchemaBuilderTest extends TestCase
                                             'parseLiteral' => fn() => true,
                                             'description' => 'Date and time (ISO-8601)',
                                         ]),
-                                        'args' => [],
                                         'description' => null,
+                                        'args' => [],
                                     ],
                                 ],
                             ])),
                             'description' => null,
                         ],
                     ],
-                    'resolve' => fn() => true,
                 ],
                 [
                     'name' => 'second',
                     'type' => Type::nonNull(Type::string()),
                     'description' => 'Mutate a second foobar',
+                    'resolve' => fn() => true,
+                    'deprecationReason' => 'Its deprecated',
                     'args' => [
                         [
                             'name' => 'value',
@@ -316,7 +700,6 @@ final class SchemaBuilderTest extends TestCase
                             'description' => null,
                         ],
                     ],
-                    'resolve' => fn() => true,
                 ],
             ],
         ]), $schema->getConfig()->getMutation());

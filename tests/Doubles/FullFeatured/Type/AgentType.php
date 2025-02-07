@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 
 #[Type]
-final readonly class AgentType implements UserType
+final readonly class AgentType implements UserType, SomeInterface
 {
     public function __construct(
         #[Field]

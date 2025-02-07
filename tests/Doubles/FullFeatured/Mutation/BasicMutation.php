@@ -9,7 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusT
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateFoobarInputType;
 
-final readonly class FoobarMutation
+final readonly class BasicMutation
 {
     #[Mutation(name: 'first', description: 'Mutate a foobar')]
     public function __invoke(MutateFoobarInputType $input): FoobarType
@@ -20,7 +20,7 @@ final readonly class FoobarMutation
         );
     }
 
-    #[Mutation(description: 'Mutate a second foobar')]
+    #[Mutation(description: 'Mutate a second foobar', deprecationReason: 'Its deprecated')]
     public function second(string $value): string
     {
         return $value;

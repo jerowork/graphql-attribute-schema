@@ -37,14 +37,22 @@ final class NativeFinderTest extends TestCase
         );
 
         self::assertSame([
-            'Doubles/FullFeatured/Mutation/FoobarMutation.php',
-            'Doubles/FullFeatured/Query/FoobarQuery.php',
+            'Doubles/FullFeatured/Mutation/BasicMutation.php',
+            'Doubles/FullFeatured/Query/BasicQuery.php',
+            'Doubles/FullFeatured/Query/DeprecatedQuery.php',
+            'Doubles/FullFeatured/Query/WithConnectionOutputQuery.php',
+            'Doubles/FullFeatured/Query/WithInputObjectQuery.php',
+            'Doubles/FullFeatured/Query/WithInterfaceOutputQuery.php',
+            'Doubles/FullFeatured/Query/WithListOutputQuery.php',
+            'Doubles/FullFeatured/Query/WithOverwrittenTypeQuery.php',
             'Doubles/FullFeatured/Type/AgentType.php',
             'Doubles/FullFeatured/Type/FoobarStatusType.php',
             'Doubles/FullFeatured/Type/FoobarType.php',
             'Doubles/FullFeatured/Type/Input/Baz.php',
             'Doubles/FullFeatured/Type/Input/MutateFoobarInputType.php',
+            'Doubles/FullFeatured/Type/Input/QueryInputType.php',
             'Doubles/FullFeatured/Type/Scalar/TestScalarType.php',
+            'Doubles/FullFeatured/Type/SomeInterface.php',
             'Doubles/FullFeatured/Type/UserType.php',
         ], $files);
     }
