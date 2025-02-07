@@ -8,12 +8,13 @@ use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Schema;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
+use Jerowork\GraphqlAttributeSchema\Resolver\RootTypeResolver;
 
 final readonly class SchemaBuilder
 {
     public function __construct(
-        private RootTypeBuilder $rootTypeBuilder,
+        private AstContainer $astContainer,
+        private RootTypeResolver $rootTypeResolver,
     ) {}
 
     /**
@@ -21,19 +22,15 @@ final readonly class SchemaBuilder
      */
     public function build(Ast $ast): Schema
     {
-        $queries = array_map(
-            fn($node) => $this->rootTypeBuilder->build($node, $ast),
-            $ast->getNodesByNodeType(QueryNode::class),
-        );
+        $this->astContainer->setAst($ast);
+
+        $queries = array_map(fn($node) => $this->rootTypeResolver->createType($node), $ast->getNodesByNodeType(QueryNode::class));
 
         if ($queries === []) {
             throw SchemaBuildException::missingQueries();
         }
 
-        $mutations = array_map(
-            fn($node) => $this->rootTypeBuilder->build($node, $ast),
-            $ast->getNodesByNodeType(MutationNode::class),
-        );
+        $mutations = array_map(fn($node) => $this->rootTypeResolver->createType($node), $ast->getNodesByNodeType(MutationNode::class));
 
         if ($mutations === []) {
             throw SchemaBuildException::missingMutations();

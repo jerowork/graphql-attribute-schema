@@ -50,6 +50,7 @@
         "cs:dry-run": "PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php-cs-fixer.php",
         "dependency-analyser": "vendor/bin/composer-dependency-analyser",
         "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon",
+        "phpstan:baseline": "vendor/bin/phpstan analyse -c phpstan.neon --generate-baseline phpstan-baseline.php src tests",
         "phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit",
         "rector": "vendor/bin/rector process --ansi",
         "rector:dry-run": "vendor/bin/rector process --ansi --dry-run",

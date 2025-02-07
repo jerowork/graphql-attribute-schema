@@ -8,7 +8,6 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 
 final readonly class DeprecatedQuery
 {
-    // @phpstan-ignore-next-line
     #[Query(deprecationReason: 'This is deprecated.')]
     public function doSomeWork(): ?string
     {

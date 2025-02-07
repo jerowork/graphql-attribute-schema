@@ -29,7 +29,7 @@ final readonly class TestExtendsInterfaceType implements TestInterfaceType
         return $this->name;
     }
 
-    public function cursor(): ?string // @phpstan-ignore-line
+    public function cursor(): ?string
     {
         return 'cursor-x';
     }

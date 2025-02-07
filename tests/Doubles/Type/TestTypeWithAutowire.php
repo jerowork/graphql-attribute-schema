@@ -12,13 +12,11 @@ use stdClass;
 #[Type]
 final readonly class TestTypeWithAutowire
 {
-    // @phpstan-ignore-next-line
     public function serviceWithCustomId(
         #[Autowire(service: stdClass::class)]
         $service,
     ): void {}
 
-    // @phpstan-ignore-next-line
     public function invalidServiceWithoutCustomId(
         #[Autowire]
         $service,

@@ -19,7 +19,6 @@ final readonly class TestType
         public DateTimeImmutable $date,
     ) {}
 
-    // @phpstan-ignore-next-line
     #[Cursor]
     #[Field]
     public function flow(): ?string

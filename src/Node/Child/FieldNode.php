@@ -60,7 +60,6 @@ final readonly class FieldNode implements ArraySerializable
             ];
         }
 
-        // @phpstan-ignore-next-line
         return [
             'reference' => [
                 'type' => $this->reference::class,
@@ -100,7 +99,7 @@ final readonly class FieldNode implements ArraySerializable
         $reference = $payload['reference']['type'];
 
         return new self(
-            $reference::fromArray($payload['reference']['payload']), // @phpstan-ignore-line
+            $reference::fromArray($payload['reference']['payload']),
             $payload['name'],
             $payload['description'],
             $argumentNodes,

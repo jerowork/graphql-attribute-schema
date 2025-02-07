@@ -4,30 +4,19 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema;
 
-use Jerowork\GraphqlAttributeSchema\Node\Node;
-use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\ExecutingTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\RootTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ConnectionTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ExecutingObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\CustomScalarObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\EnumObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InputTypeObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\InterfaceObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\ObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\Object\TypeObjectTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\ScalarTypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeBuilder\Type\TypeBuilder;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\CustomScalarNodeInputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EdgeArgsInputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\EnumNodeInputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\InputTypeNodeInputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Input\ScalarTypeInputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\EnumNodeOutputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\Field\Output\ScalarTypeOutputFieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\FieldResolver;
-use Jerowork\GraphqlAttributeSchema\TypeResolver\RootTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\Resolver\RootTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltTypesRegistryTypeResolverDecorator;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ConnectionTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\CustomScalarTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\EnumTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\InputObjectTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\InterfaceTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ListAndNullableTypeResolverDecorator;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ObjectTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Psr\Container\ContainerInterface;
 
 final readonly class SchemaBuilderFactory
@@ -35,45 +24,48 @@ final readonly class SchemaBuilderFactory
     public function create(
         ContainerInterface $container,
     ): SchemaBuilder {
-        $fieldResolver = new FieldResolver(
-            $container,
-            [
-                new ScalarTypeOutputFieldResolver(),
-                new EnumNodeOutputFieldResolver(),
-            ],
-        );
-
+        $astContainer = new AstContainer();
         $builtTypesRegistry = new BuiltTypesRegistry();
-
-        /** @var iterable<ObjectTypeBuilder<Node>> $objectTypeBuilders */
-        $objectTypeBuilders = [
-            new EnumObjectTypeBuilder(),
-            new InputTypeObjectTypeBuilder(),
-            new TypeObjectTypeBuilder($builtTypesRegistry, $fieldResolver),
-            new InterfaceObjectTypeBuilder($fieldResolver),
-            new CustomScalarObjectTypeBuilder(),
-        ];
-
-        /** @var iterable<TypeBuilder<TypeReference>> $typeBuilders */
-        $typeBuilders = [
-            new ScalarTypeBuilder(),
-            new ConnectionTypeBuilder($builtTypesRegistry, $fieldResolver),
-            new ExecutingObjectTypeBuilder($builtTypesRegistry, $objectTypeBuilders),
-        ];
+        $fieldResolver = new FieldResolver($container);
 
         return new SchemaBuilder(
-            new RootTypeBuilder(
-                new ExecutingTypeBuilder($typeBuilders),
-                new RootTypeResolver(
-                    $container,
-                    [
-                        new ScalarTypeInputFieldResolver(),
-                        new EdgeArgsInputFieldResolver(),
-                        new CustomScalarNodeInputFieldResolver(),
-                        new EnumNodeInputFieldResolver(),
-                        new InputTypeNodeInputFieldResolver(),
-                    ],
-                ),
+            $astContainer,
+            new RootTypeResolver(
+                new TypeResolverSelector([
+                    new ListAndNullableTypeResolverDecorator(
+                        new BuiltInScalarTypeResolver(),
+                    ),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new CustomScalarTypeResolver($astContainer),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new EnumTypeResolver($astContainer),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new InputObjectTypeResolver($astContainer, $fieldResolver),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new ObjectTypeResolver($astContainer, $fieldResolver),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new InterfaceTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(
+                        new ConnectionTypeResolver($astContainer, $builtTypesRegistry, $container, $fieldResolver),
+                    ),
+                ]),
+                $container,
+                $fieldResolver,
             ),
         );
     }

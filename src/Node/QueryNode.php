@@ -65,7 +65,6 @@ final readonly class QueryNode implements Node
             ];
         }
 
-        // @phpstan-ignore-next-line
         return [
             'className' => $this->className,
             'name' => $this->name,
@@ -105,7 +104,7 @@ final readonly class QueryNode implements Node
             $payload['name'],
             $payload['description'],
             $argumentNodes,
-            $type::fromArray($payload['outputReference']['payload']), // @phpstan-ignore-line
+            $type::fromArray($payload['outputReference']['payload']),
             $payload['methodName'],
             $payload['deprecationReason'],
         );

@@ -25,7 +25,6 @@ final readonly class FoobarType
         public ?FoobarStatusType $status,
     ) {}
 
-    // @phpstan-ignore-next-line
     #[Field(description: 'A foobar date')]
     public function getDate(
         #[Autowire]

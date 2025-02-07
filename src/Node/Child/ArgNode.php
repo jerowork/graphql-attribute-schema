@@ -53,7 +53,7 @@ final readonly class ArgNode implements ArgumentNode
         $reference = $payload['reference']['type'];
 
         return new self(
-            $reference::fromArray($payload['reference']['payload']), // @phpstan-ignore-line
+            $reference::fromArray($payload['reference']['payload']),
             $payload['name'],
             $payload['description'],
             $payload['propertyName'],
