@@ -111,6 +111,17 @@ final class EnumTypeResolverTest extends TestCase
     }
 
     #[Test]
+    public function itShouldResolveNull(): void
+    {
+        $resolved = $this->resolver->resolve(
+            ObjectTypeReference::create(TestEnumType::class),
+            fn() => null,
+        );
+
+        self::assertNull($resolved);
+    }
+
+    #[Test]
     public function itShouldThrowExceptionOnResolveListWhenResultIsNotBackedEnum(): void
     {
         self::expectException(LogicException::class);

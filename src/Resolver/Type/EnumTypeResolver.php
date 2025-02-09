@@ -49,10 +49,10 @@ final class EnumTypeResolver implements TypeResolver
     }
 
     /**
-     * @return list<int|string>|int|string
+     * @return null|list<int|string>|int|string
      */
     #[Override]
-    public function resolve(TypeReference $reference, Closure $callback): array|int|string
+    public function resolve(TypeReference $reference, Closure $callback): null|array|int|string
     {
         if ($reference instanceof ListableTypeReference && $reference->isList()) {
             /** @var list<BackedEnum> $enums */
@@ -68,6 +68,10 @@ final class EnumTypeResolver implements TypeResolver
         }
 
         $enum = $callback();
+
+        if ($enum === null) {
+            return null;
+        }
 
         if (!$enum instanceof BackedEnum) {
             throw new LogicException('Enum must be a BackedEnum');
