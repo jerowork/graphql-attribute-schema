@@ -2,6 +2,7 @@
 
 - [Getting Started](getting_started.md)
 - [Usage Guide](usage.md)
+- [TODO list](todo.md)
 
 ## 🔥 A Simple Example
 
