@@ -12,12 +12,12 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 final readonly class Query implements NamedAttribute, TypedAttribute
 {
     /**
-     * @param class-string|Type|ScalarType|null $type
+     * @param null|class-string|Type|ScalarType $type
      */
     public function __construct(
         public ?string $name = null,
         public ?string $description = null,
-        public string|Type|ScalarType|null $type = null,
+        public null|ScalarType|string|Type $type = null,
         public ?string $deprecationReason = null,
     ) {}
 
@@ -26,7 +26,7 @@ final readonly class Query implements NamedAttribute, TypedAttribute
         return $this->name;
     }
 
-    public function getType(): string|Type|ScalarType|null
+    public function getType(): null|ScalarType|string|Type
     {
         return $this->type;
     }

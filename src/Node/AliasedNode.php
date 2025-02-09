@@ -10,7 +10,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
 interface AliasedNode
 {
     /**
-     * @return class-string|null
+     * @return null|class-string
      */
     public function getAlias(): ?string;
 }

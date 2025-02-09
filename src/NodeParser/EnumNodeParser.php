@@ -70,7 +70,7 @@ final readonly class EnumNodeParser implements NodeParser
         foreach ((new ReflectionEnum($enumClassName))->getCases() as $case) {
             $enumAttributes = $case->getAttributes(EnumValue::class);
 
-            /** @var EnumValue|null $enumAttribute */
+            /** @var null|EnumValue $enumAttribute */
             $enumAttribute = $enumAttributes !== [] ? array_pop($enumAttributes)->newInstance() : null;
 
             /** @var BackedEnum $value */

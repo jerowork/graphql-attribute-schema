@@ -87,6 +87,7 @@ final readonly class MutationNode implements Node
         $argumentNodes = [];
         foreach ($payload['argumentNodes'] as $argumentNode) {
             $argumentPayload = $argumentNode['payload'];
+
             if ($argumentNode['node'] === ArgNode::class) {
                 /** @var ArgNodePayload $argumentPayload */
                 $argumentNodes[] = ArgNode::fromArray($argumentPayload);

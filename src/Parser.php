@@ -100,7 +100,7 @@ final readonly class Parser
     }
 
     /**
-     * @return class-string|null
+     * @return null|class-string
      */
     private function getSupportedAttribute(ReflectionClass|ReflectionMethod $reflector): ?string
     {

@@ -71,7 +71,7 @@ final class ObjectTypeResolver implements TypeResolver
     }
 
     #[Override]
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed
     {
         throw new LogicException('ObjectType does not need to abstract');
     }
@@ -86,7 +86,7 @@ final class ObjectTypeResolver implements TypeResolver
 
         // Add interface fields if present
         foreach ($node->implementsInterfaces as $interfaceClass) {
-            /** @var TypeNode|null $interfaceTypeNode */
+            /** @var null|TypeNode $interfaceTypeNode */
             $interfaceTypeNode = $this->astContainer->getAst()->getNodeByClassName($interfaceClass);
 
             if ($interfaceTypeNode === null) {

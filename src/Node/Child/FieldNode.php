@@ -83,6 +83,7 @@ final readonly class FieldNode implements ArraySerializable
         $argumentNodes = [];
         foreach ($payload['argumentNodes'] as $argumentNode) {
             $argumentPayload = $argumentNode['payload'];
+
             if ($argumentNode['node'] === ArgNode::class) {
                 /** @var ArgNodePayload $argumentPayload */
                 $argumentNodes[] = ArgNode::fromArray($argumentPayload);

@@ -44,7 +44,7 @@ final readonly class RootTypeResolver
      *     deprecationReason?: string
      * }
      */
-    public function createType(QueryNode|MutationNode $node): array
+    public function createType(MutationNode|QueryNode $node): array
     {
         $typeResolver = $this->typeResolverSelector->getResolver($node->outputReference);
 
@@ -70,7 +70,7 @@ final readonly class RootTypeResolver
      *     type: Type
      * }>
      */
-    private function createArgs(QueryNode|MutationNode $node): array
+    private function createArgs(MutationNode|QueryNode $node): array
     {
         return array_values(array_map(
             fn(ArgNode $argNode) => [
@@ -87,7 +87,7 @@ final readonly class RootTypeResolver
     /**
      * @throws ResolveException
      */
-    private function resolve(QueryNode|MutationNode $node): Closure
+    private function resolve(MutationNode|QueryNode $node): Closure
     {
         if (!$this->container->has($node->className)) {
             throw ResolveException::rootTypeNotInContainer($node->className);

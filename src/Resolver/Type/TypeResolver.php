@@ -24,5 +24,5 @@ interface TypeResolver extends TypeResolverSelectorAware
     /**
      * @param array<string, mixed> $args
      */
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed;
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed;
 }

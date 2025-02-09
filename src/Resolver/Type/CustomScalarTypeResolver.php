@@ -60,7 +60,7 @@ final class CustomScalarTypeResolver implements TypeResolver
     }
 
     #[Override]
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed
     {
         if (!$node instanceof FieldNode && !$node instanceof ArgNode) {
             throw new LogicException(sprintf('CustomScalarType: Node must be either FieldNode or ArgNode, %s given', $node::class));

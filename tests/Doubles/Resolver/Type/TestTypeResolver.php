@@ -36,7 +36,7 @@ final class TestTypeResolver implements TypeResolver
         return '';
     }
 
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed
     {
         return '';
     }

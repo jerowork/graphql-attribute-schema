@@ -80,7 +80,7 @@ final class EnumTypeResolver implements TypeResolver
      * @return list<BackedEnum>|BackedEnum
      */
     #[Override]
-    public function abstract(FieldNode|ArgumentNode $node, array $args): array|BackedEnum
+    public function abstract(ArgumentNode|FieldNode $node, array $args): array|BackedEnum
     {
         if (!$node instanceof FieldNode && !$node instanceof ArgNode) {
             throw new LogicException(sprintf('EnumType: Node must be either FieldNode or ArgNode, %s given', $node::class));

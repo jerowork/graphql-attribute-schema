@@ -18,7 +18,7 @@ final readonly class ScalarNode implements Node, AliasedNode
 {
     /**
      * @param class-string $className
-     * @param class-string|null $alias
+     * @param null|class-string $alias
      */
     public function __construct(
         public string $className,

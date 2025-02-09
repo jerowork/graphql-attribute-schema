@@ -10,7 +10,7 @@ use Attribute;
 final readonly class Scalar implements NamedAttribute
 {
     /**
-     * @param class-string|null $alias
+     * @param null|class-string $alias
      */
     public function __construct(
         public ?string $name = null,

@@ -10,6 +10,6 @@ final readonly class ListType implements Type
      * @param class-string|Type|ScalarType $type
      */
     public function __construct(
-        public string|Type|ScalarType $type,
+        public ScalarType|string|Type $type,
     ) {}
 }

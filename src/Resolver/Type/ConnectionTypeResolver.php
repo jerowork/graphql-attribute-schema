@@ -66,7 +66,7 @@ final class ConnectionTypeResolver implements TypeResolver
     }
 
     #[Override]
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed
     {
         throw new LogicException('ConnectionType does not need to abstract');
     }

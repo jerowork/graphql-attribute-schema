@@ -114,7 +114,7 @@ final readonly class TypeReferenceDecider
         return $reflectionType->allowsNull() ? $type->setNullableValue() : $type;
     }
 
-    private function getReferenceFromAttribute(string|Type|ScalarType $type): TypeReference
+    private function getReferenceFromAttribute(ScalarType|string|Type $type): TypeReference
     {
         if ($type instanceof ScalarType) {
             return ScalarTypeReference::create($type->value);

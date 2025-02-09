@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
 interface TypedAttribute
 {
     /**
-     * @return class-string|Type|ScalarType|null
+     * @return null|class-string|Type|ScalarType
      */
-    public function getType(): string|Type|ScalarType|null;
+    public function getType(): null|ScalarType|string|Type;
 }

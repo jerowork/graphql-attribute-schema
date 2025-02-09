@@ -78,7 +78,7 @@ final readonly class BuiltTypesRegistryTypeResolverDecorator implements TypeReso
     }
 
     #[Override]
-    public function abstract(FieldNode|ArgumentNode $node, array $args): mixed
+    public function abstract(ArgumentNode|FieldNode $node, array $args): mixed
     {
         return $this->typeResolver->abstract($node, $args);
     }

@@ -12,13 +12,13 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 final readonly class Cursor implements TypedAttribute
 {
     /**
-     * @param class-string|NullableType|ScalarType|null $type
+     * @param null|class-string|NullableType|ScalarType $type
      */
     public function __construct(
-        public string|NullableType|ScalarType|null $type = null,
+        public null|NullableType|ScalarType|string $type = null,
     ) {}
 
-    public function getType(): string|NullableType|ScalarType|null
+    public function getType(): null|NullableType|ScalarType|string
     {
         return $this->type;
     }
