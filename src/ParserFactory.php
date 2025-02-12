@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\InterfaceTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\MutationNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\QueryNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ScalarNodeParser;
@@ -43,6 +44,7 @@ final readonly class ParserFactory
             $typeReferenceDecider,
             $methodArgNodesParser,
         );
+        $cursorNodeParser = new CursorNodeParser($typeReferenceDecider);
 
         return new Parser(
             new NativeFinder(),
@@ -50,7 +52,8 @@ final readonly class ParserFactory
             new ChainedNodeParser([
                 new EnumNodeParser(),
                 new InputTypeNodeParser($classFieldNodesParser),
-                new TypeNodeParser($classFieldNodesParser, new CursorNodeParser($typeReferenceDecider)),
+                new TypeNodeParser($classFieldNodesParser, $cursorNodeParser),
+                new InterfaceTypeNodeParser($classFieldNodesParser, $cursorNodeParser),
                 new ScalarNodeParser(),
                 new MutationNodeParser($typeReferenceDecider, $methodArgNodesParser),
                 new QueryNodeParser($typeReferenceDecider, $methodArgNodesParser),

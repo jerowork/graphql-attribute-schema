@@ -59,7 +59,6 @@ final class GetNodeFromReferenceTraitTest extends TestCase
             null,
             [],
             null,
-            false,
             [],
         );
 
@@ -82,7 +81,6 @@ final class GetNodeFromReferenceTraitTest extends TestCase
             null,
             [],
             null,
-            false,
             [],
         );
 

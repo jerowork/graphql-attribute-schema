@@ -59,7 +59,6 @@ final class TypeNodeTest extends TestCase
                 null,
                 'property',
             ),
-            false,
             [],
         );
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Generator;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Attribute\InterfaceType;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Override;
@@ -16,7 +16,7 @@ use ReflectionMethod;
 /**
  * @internal
  */
-final readonly class TypeNodeParser implements NodeParser
+final readonly class InterfaceTypeNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;
@@ -29,13 +29,13 @@ final readonly class TypeNodeParser implements NodeParser
     #[Override]
     public function parse(string $attribute, ReflectionClass $class, ?ReflectionMethod $method): Generator
     {
-        if ($attribute !== Type::class) {
+        if ($attribute !== InterfaceType::class) {
             return;
         }
 
-        $attribute = $this->getAttribute($class, Type::class);
+        $attribute = $this->getAttribute($class, InterfaceType::class);
 
-        yield new TypeNode(
+        yield new InterfaceTypeNode(
             $class->getName(),
             $this->retrieveNameForType($class, $attribute),
             $attribute->description,

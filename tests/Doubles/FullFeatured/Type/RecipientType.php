@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Attribute\InterfaceType;
 
-#[Type]
+#[InterfaceType]
 interface RecipientType
 {
     #[Field]

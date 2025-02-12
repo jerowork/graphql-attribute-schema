@@ -6,9 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Type;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
-use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Attribute\InterfaceType;
 
-#[Type]
+#[InterfaceType]
 interface TestInterfaceType
 {
     #[Field(name: 'ID')]

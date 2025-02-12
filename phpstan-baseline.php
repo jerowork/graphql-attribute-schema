@@ -152,6 +152,30 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/NodeParser/InputTypeNodeParser.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:getAttribute\\(\\) has parameter \\$reflector with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:parse\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\MutationNodeParser\\:\\:getAttribute\\(\\) has parameter \\$reflector with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,

@@ -119,49 +119,6 @@ final class TypeNodeParserTest extends TestCase
                 'flow',
                 null,
             ),
-            false,
-            [],
-        )], $nodes);
-    }
-
-    #[Test]
-    public function itShouldParseInterfaceType(): void
-    {
-        $nodes = iterator_to_array($this->parser->parse(Type::class, new ReflectionClass(TestInterfaceType::class), null));
-
-        self::assertEquals([new TypeNode(
-            TestInterfaceType::class,
-            'TestInterface',
-            null,
-            [
-                new FieldNode(
-                    ScalarTypeReference::create('int'),
-                    'ID',
-                    null,
-                    [],
-                    FieldNodeType::Method,
-                    'getId',
-                    null,
-                    null,
-                ),
-                new FieldNode(
-                    ScalarTypeReference::create('string')->setNullableValue(),
-                    'name',
-                    null,
-                    [],
-                    FieldNodeType::Method,
-                    'getName',
-                    null,
-                    null,
-                ),
-            ],
-            new CursorNode(
-                ScalarTypeReference::create('string')->setNullableValue(),
-                FieldNodeType::Method,
-                'cursor',
-                null,
-            ),
-            true,
             [],
         )], $nodes);
     }
@@ -208,7 +165,6 @@ final class TypeNodeParserTest extends TestCase
                 ),
             ],
             null,
-            false,
             [TestInterfaceType::class],
         )], $nodes);
     }

@@ -10,7 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
-use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
@@ -52,13 +52,12 @@ final class InterfaceTypeResolverTest extends TestCase
     public function itShouldReturnIfResolverSupportsReference(): void
     {
         $this->astContainer->setAst(new Ast(
-            new TypeNode(
+            new InterfaceTypeNode(
                 TestInterfaceType::class,
                 'name',
                 null,
                 [],
                 null,
-                true,
                 [],
             ),
         ));
@@ -72,7 +71,7 @@ final class InterfaceTypeResolverTest extends TestCase
     public function itShouldCreateType(): void
     {
         $this->astContainer->setAst(new Ast(
-            new TypeNode(
+            new InterfaceTypeNode(
                 TestInterfaceType::class,
                 'name',
                 null,
@@ -89,7 +88,6 @@ final class InterfaceTypeResolverTest extends TestCase
                     ),
                 ],
                 null,
-                true,
                 [],
             ),
         ));

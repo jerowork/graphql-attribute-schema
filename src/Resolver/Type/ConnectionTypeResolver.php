@@ -15,6 +15,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\CursorNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
@@ -50,7 +51,11 @@ final class ConnectionTypeResolver implements TypeResolver
     #[Override]
     public function createType(TypeReference $reference): Type
     {
-        $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), TypeNode::class);
+        try {
+            $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), TypeNode::class);
+        } catch (LogicException) {
+            $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), InterfaceTypeNode::class);
+        }
 
         if (!$reference instanceof ConnectionTypeReference) {
             throw new LogicException('Reference is not a ConnectionTypeReference');
@@ -73,7 +78,7 @@ final class ConnectionTypeResolver implements TypeResolver
 
     private function createEdgeType(
         ConnectionTypeReference $reference,
-        TypeNode $node,
+        InterfaceTypeNode|TypeNode $node,
     ): Type {
         $edgeName = sprintf('%sEdge', $node->name);
 
@@ -114,7 +119,7 @@ final class ConnectionTypeResolver implements TypeResolver
         return $edge;
     }
 
-    private function resolveCursor(TypeNode $node, CursorNode $cursorNode): callable
+    private function resolveCursor(InterfaceTypeNode|TypeNode $node, CursorNode $cursorNode): callable
     {
         foreach ($node->fieldNodes as $fieldNode) {
             if (
@@ -181,7 +186,7 @@ final class ConnectionTypeResolver implements TypeResolver
         return $pageInfo;
     }
 
-    private function createConnectionType(TypeNode $node, Type $edge, Type $pageInfo): Type
+    private function createConnectionType(InterfaceTypeNode|TypeNode $node, Type $edge, Type $pageInfo): Type
     {
         $connectionName = sprintf('%sConnection', $node->name);
 

@@ -7,6 +7,7 @@ namespace Jerowork\GraphqlAttributeSchema;
 use Generator;
 use Jerowork\GraphqlAttributeSchema\Attribute\Enum;
 use Jerowork\GraphqlAttributeSchema\Attribute\InputType;
+use Jerowork\GraphqlAttributeSchema\Attribute\InterfaceType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
@@ -23,6 +24,7 @@ final readonly class Parser
 {
     private const array SUPPORTED_CLASS_ATTRIBUTES = [
         Type::class,
+        InterfaceType::class,
         InputType::class,
         Enum::class,
         Scalar::class,

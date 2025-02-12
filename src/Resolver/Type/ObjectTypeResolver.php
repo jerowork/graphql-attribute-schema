@@ -12,6 +12,7 @@ use GraphQL\Type\Definition\ObjectType;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
@@ -40,7 +41,7 @@ final class ObjectTypeResolver implements TypeResolver
 
         $node = $this->astContainer->getAst()->getNodeByClassName($reference->className);
 
-        return $node instanceof TypeNode && !$node->isInterface;
+        return $node instanceof TypeNode;
     }
 
     #[Override]
@@ -127,12 +128,8 @@ final class ObjectTypeResolver implements TypeResolver
                 continue;
             }
 
-            if (!$interfaceTypeNode instanceof TypeNode) {
-                throw new LogicException(sprintf('Node is not a TypeNode: %s', $interfaceClass));
-            }
-
-            if (!$interfaceTypeNode->isInterface) {
-                throw new LogicException('Interface type is not an interface');
+            if (!$interfaceTypeNode instanceof InterfaceTypeNode) {
+                throw new LogicException(sprintf('Node is not an InterfaceTypeNode: %s', $interfaceClass));
             }
 
             $reference = ObjectTypeReference::create($interfaceClass);

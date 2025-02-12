@@ -14,6 +14,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
@@ -317,6 +318,49 @@ final class ParserTest extends TestCase
             ),
         ], $nodes);
 
+        $nodes = $ast->getNodesByNodeType(InterfaceTypeNode::class);
+        usort($nodes, fn(InterfaceTypeNode $a, InterfaceTypeNode $b) => $a->name <=> $b->name);
+        self::assertEquals([
+            new InterfaceTypeNode(
+                RecipientType::class,
+                'Recipient',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'recipientId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getRecipientId',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                [],
+            ),
+            new InterfaceTypeNode(
+                UserType::class,
+                'User',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'userId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getId',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                [],
+            ),
+        ], $nodes);
+
         $nodes = $ast->getNodesByNodeType(TypeNode::class);
         usort($nodes, fn(TypeNode $a, TypeNode $b) => $a->name <=> $b->name);
         self::assertEquals([
@@ -367,7 +411,6 @@ final class ParserTest extends TestCase
                     ),
                 ],
                 null,
-                false,
                 [UserType::class, RecipientType::class, SomeInterface::class],
             ),
             new TypeNode(
@@ -449,47 +492,6 @@ final class ParserTest extends TestCase
                     ),
                 ],
                 null,
-                false,
-                [],
-            ),
-            new TypeNode(
-                RecipientType::class,
-                'Recipient',
-                null,
-                [
-                    new FieldNode(
-                        ScalarTypeReference::create('int'),
-                        'recipientId',
-                        null,
-                        [],
-                        FieldNodeType::Method,
-                        'getRecipientId',
-                        null,
-                        null,
-                    ),
-                ],
-                null,
-                true,
-                [],
-            ),
-            new TypeNode(
-                UserType::class,
-                'User',
-                null,
-                [
-                    new FieldNode(
-                        ScalarTypeReference::create('int'),
-                        'userId',
-                        null,
-                        [],
-                        FieldNodeType::Method,
-                        'getId',
-                        null,
-                        null,
-                    ),
-                ],
-                null,
-                true,
                 [],
             ),
         ], $nodes);

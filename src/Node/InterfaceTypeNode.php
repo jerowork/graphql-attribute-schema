@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
  * @phpstan-import-type FieldNodePayload from FieldNode
  * @phpstan-import-type CursorNodePayload from CursorNode
  *
- * @phpstan-type TypeNodePayload array{
+ * @phpstan-type InterfaceTypeNodePayload array{
  *     className: class-string,
  *     name: string,
  *     description: null|string,
@@ -22,7 +22,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
  *
  * @internal
  */
-final readonly class TypeNode implements Node
+final readonly class InterfaceTypeNode implements Node
 {
     /**
      * @param class-string $className
@@ -44,7 +44,7 @@ final readonly class TypeNode implements Node
     }
 
     /**
-     * @return TypeNodePayload
+     * @return InterfaceTypeNodePayload
      */
     public function toArray(): array
     {
@@ -59,9 +59,9 @@ final readonly class TypeNode implements Node
     }
 
     /**
-     * @param TypeNodePayload $payload
+     * @param InterfaceTypeNodePayload $payload
      */
-    public static function fromArray(array $payload): TypeNode
+    public static function fromArray(array $payload): InterfaceTypeNode
     {
         return new self(
             $payload['className'],

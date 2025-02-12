@@ -9,7 +9,7 @@ use GraphQL\Type\Definition\InterfaceType;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
-use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
@@ -39,13 +39,13 @@ final class InterfaceTypeResolver implements TypeResolver
 
         $node = $this->astContainer->getAst()->getNodeByClassName($reference->className);
 
-        return $node instanceof TypeNode && $node->isInterface;
+        return $node instanceof InterfaceTypeNode;
     }
 
     #[Override]
     public function createType(TypeReference $reference): InterfaceType
     {
-        $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), TypeNode::class);
+        $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), InterfaceTypeNode::class);
 
         return new InterfaceType([
             'name' => $node->name,
