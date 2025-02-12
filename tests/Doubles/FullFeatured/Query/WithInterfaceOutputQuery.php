@@ -13,6 +13,6 @@ final readonly class WithInterfaceOutputQuery
     #[Query]
     public function withInterface(): UserType
     {
-        return new AgentType('name', 1);
+        return new AgentType('recipient-name', 'name', 1);
     }
 }

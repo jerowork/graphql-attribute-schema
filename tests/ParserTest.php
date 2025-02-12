@@ -37,6 +37,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\Baz;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateFoobarInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\QueryInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\RecipientType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\SomeInterface;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
@@ -345,6 +346,16 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'recipientId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getRecipientId',
+                        null,
+                        null,
+                    ),
+                    new FieldNode(
                         ScalarTypeReference::create('string'),
                         'other',
                         null,
@@ -357,7 +368,7 @@ final class ParserTest extends TestCase
                 ],
                 null,
                 false,
-                [UserType::class, SomeInterface::class],
+                [UserType::class, RecipientType::class, SomeInterface::class],
             ),
             new TypeNode(
                 FoobarType::class,
@@ -439,6 +450,26 @@ final class ParserTest extends TestCase
                 ],
                 null,
                 false,
+                [],
+            ),
+            new TypeNode(
+                RecipientType::class,
+                'Recipient',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'recipientId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getRecipientId',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                true,
                 [],
             ),
             new TypeNode(

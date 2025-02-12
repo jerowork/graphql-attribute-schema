@@ -455,6 +455,13 @@ final class SchemaBuilderTest extends TestCase
                                                                 'resolve' => fn() => true,
                                                             ],
                                                             [
+                                                                'name' => 'recipientId',
+                                                                'type' => Type::nonNull(Type::int()),
+                                                                'description' => null,
+                                                                'args' => [],
+                                                                'resolve' => fn() => true,
+                                                            ],
+                                                            [
                                                                 'name' => 'name',
                                                                 'type' => Type::nonNull(Type::string()),
                                                                 'description' => null,
@@ -483,6 +490,20 @@ final class SchemaBuilderTest extends TestCase
                                                                 'fields' => [
                                                                     [
                                                                         'name' => 'userId',
+                                                                        'type' => Type::nonNull(Type::int()),
+                                                                        'description' => null,
+                                                                        'args' => [],
+                                                                        'resolve' => fn() => true,
+                                                                    ],
+                                                                ],
+                                                                'resolveType' => fn() => true,
+                                                            ]),
+                                                            new InterfaceType([
+                                                                'name' => 'Recipient',
+                                                                'description' => null,
+                                                                'fields' => [
+                                                                    [
+                                                                        'name' => 'recipientId',
                                                                         'type' => Type::nonNull(Type::int()),
                                                                         'description' => null,
                                                                         'args' => [],
@@ -576,6 +597,13 @@ final class SchemaBuilderTest extends TestCase
                                         'resolve' => fn() => true,
                                     ],
                                     [
+                                        'name' => 'recipientId',
+                                        'type' => Type::nonNull(Type::int()),
+                                        'description' => null,
+                                        'args' => [],
+                                        'resolve' => fn() => true,
+                                    ],
+                                    [
                                         'name' => 'name',
                                         'type' => Type::nonNull(Type::string()),
                                         'description' => null,
@@ -604,6 +632,20 @@ final class SchemaBuilderTest extends TestCase
                                         'fields' => [
                                             [
                                                 'name' => 'userId',
+                                                'type' => Type::nonNull(Type::int()),
+                                                'description' => null,
+                                                'args' => [],
+                                                'resolve' => fn() => true,
+                                            ],
+                                        ],
+                                        'resolveType' => fn() => true,
+                                    ]),
+                                    new InterfaceType([
+                                        'name' => 'Recipient',
+                                        'description' => null,
+                                        'fields' => [
+                                            [
+                                                'name' => 'recipientId',
                                                 'type' => Type::nonNull(Type::int()),
                                                 'description' => null,
                                                 'args' => [],

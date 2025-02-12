@@ -8,9 +8,10 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 
 #[Type]
-final readonly class AgentType implements UserType, SomeInterface
+final readonly class AgentType implements UserType, RecipientType, SomeInterface
 {
     public function __construct(
+        string $recipientName,
         #[Field]
         public string $name,
         #[Field]
@@ -18,6 +19,12 @@ final readonly class AgentType implements UserType, SomeInterface
     ) {}
 
     public function getId(): int
+    {
+        return 0;
+    }
+
+    #[Field]
+    public function getRecipientId(): int
     {
         return 0;
     }

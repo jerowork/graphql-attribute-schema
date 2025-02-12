@@ -51,6 +51,7 @@ final class NativeFinderTest extends TestCase
             'Doubles/FullFeatured/Type/Input/Baz.php',
             'Doubles/FullFeatured/Type/Input/MutateFoobarInputType.php',
             'Doubles/FullFeatured/Type/Input/QueryInputType.php',
+            'Doubles/FullFeatured/Type/RecipientType.php',
             'Doubles/FullFeatured/Type/Scalar/TestScalarType.php',
             'Doubles/FullFeatured/Type/SomeInterface.php',
             'Doubles/FullFeatured/Type/UserType.php',
