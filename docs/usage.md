@@ -105,13 +105,14 @@ final readonly class YourType
 
 #### Inheritance and Interfaces
 
-GraphQL supports inheritance using interfaces. To configure an interface, simply add `#[Type]` to a PHP interface:
+GraphQL supports inheritance using interfaces. To configure an interface, simply add `#[InterfaceType]` to a PHP interface or (abstract) class:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 
-#[Type]
+// Define an InterfaceType on interface
+#[InterfaceType]
 interface UserType
 {
     // With PHP 8.4, you can define fields using property hooks
@@ -121,6 +122,19 @@ interface UserType
     // For PHP versions below 8.4
     #[Field]
     public function getName(): ?string;
+}
+
+// Or define an InterfaceType on (abstract) class
+#[InterfaceType]
+abstract readonly class AbstractUserType
+{
+    public function __construct(
+        #[Field]
+        public string $id,
+    ) {}
+
+    #[Field]
+    abstract public function getName(): ?string;
 }
 ```
 
@@ -144,6 +158,46 @@ final readonly class AgentType implements UserType
     {
         return '';
     }
+}
+```
+
+Other than a single `#[Type]` implementing one interface `#[InterfaceType]` as in the example above, 
+*GraphQL Attribute Schema* also supports multiple interfaces:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\InterfaceType;
+
+#[InterfaceType]
+interface FooType 
+{
+    #[Field]
+    public function getFoo() : string;
+}
+
+#[InterfaceType]
+interface BarType extends FooType 
+{
+    #[Field]
+    public function getBar() : string;
+}
+
+#[InterfaceType]
+abstract readonly class AbstractBazType implements FooType 
+{
+    public function __construct(
+        #[Field]
+        public string $id,
+    ) {}
+
+    #[Field]
+    abstract public function getBaz() : string;
+}
+
+#[Type]
+final readonly class QuxType extends AbstractBazType
+{
+    // Implement all required logic from interfaces/extends 
 }
 ```
 
