@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\RetrieveNameForTypeTrait;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\AbstractTestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestAnother;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
@@ -69,6 +70,19 @@ final class RetrieveNameForTypeTraitTest extends TestCase
 
         self::assertSame('Test', $trait->retrieveNameForType(
             new ReflectionClass(TestType::class),
+            new Type(),
+        ));
+    }
+
+    #[Test]
+    public function itShouldRetrieveNameFromClassAndRemovePrefix(): void
+    {
+        $trait = new class {
+            use RetrieveNameForTypeTrait;
+        };
+
+        self::assertSame('TestInterface', $trait->retrieveNameForType(
+            new ReflectionClass(AbstractTestInterfaceType::class),
             new Type(),
         ));
     }

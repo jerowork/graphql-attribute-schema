@@ -7,17 +7,19 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Type;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\AbstractTestInterfaceType;
 
-#[Type(description: 'Test Type with extends')]
-final readonly class TestExtendsInterfaceType implements TestInterfaceType
+#[Type(description: 'Test Type with extends abstract')]
+final readonly class TestExtendsAbstractInterfaceType extends AbstractTestInterfaceType
 {
     public function __construct(
         public int $id,
         public ?string $name,
         #[Field]
         public DateTimeImmutable $date,
-    ) {}
+    ) {
+        parent::__construct((string) $id);
+    }
 
     #[Field(name: 'ID')]
     public function getId(): int
@@ -25,18 +27,8 @@ final readonly class TestExtendsInterfaceType implements TestInterfaceType
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function cursor(): ?string
-    {
-        return 'cursor-x';
-    }
-
     #[Field]
-    public function getStatus(): string
+    public function getStatus(): ?string
     {
         return '';
     }

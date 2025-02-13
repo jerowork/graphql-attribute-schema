@@ -20,6 +20,7 @@ final readonly class InterfaceTypeNodeParser implements NodeParser
 {
     use RetrieveNameForTypeTrait;
     use GetAttributeTrait;
+    use GetInterfaceTypesTrait;
 
     public function __construct(
         private ClassFieldsNodeParser $classFieldsNodeParser,
@@ -41,7 +42,7 @@ final readonly class InterfaceTypeNodeParser implements NodeParser
             $attribute->description,
             $this->classFieldsNodeParser->parse($class),
             $this->cursorNodeParser->parse($class),
-            $class->getInterfaceNames(),
+            $this->getInterfaceTypes($class),
         );
     }
 }

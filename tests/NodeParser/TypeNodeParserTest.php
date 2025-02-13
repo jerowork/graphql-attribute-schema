@@ -21,8 +21,10 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\AbstractTestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestExtendsAbstractInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestExtendsInterfaceType;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
@@ -166,6 +168,76 @@ final class TypeNodeParserTest extends TestCase
             ],
             null,
             [TestInterfaceType::class],
+        )], $nodes);
+    }
+
+    #[Test]
+    public function itShouldParseTypeExtendingAbstractInterface(): void
+    {
+        $nodes = iterator_to_array($this->parser->parse(
+            Type::class,
+            new ReflectionClass(TestExtendsAbstractInterfaceType::class),
+            null,
+        ));
+
+        self::assertEquals([new TypeNode(
+            TestExtendsAbstractInterfaceType::class,
+            'TestExtendsAbstractInterface',
+            'Test Type with extends abstract',
+            [
+                new FieldNode(
+                    ObjectTypeReference::create(DateTimeImmutable::class),
+                    'date',
+                    null,
+                    [],
+                    FieldNodeType::Property,
+                    null,
+                    'date',
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('string'),
+                    'constructId',
+                    null,
+                    [],
+                    FieldNodeType::Property,
+                    null,
+                    'constructId',
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('int'),
+                    'ID',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getId',
+                    null,
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('string')->setNullableValue(),
+                    'status',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getStatus',
+                    null,
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('float'),
+                    'value',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getValue',
+                    null,
+                    null,
+                ),
+            ],
+            null,
+            [AbstractTestInterfaceType::class],
         )], $nodes);
     }
 }

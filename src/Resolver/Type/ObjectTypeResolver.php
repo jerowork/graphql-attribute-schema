@@ -83,7 +83,6 @@ final class ObjectTypeResolver implements TypeResolver
     private function getCombinedFieldNodesFromInterfaceAndNode(TypeNode $node): array
     {
         $fields = [];
-        $inMemoryFieldNames = [];
 
         // Add interface fields if present
         foreach ($node->implementsInterfaces as $interfaceClass) {
@@ -94,24 +93,25 @@ final class ObjectTypeResolver implements TypeResolver
                 continue;
             }
 
-            $inMemoryFieldNames = [...$inMemoryFieldNames, ...array_map(
-                fn($fieldNode) => $fieldNode->name,
-                $interfaceTypeNode->fieldNodes,
-            )];
-
             $fields = [...$fields, ...$interfaceTypeNode->fieldNodes];
         }
 
         // Add main node fields
-        foreach ($node->fieldNodes as $fieldNode) {
-            if (in_array($fieldNode->name, $inMemoryFieldNames, true)) {
-                continue;
+        $fields = [...$fields, ...$node->fieldNodes];
+
+        // Deduplicate fields (coming from multiple interfaces and main node)
+        $inMemoryFieldNames = [];
+
+        /** @var FieldNode[] $fields */
+        foreach ($fields as $index => $field) {
+            if (in_array($field->name, $inMemoryFieldNames, true)) {
+                unset($fields[$index]);
             }
 
-            $fields[] = $fieldNode;
+            $inMemoryFieldNames[] = $field->name;
         }
 
-        return $fields;
+        return array_values($fields);
     }
 
     /**

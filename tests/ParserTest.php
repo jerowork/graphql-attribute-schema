@@ -32,6 +32,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObj
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AbstractAdminType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AgentType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarType;
@@ -40,7 +41,6 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\MutateF
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\QueryInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\RecipientType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\SomeInterface;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Override;
@@ -322,6 +322,55 @@ final class ParserTest extends TestCase
         usort($nodes, fn(InterfaceTypeNode $a, InterfaceTypeNode $b) => $a->name <=> $b->name);
         self::assertEquals([
             new InterfaceTypeNode(
+                AbstractAdminType::class,
+                'Admin',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'adminName',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'adminName',
+                        null,
+                    ),
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'password',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getPassword',
+                        null,
+                        null,
+                    ),
+                    new FieldNode(
+                        ScalarTypeReference::create('bool'),
+                        'isAdmin',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'isAdmin',
+                        null,
+                        null,
+                    ),
+                    new FieldNode(
+                        ScalarTypeReference::create('int'),
+                        'recipientId',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getRecipientId',
+                        null,
+                        null,
+                    ),
+                ],
+                null,
+                [RecipientType::class],
+            ),
+            new InterfaceTypeNode(
                 RecipientType::class,
                 'Recipient',
                 null,
@@ -390,6 +439,16 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'adminName',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'adminName',
+                        null,
+                    ),
+                    new FieldNode(
                         ScalarTypeReference::create('int'),
                         'recipientId',
                         null,
@@ -409,9 +468,23 @@ final class ParserTest extends TestCase
                         null,
                         null,
                     ),
+                    new FieldNode(
+                        ScalarTypeReference::create('bool'),
+                        'isAdmin',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'isAdmin',
+                        null,
+                        null,
+                    ),
                 ],
                 null,
-                [UserType::class, RecipientType::class, SomeInterface::class],
+                [
+                    RecipientType::class,
+                    UserType::class,
+                    AbstractAdminType::class,
+                ],
             ),
             new TypeNode(
                 FoobarType::class,

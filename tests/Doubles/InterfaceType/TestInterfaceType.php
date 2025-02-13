@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\Type;
+namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Cursor;
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;

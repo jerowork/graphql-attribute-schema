@@ -19,7 +19,8 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InterfaceTypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\AbstractTestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -93,6 +94,61 @@ final class InterfaceTypeNodeParserTest extends TestCase
                 ScalarTypeReference::create('string')->setNullableValue(),
                 FieldNodeType::Method,
                 'cursor',
+                null,
+            ),
+            [],
+        )], $nodes);
+    }
+
+    #[Test]
+    public function itShouldParseAbstractClassAsInterfaceType(): void
+    {
+        $nodes = iterator_to_array($this->parser->parse(
+            InterfaceType::class,
+            new ReflectionClass(AbstractTestInterfaceType::class),
+            null,
+        ));
+
+        self::assertEquals([new InterfaceTypeNode(
+            AbstractTestInterfaceType::class,
+            'TestInterface',
+            'A description',
+            [
+                new FieldNode(
+                    ScalarTypeReference::create('string'),
+                    'constructId',
+                    null,
+                    [],
+                    FieldNodeType::Property,
+                    null,
+                    'constructId',
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('string')->setNullableValue(),
+                    'status',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getStatus',
+                    null,
+                    null,
+                ),
+                new FieldNode(
+                    ScalarTypeReference::create('float'),
+                    'value',
+                    null,
+                    [],
+                    FieldNodeType::Method,
+                    'getValue',
+                    null,
+                    null,
+                ),
+            ],
+            new CursorNode(
+                ScalarTypeReference::create('string')->setNullableValue(),
+                FieldNodeType::Method,
+                'getStatus',
                 null,
             ),
             [],

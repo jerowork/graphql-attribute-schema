@@ -19,7 +19,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\InterfaceTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
-use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;

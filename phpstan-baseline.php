@@ -152,7 +152,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/NodeParser/InputTypeNodeParser.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:addParentInterfaceType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:getAttribute\\(\\) has parameter \\$reflector with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\InterfaceTypeNodeParser\\:\\:getInterfaceTypes\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/NodeParser/InterfaceTypeNodeParser.php',
@@ -230,7 +242,19 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/NodeParser/ScalarNodeParser.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\TypeNodeParser\\:\\:addParentInterfaceType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/TypeNodeParser.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\TypeNodeParser\\:\\:getAttribute\\(\\) has parameter \\$reflector with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/NodeParser/TypeNodeParser.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\NodeParser\\\\TypeNodeParser\\:\\:getInterfaceTypes\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/src/NodeParser/TypeNodeParser.php',
@@ -308,12 +332,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/DeprecatedQuery.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Constructor of class Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\AgentType has an unused parameter \\$recipientName\\.$#',
-	'identifier' => 'constructor.unusedParameter',
-	'count' => 1,
-	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Type/AgentType.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\FoobarType\\:\\:getDate\\(\\) never returns null so it can be removed from the return type\\.$#',
 	'identifier' => 'return.unusedType',
 	'count' => 1,
@@ -324,6 +342,18 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/Doubles/Mutation/TestInvalidMutationWithInvalidMethodArgument.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestCascadingInterfaceType\\:\\:getStatus\\(\\) never returns null so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Type/TestCascadingInterfaceType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestExtendsAbstractInterfaceType\\:\\:getStatus\\(\\) never returns null so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Type/TestExtendsAbstractInterfaceType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestExtendsInterfaceType\\:\\:cursor\\(\\) never returns null so it can be removed from the return type\\.$#',
@@ -362,49 +392,73 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/tests/NodeParser/GetClassAttributeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:25\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/GetInterfaceTypesTraitTest\\.php\\:24\\:\\:addParentInterfaceType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/NodeParser/GetInterfaceTypesTraitTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method class@anonymous/tests/NodeParser/GetInterfaceTypesTraitTest\\.php\\:24\\:\\:getInterfaceTypes\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/NodeParser/GetInterfaceTypesTraitTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:26\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:25\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:26\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:40\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:41\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:40\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:41\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:53\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:54\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:53\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:54\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:66\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:67\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:66\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:67\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:80\\:\\:retrieveNameForType\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method class@anonymous/tests/NodeParser/RetrieveNameForTypeTraitTest\\.php\\:80\\:\\:retrieveNameFromClass\\(\\) has parameter \\$class with generic class ReflectionClass but does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/NodeParser/RetrieveNameForTypeTraitTest.php',
@@ -414,6 +468,12 @@ $ignoreErrors[] = [
 	'identifier' => 'argument.type',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/Resolver/Type/InterfaceTypeResolverTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\InterfaceType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, fields\\: \\(callable\\(\\)\\: iterable\\)\\|iterable, interfaces\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\)\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\InterfaceTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\InterfaceTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'Admin\', description\\: null, fields\\: array\\{array\\{name\\: \'adminName\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'password\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'isAdmin\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'recipientId\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 2,
+	'path' => __DIR__ . '/tests/SchemaBuilderTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\InterfaceType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, fields\\: \\(callable\\(\\)\\: iterable\\)\\|iterable, interfaces\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\)\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\InterfaceTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\InterfaceTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'Recipient\', description\\: null, fields\\: array\\{array\\{name\\: \'recipientId\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',

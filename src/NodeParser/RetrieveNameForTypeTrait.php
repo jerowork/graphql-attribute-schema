@@ -13,6 +13,7 @@ use ReflectionClass;
 trait RetrieveNameForTypeTrait
 {
     private const string NAME_TYPE_SUFFIX = 'Type';
+    private const string NAME_TYPE_PREFIX = 'Abstract';
     private const string VALID_REGEX = '/^[A-Z][a-zA-Z]+$/';
 
     /**
@@ -36,6 +37,10 @@ trait RetrieveNameForTypeTrait
 
         if (str_ends_with($name, self::NAME_TYPE_SUFFIX)) {
             $name = substr($name, 0, -strlen(self::NAME_TYPE_SUFFIX));
+        }
+
+        if (str_starts_with($name, self::NAME_TYPE_PREFIX)) {
+            $name = substr($name, strlen(self::NAME_TYPE_PREFIX));
         }
 
         return $name;

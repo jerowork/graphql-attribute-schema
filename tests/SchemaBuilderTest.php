@@ -448,6 +448,13 @@ final class SchemaBuilderTest extends TestCase
                                                         'description' => null,
                                                         'fields' => [
                                                             [
+                                                                'name' => 'recipientId',
+                                                                'type' => Type::nonNull(Type::int()),
+                                                                'description' => null,
+                                                                'args' => [],
+                                                                'resolve' => fn() => true,
+                                                            ],
+                                                            [
                                                                 'name' => 'userId',
                                                                 'type' => Type::nonNull(Type::int()),
                                                                 'description' => null,
@@ -455,8 +462,22 @@ final class SchemaBuilderTest extends TestCase
                                                                 'resolve' => fn() => true,
                                                             ],
                                                             [
-                                                                'name' => 'recipientId',
-                                                                'type' => Type::nonNull(Type::int()),
+                                                                'name' => 'adminName',
+                                                                'type' => Type::nonNull(Type::string()),
+                                                                'description' => null,
+                                                                'args' => [],
+                                                                'resolve' => fn() => true,
+                                                            ],
+                                                            [
+                                                                'name' => 'password',
+                                                                'type' => Type::nonNull(Type::string()),
+                                                                'description' => null,
+                                                                'args' => [],
+                                                                'resolve' => fn() => true,
+                                                            ],
+                                                            [
+                                                                'name' => 'isAdmin',
+                                                                'type' => Type::nonNull(Type::boolean()),
                                                                 'description' => null,
                                                                 'args' => [],
                                                                 'resolve' => fn() => true,
@@ -485,6 +506,20 @@ final class SchemaBuilderTest extends TestCase
                                                         ],
                                                         'interfaces' => [
                                                             new InterfaceType([
+                                                                'name' => 'Recipient',
+                                                                'description' => null,
+                                                                'fields' => [
+                                                                    [
+                                                                        'name' => 'recipientId',
+                                                                        'type' => Type::nonNull(Type::int()),
+                                                                        'description' => null,
+                                                                        'args' => [],
+                                                                        'resolve' => fn() => true,
+                                                                    ],
+                                                                ],
+                                                                'resolveType' => fn() => true,
+                                                            ]),
+                                                            new InterfaceType([
                                                                 'name' => 'User',
                                                                 'description' => null,
                                                                 'fields' => [
@@ -499,9 +534,30 @@ final class SchemaBuilderTest extends TestCase
                                                                 'resolveType' => fn() => true,
                                                             ]),
                                                             new InterfaceType([
-                                                                'name' => 'Recipient',
+                                                                'name' => 'Admin',
                                                                 'description' => null,
                                                                 'fields' => [
+                                                                    [
+                                                                        'name' => 'adminName',
+                                                                        'type' => Type::nonNull(Type::string()),
+                                                                        'description' => null,
+                                                                        'args' => [],
+                                                                        'resolve' => fn() => true,
+                                                                    ],
+                                                                    [
+                                                                        'name' => 'password',
+                                                                        'type' => Type::nonNull(Type::string()),
+                                                                        'description' => null,
+                                                                        'args' => [],
+                                                                        'resolve' => fn() => true,
+                                                                    ],
+                                                                    [
+                                                                        'name' => 'isAdmin',
+                                                                        'type' => Type::nonNull(Type::boolean()),
+                                                                        'description' => null,
+                                                                        'args' => [],
+                                                                        'resolve' => fn() => true,
+                                                                    ],
                                                                     [
                                                                         'name' => 'recipientId',
                                                                         'type' => Type::nonNull(Type::int()),
@@ -590,6 +646,13 @@ final class SchemaBuilderTest extends TestCase
                                 'description' => null,
                                 'fields' => [
                                     [
+                                        'name' => 'recipientId',
+                                        'type' => Type::nonNull(Type::int()),
+                                        'description' => null,
+                                        'args' => [],
+                                        'resolve' => fn() => true,
+                                    ],
+                                    [
                                         'name' => 'userId',
                                         'type' => Type::nonNull(Type::int()),
                                         'description' => null,
@@ -597,8 +660,22 @@ final class SchemaBuilderTest extends TestCase
                                         'resolve' => fn() => true,
                                     ],
                                     [
-                                        'name' => 'recipientId',
-                                        'type' => Type::nonNull(Type::int()),
+                                        'name' => 'adminName',
+                                        'type' => Type::nonNull(Type::string()),
+                                        'description' => null,
+                                        'args' => [],
+                                        'resolve' => fn() => true,
+                                    ],
+                                    [
+                                        'name' => 'password',
+                                        'type' => Type::nonNull(Type::string()),
+                                        'description' => null,
+                                        'args' => [],
+                                        'resolve' => fn() => true,
+                                    ],
+                                    [
+                                        'name' => 'isAdmin',
+                                        'type' => Type::nonNull(Type::boolean()),
                                         'description' => null,
                                         'args' => [],
                                         'resolve' => fn() => true,
@@ -627,6 +704,20 @@ final class SchemaBuilderTest extends TestCase
                                 ],
                                 'interfaces' => [
                                     new InterfaceType([
+                                        'name' => 'Recipient',
+                                        'description' => null,
+                                        'fields' => [
+                                            [
+                                                'name' => 'recipientId',
+                                                'type' => Type::nonNull(Type::int()),
+                                                'description' => null,
+                                                'args' => [],
+                                                'resolve' => fn() => true,
+                                            ],
+                                        ],
+                                        'resolveType' => fn() => true,
+                                    ]),
+                                    new InterfaceType([
                                         'name' => 'User',
                                         'description' => null,
                                         'fields' => [
@@ -641,9 +732,30 @@ final class SchemaBuilderTest extends TestCase
                                         'resolveType' => fn() => true,
                                     ]),
                                     new InterfaceType([
-                                        'name' => 'Recipient',
+                                        'name' => 'Admin',
                                         'description' => null,
                                         'fields' => [
+                                            [
+                                                'name' => 'adminName',
+                                                'type' => Type::nonNull(Type::string()),
+                                                'description' => null,
+                                                'args' => [],
+                                                'resolve' => fn() => true,
+                                            ],
+                                            [
+                                                'name' => 'password',
+                                                'type' => Type::nonNull(Type::string()),
+                                                'description' => null,
+                                                'args' => [],
+                                                'resolve' => fn() => true,
+                                            ],
+                                            [
+                                                'name' => 'isAdmin',
+                                                'type' => Type::nonNull(Type::boolean()),
+                                                'description' => null,
+                                                'args' => [],
+                                                'resolve' => fn() => true,
+                                            ],
                                             [
                                                 'name' => 'recipientId',
                                                 'type' => Type::nonNull(Type::int()),

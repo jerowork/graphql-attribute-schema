@@ -8,7 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
 
 #[Type]
-final readonly class AgentType implements UserType, RecipientType, SomeInterface
+final readonly class AgentType extends AbstractAdminType implements UserType, SomeInterface
 {
     public function __construct(
         string $recipientName,
@@ -16,7 +16,9 @@ final readonly class AgentType implements UserType, RecipientType, SomeInterface
         public string $name,
         #[Field]
         public int $number,
-    ) {}
+    ) {
+        parent::__construct($recipientName);
+    }
 
     public function getId(): int
     {
@@ -27,6 +29,11 @@ final readonly class AgentType implements UserType, RecipientType, SomeInterface
     public function getRecipientId(): int
     {
         return 0;
+    }
+
+    public function getPassword(): string
+    {
+        return 'password';
     }
 
     #[Field]
