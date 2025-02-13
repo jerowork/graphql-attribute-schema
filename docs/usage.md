@@ -8,7 +8,8 @@ You can use the following attributes:
 
 - [#[Mutation]](#mutation-and-query)
 - [#[Query]](#mutation-and-query)
-- [#[Type]](#type) (including [Inheritance and interfaces](#inheritance-and-interfaces))
+- [#[Type]](#type)
+- [#[InterfaceType]](#interfacetype)
 - [#[InputType]](#inputtype)
 - [#[Enum]](#enum)
     - [#[EnumValue]](#enum)
@@ -103,7 +104,33 @@ final readonly class YourType
 }
 ```
 
-#### Inheritance and Interfaces
+#### Automatic schema creation
+
+*GraphQL Attribute Schema* automatically reads the `__construct` signature and detects input arguments,  
+as well as method return types.
+
+- Any argument marked with `#[Field]` will be included in the schema by default (you can override this, see
+  the [Field](#field) section).
+- Any method marked with `#[Field]` will be added to the schema.
+  - The return type is considered the field type.
+  - Method arguments are treated as filter arguments (you can override this using `#[Arg]`, see [Arg](#arg)).
+
+Like input types, types can be scalars or objects. If you're using objects, ensure they're properly defined with
+`#[InputType]` or `#[Enum]`.
+
+By default, the type name is taken from the class name, but you can override it (see options below).
+
+#### Options
+
+You can configure the `#[Type]` attribute:
+
+| Option        | Description                                                 |
+|---------------|-------------------------------------------------------------|
+| `name`        | Custom name for the type (instead of using the class name). |
+| `description` | Description of the type, visible in the GraphQL schema.     |
+
+
+### #[InterfaceType]
 
 GraphQL supports inheritance using interfaces. To configure an interface, simply add `#[InterfaceType]` to a PHP interface or (abstract) class:
 
@@ -200,31 +227,15 @@ final readonly class QuxType extends AbstractBazType
     // Implement all required logic from interfaces/extends 
 }
 ```
-
-#### Automatic schema creation
-
-*GraphQL Attribute Schema* automatically reads the `__construct` signature and detects input arguments,  
-as well as method return types.
-
-- Any argument marked with `#[Field]` will be included in the schema by default (you can override this, see
-  the [Field](#field) section).
-- Any method marked with `#[Field]` will be added to the schema.
-    - The return type is considered the field type.
-    - Method arguments are treated as filter arguments (you can override this using `#[Arg]`, see [Arg](#arg)).
-
-Like input types, types can be scalars or objects. If you're using objects, ensure they're properly defined with
-`#[InputType]` or `#[Enum]`.
-
-By default, the type name is taken from the class name, but you can override it (see options below).
-
 #### Options
 
-You can configure the `#[Type]` attribute:
+You can configure the `#[InterfaceType]` attribute:
 
-| Option        | Description                                                 |
-|---------------|-------------------------------------------------------------|
-| `name`        | Custom name for the type (instead of using the class name). |
-| `description` | Description of the type, visible in the GraphQL schema.     |
+| Option        | Description                                                                     |
+|---------------|---------------------------------------------------------------------------------|
+| `name`        | Custom name for the interface type (instead of using the interface/class name). |
+| `description` | Description of the interface type, visible in the GraphQL schema.               |
+
 
 ### #[InputType]
 
