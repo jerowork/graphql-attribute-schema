@@ -314,6 +314,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Resolver/Type/InterfaceTypeResolver.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\UnionType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, types\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType\\)\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\UnionTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\UnionTypeExtensionNode\\>\\|null\\}, array\\{name\\: string, types\\: list\\<GraphQL\\\\Type\\\\Definition\\\\Type\\>, resolveType\\: Closure\\(object\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type\\} given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Resolver/Type/UnionTypeResolver.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Util\\\\Reflector\\\\Reflector\\:\\:getClasses\\(\\) return type with generic class ReflectionClass does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,
@@ -332,6 +338,24 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/DeprecatedQuery.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\WithUnionOutputQuery\\:\\:getUnionQuery\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\AgentType so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/WithUnionOutputQuery.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\WithUnionOutputQuery\\:\\:getUnionQuery\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\FoobarType so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/WithUnionOutputQuery.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\WithUnionOutputQuery\\:\\:getUnionQuery\\(\\) should return Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\AgentType\\|Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\FoobarType but returns string\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/WithUnionOutputQuery.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\FoobarType\\:\\:getDate\\(\\) never returns null so it can be removed from the return type\\.$#',
 	'identifier' => 'return.unusedType',
 	'count' => 1,
@@ -342,6 +366,72 @@ $ignoreErrors[] = [
 	'identifier' => 'missingType.parameter',
 	'count' => 1,
 	'path' => __DIR__ . '/tests/Doubles/Mutation/TestInvalidMutationWithInvalidMethodArgument.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getBazs\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getBazs\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getBazs\\(\\) should return Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType\\|Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire but returns string\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getFoobars\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getFoobars\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getFoobars\\(\\) should return Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType\\|Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire but returns string\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getListOfQuxs\\(\\) return type has no value type specified in iterable type array\\.$#',
+	'identifier' => 'missingType.iterableValue',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getNullableBazs\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getNullableBazs\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getNullableBazs\\(\\) never returns null so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Query\\\\TestQueryWithUnionType\\:\\:getNullableBazs\\(\\) should return Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestType\\|Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestTypeWithAutowire\\|null but returns string\\.$#',
+	'identifier' => 'return.type',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/Query/TestQueryWithUnionType.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\Type\\\\TestCascadingInterfaceType\\:\\:getStatus\\(\\) never returns null so it can be removed from the return type\\.$#',
@@ -472,19 +562,25 @@ $ignoreErrors[] = [
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\InterfaceType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, fields\\: \\(callable\\(\\)\\: iterable\\)\\|iterable, interfaces\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\)\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\InterfaceTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\InterfaceTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'Admin\', description\\: null, fields\\: array\\{array\\{name\\: \'adminName\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'password\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'isAdmin\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}, array\\{name\\: \'recipientId\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 2,
+	'count' => 5,
 	'path' => __DIR__ . '/tests/SchemaBuilderTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\InterfaceType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, fields\\: \\(callable\\(\\)\\: iterable\\)\\|iterable, interfaces\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\)\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\InterfaceTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\InterfaceTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'Recipient\', description\\: null, fields\\: array\\{array\\{name\\: \'recipientId\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 2,
+	'count' => 5,
 	'path' => __DIR__ . '/tests/SchemaBuilderTest.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\InterfaceType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, fields\\: \\(callable\\(\\)\\: iterable\\)\\|iterable, interfaces\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\)\\|GraphQL\\\\Type\\\\Definition\\\\InterfaceType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\InterfaceTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\InterfaceTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'User\', description\\: null, fields\\: array\\{array\\{name\\: \'userId\', type\\: GraphQL\\\\Type\\\\Definition\\\\NonNull, description\\: null, args\\: array\\{\\}, resolve\\: Closure\\(\\)\\: true\\}\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',
 	'identifier' => 'argument.type',
-	'count' => 5,
+	'count' => 8,
+	'path' => __DIR__ . '/tests/SchemaBuilderTest.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Definition\\\\UnionType constructor expects array\\{name\\?\\: string\\|null, description\\?\\: string\\|null, types\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType\\)\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\>, resolveType\\?\\: \\(callable\\(mixed, mixed, GraphQL\\\\Type\\\\Definition\\\\ResolveInfo\\)\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\|GraphQL\\\\Deferred\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|string\\|null\\)\\)\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\UnionTypeDefinitionNode\\|null, extensionASTNodes\\?\\: array\\<GraphQL\\\\Language\\\\AST\\\\UnionTypeExtensionNode\\>\\|null\\}, array\\{name\\: \'Union_AgentType…\', types\\: array\\{GraphQL\\\\Type\\\\Definition\\\\ObjectType, GraphQL\\\\Type\\\\Definition\\\\ObjectType\\}, resolveType\\: Closure\\(\\)\\: true\\} given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
 	'path' => __DIR__ . '/tests/SchemaBuilderTest.php',
 ];
 

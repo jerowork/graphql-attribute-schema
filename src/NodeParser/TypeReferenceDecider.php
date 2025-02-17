@@ -10,15 +10,18 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ObjectType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\Type;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\UnionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\TypedAttribute;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ListableTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\UnionTypeReference;
 use LogicException;
 use ReflectionNamedType;
 use ReflectionType;
+use ReflectionUnionType;
 
 /**
  * @internal
@@ -42,7 +45,7 @@ final readonly class TypeReferenceDecider
 
             if ($attributeType instanceof ListType) {
                 if ($attributeType->type instanceof NullableType) {
-                    $type = $this->getReferenceFromAttribute($attributeType->type->type);
+                    $type = $this->getReferenceFromAttribute($attributeType->type->type, $reflectionType);
 
                     if (!$type instanceof ListableTypeReference) {
                         throw ParseException::invalidListTypeConfiguration($type::class);
@@ -51,7 +54,7 @@ final readonly class TypeReferenceDecider
                     return $type->setList()->setNullableValue();
                 }
 
-                $type = $this->getReferenceFromAttribute($attributeType->type);
+                $type = $this->getReferenceFromAttribute($attributeType->type, $reflectionType);
 
                 if (!$type instanceof ListableTypeReference) {
                     throw ParseException::invalidListTypeConfiguration($type::class);
@@ -68,7 +71,7 @@ final readonly class TypeReferenceDecider
 
                 if ($attributeType->type instanceof ListType) {
                     if ($attributeType->type->type instanceof NullableType) {
-                        $type = $this->getReferenceFromAttribute($attributeType->type->type->type);
+                        $type = $this->getReferenceFromAttribute($attributeType->type->type->type, $reflectionType);
 
                         if (!$type instanceof ListableTypeReference) {
                             throw ParseException::invalidListTypeConfiguration($type::class);
@@ -77,7 +80,7 @@ final readonly class TypeReferenceDecider
                         return $type->setList()->setNullableList()->setNullableValue();
                     }
 
-                    $type = $this->getReferenceFromAttribute($attributeType->type->type);
+                    $type = $this->getReferenceFromAttribute($attributeType->type->type, $reflectionType);
 
                     if (!$type instanceof ListableTypeReference) {
                         throw ParseException::invalidListTypeConfiguration($type::class);
@@ -86,14 +89,36 @@ final readonly class TypeReferenceDecider
                     return $type->setList()->setNullableList();
                 }
 
-                return $this->getReferenceFromAttribute($attributeType->type)
+                return $this->getReferenceFromAttribute($attributeType->type, $reflectionType)
                     ->setNullableValue();
             }
 
-            return $this->getReferenceFromAttribute($attributeType);
+            return $this->getReferenceFromAttribute($attributeType, $reflectionType);
         }
 
         // Retrieve from class
+
+        if ($reflectionType instanceof ReflectionUnionType) {
+            /** @var list<class-string> $classNames */
+            $classNames = array_values(array_map(
+                fn($type) => $type->getName(),
+                array_filter(
+                    $reflectionType->getTypes(),
+                    fn($type) => $type instanceof ReflectionNamedType && !$type->isBuiltin(),
+                ),
+            ));
+
+            $type = UnionTypeReference::create(
+                sprintf('Union_%s', implode('_', array_map(
+                    fn($classname) => array_values(array_reverse(explode('\\', $classname)))[0],
+                    $classNames,
+                ))),
+                $classNames,
+            );
+
+            return $reflectionType->allowsNull() ? $type->setNullableValue() : $type;
+        }
+
         if (!$reflectionType instanceof ReflectionNamedType) {
             return null;
         }
@@ -114,7 +139,7 @@ final readonly class TypeReferenceDecider
         return $reflectionType->allowsNull() ? $type->setNullableValue() : $type;
     }
 
-    private function getReferenceFromAttribute(ScalarType|string|Type $type): TypeReference
+    private function getReferenceFromAttribute(ScalarType|string|Type $type, ?ReflectionType $reflectionType): TypeReference
     {
         if ($type instanceof ScalarType) {
             return ScalarTypeReference::create($type->value);
@@ -122,6 +147,27 @@ final readonly class TypeReferenceDecider
 
         if ($type instanceof ObjectType) {
             return ObjectTypeReference::create($type->className);
+        }
+
+        if ($type instanceof UnionType) {
+            $classNames = $type->objectTypes;
+
+            if ($classNames === []) {
+                if (!$reflectionType instanceof ReflectionUnionType) {
+                    throw new LogicException('UnionType is missing union types as return type');
+                }
+
+                /** @var list<class-string> $classNames */
+                $classNames = array_values(array_map(
+                    fn($returnType) => $returnType->getName(),
+                    array_filter(
+                        $reflectionType->getTypes(),
+                        fn($type) => $type instanceof ReflectionNamedType && !$type->isBuiltin(),
+                    ),
+                ));
+            }
+
+            return UnionTypeReference::create($type->name, $classNames);
         }
 
         if (is_string($type)) {

@@ -1,6 +1,10 @@
 # Usage Guide
 
-At a minimum, you need to define a query and a mutation to build a valid schema.
+- [Attributes](#attributes)
+- [Union types](#union-types)
+- [Connections (Pagination)](#connections-pagination)
+
+📌 At a minimum, you need to define a query and a mutation to build a valid schema.
 
 ## Attributes
 
@@ -17,7 +21,7 @@ You can use the following attributes:
 - [#[Arg]](#arg)
 - [#[Autowire]](#autowire)
 - [#[Scalar]](#scalar)
-- [#[Cursor]](#cursor) (as part of [Connections (Pagination)](#connections-pagination))
+- [#[Cursor]](#cursor)
 
 More details on each attribute are provided below.
 
@@ -67,12 +71,12 @@ Mutations and queries must:
 
 You can configure both `#[Mutation]` and `#[Query]` attributes:
 
-| Option              | Description                                                                                                                                                                                                                                                                                                                                                                             |
-|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `name`              | Custom name for the mutation or query (instead of using the method name).                                                                                                                                                                                                                                                                                                               |
-| `description`       | Description of the mutation or query, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                    |
-| `type`              | Custom return type, which can be:<br/> - A Type (FQCN)<br/> - A `ScalarType` (e.g., `ScalarType::Int`)<br/> - A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/> - A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/> - A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`) |
-| `deprecationReason` | Marks the mutation or query as deprecated if set.                                                                                                                                                                                                                                                                                                                                       |
+| Option              | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `name`              | Custom name for the mutation or query (instead of using the method name).                                                                                                                                                                                                                                                                                                                                                                     |
+| `description`       | Description of the mutation or query, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                                                                          |
+| `type`              | Custom return type, which can be:<br/> - A Type (FQCN)<br/> - A `ScalarType` (e.g., `ScalarType::Int`)<br/> - A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/> - A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/> - A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`)<br/>- A `UnionType` (see [Union types](#union-types)) |
+| `deprecationReason` | Marks the mutation or query as deprecated if set.                                                                                                                                                                                                                                                                                                                                                                                             |
 
 ### #[Type]
 
@@ -381,7 +385,7 @@ You can configure the `#[Field]` attribute:
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `name`              | Custom name for the field (instead of using the property/method name).                                                                                                                                                                                                                                                                                                             |
 | `description`       | Description of the field, visible in the GraphQL schema.                                                                                                                                                                                                                                                                                                                           |
-| `type`              | Custom return type, which can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g., `ScalarType::Int`)<br/>- A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/>- A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`) |
+| `type`              | Custom return type, which can be:<br/>- A Type (FQCN)<br/>- A `ScalarType` (e.g., `ScalarType::Int`)<br/>- A `ListType` (e.g., `new ListType(ScalarType::Int)`)<br/>- A `NullableType` (e.g., `new NullableType(SomeType::class)`)<br/>- A combination of `ListType`, `NullableType`, and a Type FQCN or `ScalarType` (e.g., `new NullableType(new ListType(ScalarType::String))`)<br/>- A `UnionType` (see [Union types](#union-types)) |
 | `deprecationReason` | Marks the field as deprecated (only applicable in `#[Type]`).                                                                                                                                                                                                                                                                                                                      |
 
 ### #[Arg]
@@ -555,6 +559,50 @@ You can configure the `#[Cursor]` attribute:
 | Option | Description                                                                                                                                                                                                                                                          |
 |--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `type` | Defines a custom return type. It can be:<br/>- A class implementing `ScalarType` (FQCN)<br/>- `ScalarType::String`<br/>- A `NullableType` wrapping one of the above (e.g., `new NullableType(ScalarType::String)`)<br/><br/>*All cursor values resolve to a string.* |
+
+## Union types
+*GraphQL Attribute Schema* allows union types as defined by the GraphQL specification.
+
+> "Union types share similarities with Interface types, but they cannot define any shared fields among the constituent types."
+
+_See https://graphql.org/learn/schema/#union-types_
+
+By default, a GraphQL union type cannot not define any shared fields. Instead, it acts like a group of object types.
+
+Therefore, in contrary to all other types, a *GraphQL Attribute Schema* union type **cannot** be defined by an attribute (as that would be an empty class/interface).
+
+Instead, you can define a union type by (a) a native PHP union return type, or (b) a custom set type `UnionType` in a `#[Query]` or `#[Mutation]`.
+
+With using `UnionType`, it is possible to define a custom name for the type. See below:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\UnionType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+
+final readonly class Query
+{
+    // Define GraphQL union type by PHP return type only
+    #[Query]
+    public function getFoobar() : UserType|OtherType
+    {
+        // todo
+    }
+    
+    // Or define GraphQL union type by type in attribute
+    #[Query(type: new UnionType('FoobarUnionType', UserType::class, OtherType::class))]
+    public function getFoobar()
+    {
+        // todo
+    }
+    
+    // Or a combination of the above
+    #[Query(type: new UnionType('FoobarUnionType'))]
+    public function getFoobar() : UserType|OtherType
+    {
+        // todo
+    }
+}
+```
 
 ## Connections (Pagination)
 

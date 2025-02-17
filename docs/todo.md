@@ -10,6 +10,6 @@ This library is still work in progress:
 - ~~Connection, edge, nodes (see https://relay.dev/graphql/connections.htm)~~
 - ~~GraphQL interfaces, inheritance~~
 - ~~Interfaces extending interfaces (see https://graphql.org/learn/schema/#interface-types)~~
+- ~~Union types (see https://graphql.org/learn/schema/#union-types)~~
 - Subscriptions
-- Union types (see https://graphql.org/learn/schema/#union-types)
 - Directives (see https://graphql.org/learn/schema/#directives)

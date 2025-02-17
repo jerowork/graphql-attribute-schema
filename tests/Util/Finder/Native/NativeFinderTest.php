@@ -45,6 +45,7 @@ final class NativeFinderTest extends TestCase
             'Doubles/FullFeatured/Query/WithInterfaceOutputQuery.php',
             'Doubles/FullFeatured/Query/WithListOutputQuery.php',
             'Doubles/FullFeatured/Query/WithOverwrittenTypeQuery.php',
+            'Doubles/FullFeatured/Query/WithUnionOutputQuery.php',
             'Doubles/FullFeatured/Type/AbstractAdminType.php',
             'Doubles/FullFeatured/Type/AgentType.php',
             'Doubles/FullFeatured/Type/FoobarStatusType.php',

@@ -22,6 +22,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\UnionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Parser;
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\BasicMutation;
@@ -32,6 +33,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObj
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithUnionOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AbstractAdminType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AgentType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\FoobarStatusType;
@@ -164,6 +166,15 @@ final class ParserTest extends TestCase
                 ],
                 ObjectTypeReference::create(FoobarStatusType::class),
                 'query',
+                null,
+            ),
+            new QueryNode(
+                WithUnionOutputQuery::class,
+                'unionQuery',
+                null,
+                [],
+                UnionTypeReference::create('Union_AgentType_FoobarType', [AgentType::class, FoobarType::class]),
+                'getUnionQuery',
                 null,
             ),
             new QueryNode(

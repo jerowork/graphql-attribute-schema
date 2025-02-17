@@ -17,6 +17,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\InterfaceTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ListAndNullableTypeResolverDecorator;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ObjectTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\UnionTypeResolver;
 use Psr\Container\ContainerInterface;
 
 final readonly class SchemaBuilderFactory
@@ -58,6 +59,11 @@ final readonly class SchemaBuilderFactory
                     new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
                         $astContainer,
                         new InterfaceTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
+                        $builtTypesRegistry,
+                    )),
+                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                        $astContainer,
+                        new UnionTypeResolver($builtTypesRegistry),
                         $builtTypesRegistry,
                     )),
                     new ListAndNullableTypeResolverDecorator(

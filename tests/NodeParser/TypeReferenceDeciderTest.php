@@ -11,18 +11,24 @@ use Jerowork\GraphqlAttributeSchema\Attribute\Option\ConnectionType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ListType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\NullableType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Option\ScalarType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Option\UnionType;
+use Jerowork\GraphqlAttributeSchema\Attribute\Query;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
+use Jerowork\GraphqlAttributeSchema\Node\TypeReference\UnionTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestConnectionMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestNullableConnectionMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQueryWithUnionType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestTypeWithAutowire;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionNamedType;
+use ReflectionUnionType;
 
 /**
  * @internal
@@ -87,6 +93,63 @@ final class TypeReferenceDeciderTest extends TestCase
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($nodeType?->equals(ObjectTypeReference::create(DateTime::class)));
+    }
+
+    #[Test]
+    public function itShouldReturnUnionFromAttributeWithSetObjectTypes(): void
+    {
+        $decider = new TypeReferenceDecider();
+
+        $class = new ReflectionClass(TestQueryWithUnionType::class);
+        $methods = $class->getMethod('getQuxs');
+        $type = $methods->getReturnType();
+
+        $nodeType = $decider->getTypeReference(
+            $type,
+            new Query(type: new UnionType('FoobarResults', TestType::class, TestTypeWithAutowire::class)),
+        );
+
+        self::assertInstanceOf(ReflectionNamedType::class, $type);
+        self::assertTrue($nodeType?->equals(UnionTypeReference::create('FoobarResults', [TestType::class, TestTypeWithAutowire::class])));
+    }
+
+    #[Test]
+    public function itShouldReturnUnionFromAttributeWithSetObjectTypesAsReturnType(): void
+    {
+        $decider = new TypeReferenceDecider();
+
+        $class = new ReflectionClass(TestQueryWithUnionType::class);
+        $methods = $class->getMethod('getFoobars');
+        $type = $methods->getReturnType();
+
+        $nodeType = $decider->getTypeReference(
+            $type,
+            new Query(type: new UnionType('FoobarResults')),
+        );
+
+        self::assertInstanceOf(ReflectionUnionType::class, $type);
+        self::assertTrue($nodeType?->equals(UnionTypeReference::create('FoobarResults', [TestType::class, TestTypeWithAutowire::class])));
+    }
+
+    #[Test]
+    public function itShouldReturnListOfUnionFromAttribute(): void
+    {
+        $decider = new TypeReferenceDecider();
+
+        $class = new ReflectionClass(TestQueryWithUnionType::class);
+        $methods = $class->getMethod('getListOfQuxs');
+        $type = $methods->getReturnType();
+
+        $nodeType = $decider->getTypeReference(
+            $type,
+            new Query(type: new ListType(new UnionType('FoobarResults', TestType::class, TestTypeWithAutowire::class))),
+        );
+
+        self::assertInstanceOf(ReflectionNamedType::class, $type);
+        self::assertTrue($nodeType?->equals(UnionTypeReference::create(
+            'FoobarResults',
+            [TestType::class, TestTypeWithAutowire::class],
+        )->setList()));
     }
 
     #[Test]
@@ -223,5 +286,38 @@ final class TypeReferenceDeciderTest extends TestCase
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
         self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class, 12)->setNullableValue()));
+    }
+
+    #[Test]
+    public function itShouldReturnUnionFromReturnType(): void
+    {
+        $decider = new TypeReferenceDecider();
+
+        $class = new ReflectionClass(TestQueryWithUnionType::class);
+        $methods = $class->getMethod('getBazs');
+        $type = $methods->getReturnType();
+
+        $nodeType = $decider->getTypeReference($type, new Query());
+
+        self::assertInstanceOf(ReflectionUnionType::class, $type);
+        self::assertTrue($nodeType?->equals(UnionTypeReference::create('Union_TestType_TestTypeWithAutowire', [TestType::class, TestTypeWithAutowire::class])));
+    }
+
+    #[Test]
+    public function itShouldReturnNullableUnionFromReturnType(): void
+    {
+        $decider = new TypeReferenceDecider();
+
+        $class = new ReflectionClass(TestQueryWithUnionType::class);
+        $methods = $class->getMethod('getNullableBazs');
+        $type = $methods->getReturnType();
+
+        $nodeType = $decider->getTypeReference($type, new Query());
+
+        self::assertInstanceOf(ReflectionUnionType::class, $type);
+        self::assertTrue($nodeType?->equals(UnionTypeReference::create(
+            'Union_TestType_TestTypeWithAutowire',
+            [TestType::class, TestTypeWithAutowire::class],
+        )->setNullableValue()));
     }
 }
