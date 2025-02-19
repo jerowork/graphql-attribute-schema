@@ -8,6 +8,8 @@ use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\Resolver\RootTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltTypesRegistryTypeResolverDecorator;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\PageInfoTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ConnectionTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\CustomScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\EnumTypeResolver;
@@ -67,7 +69,12 @@ final readonly class SchemaBuilderFactory
                         $builtTypesRegistry,
                     )),
                     new ListAndNullableTypeResolverDecorator(
-                        new ConnectionTypeResolver($astContainer, $builtTypesRegistry, $container, $fieldResolver),
+                        new ConnectionTypeResolver(
+                            $astContainer,
+                            $builtTypesRegistry,
+                            new PageInfoTypeResolver($builtTypesRegistry),
+                            new EdgeTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
+                        ),
                     ),
                 ]),
                 $container,
