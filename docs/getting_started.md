@@ -57,6 +57,7 @@ For a quick start, here’s an example of a **GraphQL server in Symfony**.
 *This example omits error handling for simplicity.*
 
 ```php
+use GraphQL\Error\DebugFlag;
 use GraphQL\Server\StandardServer;
 use GraphQL\Server\ServerConfig;
 use Jerowork\GraphqlAttributeSchema\ParserFactory;
@@ -100,11 +101,11 @@ final readonly class GraphQLServerController
 
         // 4. Handle batch requests
         if (is_array($result)) {
-            return new JsonResponse(array_map(fn($res) => $res->toArray(), $result));        
+            return new JsonResponse(array_map(fn($res) => $res->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE), $result));        
         }
         
         // 5. Return response
-        return new JsonResponse($result->toArray());
+        return new JsonResponse($result->toArray(DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE));
     }
 }
 ```
