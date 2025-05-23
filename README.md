@@ -20,3 +20,5 @@ By adding attributes (`#[Mutation]`, `#[Query]`, `#[Type]`, etc.) directly to yo
 
 ## 📖 Documentation
 Documentation is available at [jerowork.github.io/graphql-attribute-schema](https://jerowork.github.io/graphql-attribute-schema) or in the [docs](docs/index.md).
+
+There is also an example application, using most of the features: https://github.com/jerowork/example-application-graphql-attribute-schema
