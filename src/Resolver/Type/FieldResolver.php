@@ -113,7 +113,6 @@ final readonly class FieldResolver
                 'name' => 'first',
                 'type' => Type::int(),
                 'description' => 'Connection: return the first # items',
-                'defaultValue' => $reference->first,
             ],
             [
                 'name' => 'after',
