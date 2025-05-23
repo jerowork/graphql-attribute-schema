@@ -11,6 +11,5 @@ final readonly class ConnectionType implements Type
      */
     public function __construct(
         public string $edgeType,
-        public int $first = 10,
     ) {}
 }

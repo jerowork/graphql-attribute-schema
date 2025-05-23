@@ -39,7 +39,7 @@ final class TypeResolverSelectorTest extends TestCase
     {
         self::expectException(LogicException::class);
 
-        $this->selector->getResolver(ConnectionTypeReference::create(stdClass::class, 10));
+        $this->selector->getResolver(ConnectionTypeReference::create(stdClass::class));
     }
 
     #[Test]

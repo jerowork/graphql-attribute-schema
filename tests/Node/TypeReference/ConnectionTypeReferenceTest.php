@@ -17,7 +17,7 @@ final class ConnectionTypeReferenceTest extends TestCase
     #[Test]
     public function itShouldCreateBaseObject(): void
     {
-        $reference = ConnectionTypeReference::create(stdClass::class, 10);
+        $reference = ConnectionTypeReference::create(stdClass::class);
 
         self::assertSame(stdClass::class, $reference->className);
     }
@@ -25,7 +25,7 @@ final class ConnectionTypeReferenceTest extends TestCase
     #[Test]
     public function itShouldSetValueNullable(): void
     {
-        $reference = ConnectionTypeReference::create(stdClass::class, 10);
+        $reference = ConnectionTypeReference::create(stdClass::class);
 
         self::assertFalse($reference->isValueNullable());
 
@@ -37,7 +37,7 @@ final class ConnectionTypeReferenceTest extends TestCase
     #[Test]
     public function itShouldSerializeAndDeserialize(): void
     {
-        $reference = ConnectionTypeReference::create(stdClass::class, 10)
+        $reference = ConnectionTypeReference::create(stdClass::class)
             ->setNullableValue();
 
         self::assertEquals(ConnectionTypeReference::fromArray($reference->toArray()), $reference);

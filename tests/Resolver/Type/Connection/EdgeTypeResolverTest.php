@@ -78,7 +78,7 @@ final class EdgeTypeResolverTest extends TestCase
         self::assertFalse($this->builtTypesRegistry->hasType('TestEdge'));
 
         $edgeType = $this->resolver->createEdgeType(
-            ConnectionTypeReference::create(TestType::class, 10),
+            ConnectionTypeReference::create(TestType::class),
             $typeNode,
             new TypeResolverSelector([
                 new ObjectTypeResolver($this->astContainer, $this->fieldResolver),
@@ -141,7 +141,7 @@ final class EdgeTypeResolverTest extends TestCase
         self::expectExceptionMessage('Invalid object type cursor connection edge type');
 
         $this->resolver->createEdgeType(
-            ConnectionTypeReference::create(TestType::class, 10),
+            ConnectionTypeReference::create(TestType::class),
             $typeNode,
             new TypeResolverSelector([
                 new ObjectTypeResolver($this->astContainer, $this->fieldResolver),
@@ -175,7 +175,7 @@ final class EdgeTypeResolverTest extends TestCase
         self::assertTrue($this->builtTypesRegistry->hasType('TestEdge'));
 
         $edgeType = $this->resolver->createEdgeType(
-            ConnectionTypeReference::create(TestType::class, 10),
+            ConnectionTypeReference::create(TestType::class),
             new TypeNode(
                 TestType::class,
                 'Test',

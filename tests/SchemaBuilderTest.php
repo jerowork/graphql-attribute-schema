@@ -264,7 +264,6 @@ final class SchemaBuilderTest extends TestCase
                         'name' => 'first',
                         'type' => Type::int(),
                         'description' => 'Connection: return the first # items',
-                        'defaultValue' => 10,
                     ],
                     [
                         'name' => 'after',
@@ -745,7 +744,6 @@ final class SchemaBuilderTest extends TestCase
                                             'name' => 'first',
                                             'type' => Type::int(),
                                             'description' => 'Connection: return the first # items',
-                                            'defaultValue' => 10,
                                         ],
                                         [
                                             'name' => 'after',
@@ -1160,7 +1158,6 @@ final class SchemaBuilderTest extends TestCase
                                     'name' => 'first',
                                     'type' => Type::int(),
                                     'description' => 'Connection: return the first # items',
-                                    'defaultValue' => 10,
                                 ],
                                 [
                                     'name' => 'after',

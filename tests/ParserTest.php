@@ -190,7 +190,7 @@ final class ParserTest extends TestCase
                         'status',
                     ),
                 ],
-                ConnectionTypeReference::create(UserType::class, 10),
+                ConnectionTypeReference::create(UserType::class),
                 'withConnectionOutput',
                 null,
             ),
@@ -547,7 +547,7 @@ final class ParserTest extends TestCase
                         null,
                     ),
                     new FieldNode(
-                        ConnectionTypeReference::create(AgentType::class, 10)->setNullableValue(),
+                        ConnectionTypeReference::create(AgentType::class)->setNullableValue(),
                         'users',
                         null,
                         [

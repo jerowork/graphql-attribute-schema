@@ -40,7 +40,7 @@ final readonly class TypeReferenceDecider
             $attributeType = $attribute->getType();
 
             if ($attributeType instanceof ConnectionType) {
-                return ConnectionTypeReference::create($attributeType->edgeType, $attributeType->first);
+                return ConnectionTypeReference::create($attributeType->edgeType);
             }
 
             if ($attributeType instanceof ListType) {
@@ -65,7 +65,7 @@ final readonly class TypeReferenceDecider
 
             if ($attributeType instanceof NullableType) {
                 if ($attributeType->type instanceof ConnectionType) {
-                    return ConnectionTypeReference::create($attributeType->type->edgeType, $attributeType->type->first)
+                    return ConnectionTypeReference::create($attributeType->type->edgeType)
                         ->setNullableValue();
                 }
 

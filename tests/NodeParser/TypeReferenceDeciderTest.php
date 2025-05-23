@@ -266,10 +266,10 @@ final class TypeReferenceDeciderTest extends TestCase
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
-        $reference = $decider->getTypeReference($type, new Mutation(type: new ConnectionType(TestType::class, 12)));
+        $reference = $decider->getTypeReference($type, new Mutation(type: new ConnectionType(TestType::class)));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class, 12)));
+        self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class)));
     }
 
     #[Test]
@@ -282,10 +282,10 @@ final class TypeReferenceDeciderTest extends TestCase
         $parameters = $methods->getParameters();
         $type = $parameters[0]->getType();
 
-        $reference = $decider->getTypeReference($type, new Mutation(type: new NullableType(new ConnectionType(TestType::class, 12))));
+        $reference = $decider->getTypeReference($type, new Mutation(type: new NullableType(new ConnectionType(TestType::class))));
 
         self::assertInstanceOf(ReflectionNamedType::class, $type);
-        self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class, 12)->setNullableValue()));
+        self::assertTrue($reference?->equals(ConnectionTypeReference::create(TestType::class)->setNullableValue()));
     }
 
     #[Test]

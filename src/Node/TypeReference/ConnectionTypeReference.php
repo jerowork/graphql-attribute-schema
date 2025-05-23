@@ -7,7 +7,6 @@ namespace Jerowork\GraphqlAttributeSchema\Node\TypeReference;
 /**
  * @phpstan-type ConnectionReferencePayload array{
  *     className: class-string,
- *     first: int,
  *     isValueNullable: bool
  * }
  *
@@ -22,7 +21,6 @@ final class ConnectionTypeReference implements TypeReference
      */
     public function __construct(
         public readonly string $className,
-        public readonly int $first,
         bool $isValueNullable,
     ) {
         $this->isValueNullable = $isValueNullable;
@@ -31,9 +29,9 @@ final class ConnectionTypeReference implements TypeReference
     /**
      * @param class-string $className
      */
-    public static function create(string $className, int $first): self
+    public static function create(string $className): self
     {
-        return new self($className, $first, false);
+        return new self($className, false);
     }
 
     /**
@@ -43,7 +41,6 @@ final class ConnectionTypeReference implements TypeReference
     {
         return [
             'className' => $this->className,
-            'first' => $this->first,
             'isValueNullable' => $this->isValueNullable(),
         ];
     }
@@ -55,7 +52,6 @@ final class ConnectionTypeReference implements TypeReference
     {
         return new self(
             $payload['className'],
-            $payload['first'],
             $payload['isValueNullable'],
         );
     }
@@ -64,7 +60,6 @@ final class ConnectionTypeReference implements TypeReference
     {
         return $reference instanceof self
             && $reference->className === $this->className
-            && $reference->first === $this->first
             && $reference->isValueNullable === $this->isValueNullable;
     }
 }
