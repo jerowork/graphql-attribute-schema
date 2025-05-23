@@ -115,4 +115,21 @@ final class CustomScalarTypeResolverTest extends TestCase
 
         self::assertSame('2025-02-07T12:00:12+00:00', $value);
     }
+
+    #[Test]
+    public function itShouldAbstractNullable(): void
+    {
+        $value = $this->resolver->abstract(new FieldNode(
+            ObjectTypeReference::create(DateTimeType::class),
+            'value',
+            null,
+            [],
+            FieldNodeType::Property,
+            null,
+            'value',
+            null,
+        ), []);
+
+        self::assertNull($value);
+    }
 }

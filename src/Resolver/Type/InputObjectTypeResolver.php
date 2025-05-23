@@ -82,6 +82,10 @@ final class InputObjectTypeResolver implements TypeResolver
             );
         }
 
+        if (!array_key_exists($node->name, $args)) {
+            return null;
+        }
+
         /** @var array<string, mixed> $nodeArgs */
         $nodeArgs = $args[$node->name];
 

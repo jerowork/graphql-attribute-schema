@@ -89,4 +89,21 @@ final class BuiltInScalarTypeResolverTest extends TestCase
 
         self::assertSame('test-string', $value);
     }
+
+    #[Test]
+    public function itShouldAbstractNullable(): void
+    {
+        $value = $this->resolver->abstract(new FieldNode(
+            ScalarTypeReference::create('string'),
+            'value',
+            null,
+            [],
+            FieldNodeType::Property,
+            null,
+            'value',
+            null,
+        ), []);
+
+        self::assertNull($value);
+    }
 }

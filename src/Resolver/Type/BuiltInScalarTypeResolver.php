@@ -56,6 +56,6 @@ final class BuiltInScalarTypeResolver implements TypeResolver
             throw new LogicException(sprintf('BuiltInScalarType: Node must be either FieldNode or ArgNode, %s given', $node::class));
         }
 
-        return $args[$node->name];
+        return $args[$node->name] ?? null;
     }
 }
