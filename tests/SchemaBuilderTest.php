@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test;
 
-use GraphQL\Type\Definition\CustomScalarType;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\FieldDefinition;
 use GraphQL\Type\Definition\InputObjectType;
@@ -31,6 +30,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutp
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithUnionOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -534,11 +534,8 @@ final class SchemaBuilderTest extends TestCase
                                 ],
                                 [
                                     'name' => 'date',
-                                    'type' => new CustomScalarType([
+                                    'type' => new DateTimeType([
                                         'name' => 'DateTime',
-                                        'serialize' => fn() => true,
-                                        'parseValue' => fn() => true,
-                                        'parseLiteral' => fn() => true,
                                         'description' => 'Date and time (ISO-8601)',
                                     ]),
                                     'description' => 'A foobar date',
@@ -948,11 +945,8 @@ final class SchemaBuilderTest extends TestCase
                         ],
                         [
                             'name' => 'date',
-                            'type' => new CustomScalarType([
+                            'type' => new DateTimeType([
                                 'name' => 'DateTime',
-                                'serialize' => fn() => true,
-                                'parseValue' => fn() => true,
-                                'parseLiteral' => fn() => true,
                                 'description' => 'Date and time (ISO-8601)',
                             ]),
                             'description' => 'A foobar date',
@@ -1372,11 +1366,8 @@ final class SchemaBuilderTest extends TestCase
                                 ],
                                 [
                                     'name' => 'date',
-                                    'type' => new CustomScalarType([
+                                    'type' => new DateTimeType([
                                         'name' => 'DateTime',
-                                        'serialize' => fn() => true,
-                                        'parseValue' => fn() => true,
-                                        'parseLiteral' => fn() => true,
                                         'description' => 'Date and time (ISO-8601)',
                                     ]),
                                     'description' => null,

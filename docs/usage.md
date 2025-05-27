@@ -502,26 +502,33 @@ Webonyx/graphql-php comes with four built-in scalar types:
 
 💡 **Tip:** Scalar types work for both input and output.
 
-If you need something custom, you can define your own scalar type using `#[Scalar]`:
+If you need a custom scalar type, you can define your own type using `#[Scalar]` and extending Webonyx's `ScalarType`:
 
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
-use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
+use GraphQL\Type\Definition\ScalarType;
 
 #[Scalar]
-final readonly class CustomScalar implements ScalarType
+final class CustomScalar extends ScalarType
 {
-    public static function serialize(mixed $value): string
+    public function serialize($value): string
     {
         // ...
     }
 
-    public static function deserialize(string $value): mixed
+    public function parseValue($value): string
+    {
+        // ...
+    }
+
+    public function parseLiteral(Node $valueNode, ?array $variables = null): string
     {
         // ...
     }
 }
 ```
+
+More information about Webonyx's `ScalarType` see: https://webonyx.github.io/graphql-php/type-definitions/scalars/#writing-custom-scalar-types
 
 Once defined, you can use your custom scalar type in attributes like `#[Field]` and `#[Mutation]`.  
 If you use the `alias` option in `#[Scalar]`, the `type` option becomes optional (see below).
@@ -530,7 +537,7 @@ If you use the `alias` option in `#[Scalar]`, the `type` option becomes optional
 
 Custom scalar types must:
 
-- Implement the `ScalarType` interface.
+- Extend the `ScalarType` class.
 
 #### Options
 

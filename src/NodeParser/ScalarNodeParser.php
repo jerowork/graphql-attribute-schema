@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\NodeParser;
 
 use Generator;
+use GraphQL\Type\Definition\ScalarType;
 use Jerowork\GraphqlAttributeSchema\Attribute\Scalar;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
-use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use Override;
 use ReflectionClass;
 use ReflectionMethod;
@@ -30,8 +30,8 @@ final readonly class ScalarNodeParser implements NodeParser
             return;
         }
 
-        if (!$class->implementsInterface(ScalarType::class)) {
-            throw ParseException::missingImplements($class->getName(), ScalarType::class);
+        if ($class->getParentClass() === false || $class->getParentClass()->getName() !== ScalarType::class) {
+            throw ParseException::missingExtends($class->getName(), ScalarType::class);
         }
 
         $attribute = $this->getAttribute($class, Scalar::class);
