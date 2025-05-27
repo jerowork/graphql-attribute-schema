@@ -83,7 +83,7 @@ return (new PhpCsFixer\Config())
         'ordered_imports' => true,
         'ordered_types' => ['null_adjustment' => 'always_first', 'sort_algorithm' => 'alpha'],
         'php_unit_fqcn_annotation' => true,
-        'php_unit_method_casing' => ['case' => 'snake_case'],
+        'php_unit_method_casing' => ['case' => 'camel_case'],
         'php_unit_test_annotation' => ['style' => 'annotation'],
         'php_unit_test_case_static_method_calls' => ['call_type' => 'self'],
         'phpdoc_align' => ['align' => 'left'],
