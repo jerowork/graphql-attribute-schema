@@ -11,5 +11,6 @@ This library is still work in progress:
 - ~~GraphQL interfaces, inheritance~~
 - ~~Interfaces extending interfaces (see https://graphql.org/learn/schema/#interface-types)~~
 - ~~Union types (see https://graphql.org/learn/schema/#union-types)~~
+- [WIP] Deferred loaders (N+1 problem) (see https://webonyx.github.io/graphql-php/data-fetching/#solving-n1-problem)
 - Subscriptions
 - Directives (see https://graphql.org/learn/schema/#directives)
