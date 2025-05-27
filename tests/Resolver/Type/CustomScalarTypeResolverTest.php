@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type;
 
-use GraphQL\Type\Definition\CustomScalarType;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
@@ -68,11 +67,8 @@ final class CustomScalarTypeResolverTest extends TestCase
 
         $type = $this->resolver->createType(ObjectTypeReference::create(DateTimeType::class));
 
-        self::assertEquals(new CustomScalarType([
+        self::assertEquals(new DateTimeType([
             'name' => 'date',
-            'serialize' => fn() => true,
-            'parseValue' => fn() => true,
-            'parseLiteral' => fn() => true,
             'description' => 'Date Time',
         ]), $type);
     }

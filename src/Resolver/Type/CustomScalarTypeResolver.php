@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Resolver\Type;
 
 use Closure;
-use GraphQL\Language\AST\StringValueNode;
-use GraphQL\Type\Definition\CustomScalarType;
+use GraphQL\Type\Definition\ScalarType;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
@@ -14,7 +13,6 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
-use Jerowork\GraphqlAttributeSchema\Type\ScalarType;
 use LogicException;
 use Override;
 
@@ -37,18 +35,15 @@ final class CustomScalarTypeResolver implements TypeResolver
     }
 
     #[Override]
-    public function createType(TypeReference $reference): CustomScalarType
+    public function createType(TypeReference $reference): ScalarType
     {
         $node = $this->getNodeFromReference($reference, $this->astContainer->getAst(), ScalarNode::class);
 
-        /** @var class-string<ScalarType<mixed>> $scalarType */
+        /** @var class-string<ScalarType> $scalarType */
         $scalarType = $node->className;
 
-        return new CustomScalarType([
+        return new $scalarType([
             'name' => $node->name,
-            'serialize' => fn($value) => $scalarType::serialize($value),
-            'parseValue' => fn(string $value) => $scalarType::deserialize($value),
-            'parseLiteral' => fn(StringValueNode $valueNode) => $scalarType::deserialize($valueNode->value),
             'description' => $node->description,
         ]);
     }
