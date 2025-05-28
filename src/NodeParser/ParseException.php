@@ -21,6 +21,16 @@ final class ParseException extends Exception
         return new self(sprintf('Invalid return type for connection %s:%s', $class, $method));
     }
 
+    public static function missingDeferredTypeLoaderReturnType(string $class, string $method): self
+    {
+        return new self(sprintf('Missing return type for deferred type loader %s:%s', $class, $method));
+    }
+
+    public static function invalidDeferredTypeLoaderReturnType(string $class, string $method): self
+    {
+        return new self(sprintf('Invalid return type for deferred type loader %s:%s', $class, $method));
+    }
+
     public static function invalidParameterType(string $parameter): self
     {
         return new self(sprintf('Invalid arg parameter type for parameter %s', $parameter));

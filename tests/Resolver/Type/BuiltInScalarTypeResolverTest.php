@@ -85,6 +85,7 @@ final class BuiltInScalarTypeResolverTest extends TestCase
             null,
             'value',
             null,
+            null,
         ), ['value' => 'test-string']);
 
         self::assertSame('test-string', $value);
@@ -101,6 +102,7 @@ final class BuiltInScalarTypeResolverTest extends TestCase
             FieldNodeType::Property,
             null,
             'value',
+            null,
             null,
         ), []);
 

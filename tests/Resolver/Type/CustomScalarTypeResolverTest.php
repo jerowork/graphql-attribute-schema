@@ -107,6 +107,7 @@ final class CustomScalarTypeResolverTest extends TestCase
             null,
             'value',
             null,
+            null,
         ), ['value' => '2025-02-07T12:00:12+00:00']);
 
         self::assertSame('2025-02-07T12:00:12+00:00', $value);
@@ -123,6 +124,7 @@ final class CustomScalarTypeResolverTest extends TestCase
             FieldNodeType::Property,
             null,
             'value',
+            null,
             null,
         ), []);
 

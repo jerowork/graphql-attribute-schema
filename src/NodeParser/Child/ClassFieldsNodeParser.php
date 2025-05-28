@@ -16,6 +16,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionProperty;
+use Stringable;
 
 /**
  * @internal
@@ -23,6 +24,8 @@ use ReflectionProperty;
 final readonly class ClassFieldsNodeParser
 {
     use RetrieveNameForFieldTrait;
+
+    private const array ALLOWED_SCALAR_TYPES_FOR_DEFERRED_TYPE_LOADER = ['string', 'int', 'array'];
 
     private const array RESERVED_METHOD_NAMES = ['__construct'];
 
@@ -58,6 +61,24 @@ final readonly class ClassFieldsNodeParser
                 }
             }
 
+            // When it has a deferred type loader, the return type needs to be an integer, string or Stringable
+            if ($fieldAttribute->deferredTypeLoader !== null) {
+                if ($property->getType() === null) {
+                    throw ParseException::missingDeferredTypeLoaderReturnType($class->getName(), $property->getName());
+                }
+
+                if ($property->getType() instanceof ReflectionNamedType
+                    && $property->getType()->isBuiltin()
+                    && !in_array($property->getType()->getName(), self::ALLOWED_SCALAR_TYPES_FOR_DEFERRED_TYPE_LOADER, true)
+                ) {
+                    throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $property->getName());
+                }
+
+                if (!$property->getType() instanceof Stringable) {
+                    throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $property->getName());
+                }
+            }
+
             $fieldNodes[] = new FieldNode(
                 $reference,
                 $fieldAttribute->name ?? $property->getName(),
@@ -67,6 +88,7 @@ final readonly class ClassFieldsNodeParser
                 null,
                 $property->getName(),
                 $fieldAttribute->deprecationReason,
+                $fieldAttribute->deferredTypeLoader,
             );
         }
 
@@ -90,6 +112,24 @@ final readonly class ClassFieldsNodeParser
                 }
             }
 
+            // When it has a deferred type loader, the return type needs to be an integer, string or Stringable
+            if ($fieldAttribute->deferredTypeLoader !== null) {
+                if ($returnType === null) {
+                    throw ParseException::missingDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+                }
+
+                if ($returnType instanceof ReflectionNamedType
+                    && $returnType->isBuiltin()
+                    && !in_array($returnType->getName(), self::ALLOWED_SCALAR_TYPES_FOR_DEFERRED_TYPE_LOADER, true)
+                ) {
+                    throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+                }
+
+                if (!$returnType instanceof Stringable) {
+                    throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+                }
+            }
+
             $fieldNodes[] = new FieldNode(
                 $reference,
                 $this->retrieveNameForField($method, $fieldAttribute),
@@ -99,6 +139,7 @@ final readonly class ClassFieldsNodeParser
                 $method->getName(),
                 null,
                 $fieldAttribute->deprecationReason,
+                $fieldAttribute->deferredTypeLoader,
             );
         }
 

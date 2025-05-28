@@ -50,6 +50,7 @@ final class FieldNodeTest extends TestCase
             'method',
             null,
             'deprecated',
+            null,
         );
 
         self::assertEquals(FieldNode::fromArray($fieldNode->toArray()), $fieldNode);

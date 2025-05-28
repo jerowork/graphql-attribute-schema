@@ -108,6 +108,7 @@ final class MutationNodeParserTest extends TestCase
             ScalarTypeReference::create('string'),
             'testMutation',
             null,
+            null,
         )], $nodes);
     }
 }

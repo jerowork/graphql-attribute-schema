@@ -50,6 +50,7 @@ final class InputTypeNodeTest extends TestCase
                     'method',
                     null,
                     'deprecated',
+                    null,
                 ),
             ],
         );

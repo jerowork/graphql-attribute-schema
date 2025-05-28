@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -44,6 +45,7 @@ final class QueryNodeTest extends TestCase
             ObjectTypeReference::create(TestType::class),
             'method',
             'deprecated',
+            TestTypeLoader::class,
         );
 
         self::assertEquals(QueryNode::fromArray($queryNode->toArray()), $queryNode);

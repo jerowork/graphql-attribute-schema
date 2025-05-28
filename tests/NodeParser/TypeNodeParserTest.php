@@ -83,6 +83,7 @@ final class TypeNodeParserTest extends TestCase
                     null,
                     'id',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ObjectTypeReference::create(DateTimeImmutable::class),
@@ -92,6 +93,7 @@ final class TypeNodeParserTest extends TestCase
                     FieldNodeType::Property,
                     null,
                     'date',
+                    null,
                     null,
                 ),
                 new FieldNode(
@@ -103,6 +105,7 @@ final class TypeNodeParserTest extends TestCase
                     'flow',
                     null,
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('string'),
@@ -111,6 +114,7 @@ final class TypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getStatus',
+                    null,
                     null,
                     null,
                 ),
@@ -144,6 +148,7 @@ final class TypeNodeParserTest extends TestCase
                     null,
                     'date',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('int'),
@@ -154,6 +159,7 @@ final class TypeNodeParserTest extends TestCase
                     'getId',
                     null,
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('string'),
@@ -162,6 +168,7 @@ final class TypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getStatus',
+                    null,
                     null,
                     null,
                 ),
@@ -194,6 +201,7 @@ final class TypeNodeParserTest extends TestCase
                     null,
                     'date',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('string'),
@@ -204,6 +212,7 @@ final class TypeNodeParserTest extends TestCase
                     null,
                     'constructId',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('int'),
@@ -212,6 +221,7 @@ final class TypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getId',
+                    null,
                     null,
                     null,
                 ),
@@ -224,6 +234,7 @@ final class TypeNodeParserTest extends TestCase
                     'getStatus',
                     null,
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('float'),
@@ -232,6 +243,7 @@ final class TypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getValue',
+                    null,
                     null,
                     null,
                 ),

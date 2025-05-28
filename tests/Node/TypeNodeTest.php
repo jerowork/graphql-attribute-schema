@@ -51,6 +51,7 @@ final class TypeNodeTest extends TestCase
                     'method',
                     null,
                     'deprecated',
+                    null,
                 ),
             ],
             new CursorNode(

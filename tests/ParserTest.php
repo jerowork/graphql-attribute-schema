@@ -29,6 +29,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Mutation\BasicMuta
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\BasicQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\DeprecatedQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithConnectionOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithDeferredTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObjectQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
@@ -44,6 +45,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Input\QueryIn
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\RecipientType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\UserType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
@@ -87,6 +89,7 @@ final class ParserTest extends TestCase
                 ObjectTypeReference::create(FoobarType::class),
                 '__invoke',
                 null,
+                null,
             ),
             new MutationNode(
                 BasicMutation::class,
@@ -103,6 +106,7 @@ final class ParserTest extends TestCase
                 ScalarTypeReference::create('string'),
                 'second',
                 'Its deprecated',
+                null,
             ),
         ], $nodes);
 
@@ -142,6 +146,7 @@ final class ParserTest extends TestCase
                 ScalarTypeReference::create('string'),
                 '__invoke',
                 null,
+                null,
             ),
             new QueryNode(
                 DeprecatedQuery::class,
@@ -151,6 +156,7 @@ final class ParserTest extends TestCase
                 ScalarTypeReference::create('string')->setNullableValue(),
                 'doSomeWork',
                 'This is deprecated.',
+                null,
             ),
             new QueryNode(
                 WithInputObjectQuery::class,
@@ -167,6 +173,7 @@ final class ParserTest extends TestCase
                 ObjectTypeReference::create(FoobarStatusType::class),
                 'query',
                 null,
+                null,
             ),
             new QueryNode(
                 WithUnionOutputQuery::class,
@@ -175,6 +182,7 @@ final class ParserTest extends TestCase
                 [],
                 UnionTypeReference::create('Union_AgentType_FoobarType', [AgentType::class, FoobarType::class]),
                 'getUnionQuery',
+                null,
                 null,
             ),
             new QueryNode(
@@ -193,6 +201,17 @@ final class ParserTest extends TestCase
                 ConnectionTypeReference::create(UserType::class),
                 'withConnectionOutput',
                 null,
+                null,
+            ),
+            new QueryNode(
+                WithDeferredTypeLoader::class,
+                'withDeferredTypeLoader',
+                'A description',
+                [],
+                ScalarTypeReference::create('string'),
+                '__invoke',
+                null,
+                TestTypeLoader::class,
             ),
             new QueryNode(
                 WithInterfaceOutputQuery::class,
@@ -201,6 +220,7 @@ final class ParserTest extends TestCase
                 [],
                 ObjectTypeReference::create(UserType::class),
                 'withInterface',
+                null,
                 null,
             ),
             new QueryNode(
@@ -211,6 +231,7 @@ final class ParserTest extends TestCase
                 ObjectTypeReference::create(UserType::class)->setList()->setNullableList(),
                 'withListOutput',
                 null,
+                null,
             ),
             new QueryNode(
                 WithOverwrittenTypeQuery::class,
@@ -219,6 +240,7 @@ final class ParserTest extends TestCase
                 [],
                 ScalarTypeReference::create('bool')->setNullableValue(),
                 'withOverwrittenType',
+                null,
                 null,
             ),
         ], $nodes);
@@ -240,6 +262,7 @@ final class ParserTest extends TestCase
                         null,
                         'id',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ObjectTypeReference::create(FoobarStatusType::class),
@@ -249,6 +272,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'status',
+                        null,
                         null,
                     ),
                 ],
@@ -267,6 +291,7 @@ final class ParserTest extends TestCase
                         null,
                         'id',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('string')->setNullableValue(),
@@ -276,6 +301,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'value',
+                        null,
                         null,
                     ),
                     new FieldNode(
@@ -287,6 +313,7 @@ final class ParserTest extends TestCase
                         null,
                         'baz',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ObjectTypeReference::create(DateTimeImmutable::class)->setNullableValue(),
@@ -296,6 +323,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'date',
+                        null,
                         null,
                     ),
                 ],
@@ -314,6 +342,7 @@ final class ParserTest extends TestCase
                         null,
                         'id',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ObjectTypeReference::create(FoobarStatusType::class),
@@ -323,6 +352,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'status',
+                        null,
                         null,
                     ),
                 ],
@@ -346,6 +376,7 @@ final class ParserTest extends TestCase
                         null,
                         'adminName',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('string'),
@@ -354,6 +385,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'getPassword',
+                        null,
                         null,
                         null,
                     ),
@@ -366,6 +398,7 @@ final class ParserTest extends TestCase
                         'isAdmin',
                         null,
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('int'),
@@ -374,6 +407,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'getRecipientId',
+                        null,
                         null,
                         null,
                     ),
@@ -395,6 +429,7 @@ final class ParserTest extends TestCase
                         'getRecipientId',
                         null,
                         null,
+                        null,
                     ),
                 ],
                 null,
@@ -412,6 +447,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'getId',
+                        null,
                         null,
                         null,
                     ),
@@ -438,6 +474,7 @@ final class ParserTest extends TestCase
                         null,
                         'name',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('int'),
@@ -448,6 +485,18 @@ final class ParserTest extends TestCase
                         null,
                         'number',
                         null,
+                        null,
+                    ),
+                    new FieldNode(
+                        ObjectTypeReference::create(RecipientType::class),
+                        'recipient',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'recipient',
+                        null,
+                        TestTypeLoader::class,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('string'),
@@ -458,6 +507,7 @@ final class ParserTest extends TestCase
                         null,
                         'adminName',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('int'),
@@ -466,6 +516,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'getRecipientId',
+                        null,
                         null,
                         null,
                     ),
@@ -478,6 +529,18 @@ final class ParserTest extends TestCase
                         'getOther',
                         null,
                         null,
+                        null,
+                    ),
+                    new FieldNode(
+                        ObjectTypeReference::create(RecipientType::class),
+                        'parentRecipient',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getParentRecipient',
+                        null,
+                        null,
+                        TestTypeLoader::class,
                     ),
                     new FieldNode(
                         ScalarTypeReference::create('bool'),
@@ -486,6 +549,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'isAdmin',
+                        null,
                         null,
                         null,
                     ),
@@ -511,6 +575,7 @@ final class ParserTest extends TestCase
                         null,
                         'id',
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ObjectTypeReference::create(FoobarStatusType::class)->setNullableValue(),
@@ -520,6 +585,7 @@ final class ParserTest extends TestCase
                         FieldNodeType::Property,
                         null,
                         'status',
+                        null,
                         null,
                     ),
                     new FieldNode(
@@ -545,6 +611,7 @@ final class ParserTest extends TestCase
                         'getDate',
                         null,
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ConnectionTypeReference::create(AgentType::class)->setNullableValue(),
@@ -563,6 +630,7 @@ final class ParserTest extends TestCase
                         'getUsers',
                         null,
                         null,
+                        null,
                     ),
                     new FieldNode(
                         ObjectTypeReference::create(AgentType::class)->setList()->setNullableList(),
@@ -571,6 +639,7 @@ final class ParserTest extends TestCase
                         [],
                         FieldNodeType::Method,
                         'getUsersList',
+                        null,
                         null,
                         null,
                     ),
