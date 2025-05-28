@@ -12,6 +12,8 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\PageInfoTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ConnectionTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\CustomScalarTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\EnumTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\InputObjectTypeResolver;
@@ -29,7 +31,9 @@ final readonly class SchemaBuilderFactory
     ): SchemaBuilder {
         $astContainer = new AstContainer();
         $builtTypesRegistry = new BuiltTypesRegistry();
-        $fieldResolver = new FieldResolver($container);
+        $deferredTypeResolver = new DeferredTypeResolver($container, new DeferredTypeRegistryFactory());
+
+        $fieldResolver = new FieldResolver($container, $deferredTypeResolver);
 
         return new SchemaBuilder(
             $astContainer,
@@ -79,6 +83,7 @@ final readonly class SchemaBuilderFactory
                 ]),
                 $container,
                 $fieldResolver,
+                $deferredTypeResolver,
             ),
         );
     }

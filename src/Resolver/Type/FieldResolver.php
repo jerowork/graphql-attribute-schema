@@ -13,9 +13,11 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use LogicException;
 use Psr\Container\ContainerInterface;
+use Stringable;
 
 /**
  * @internal
@@ -24,6 +26,7 @@ final readonly class FieldResolver
 {
     public function __construct(
         private ContainerInterface $container,
+        private DeferredTypeResolver $deferredTypeResolver,
     ) {}
 
     /**
@@ -135,9 +138,18 @@ final readonly class FieldResolver
     public function resolveField(FieldNode $node, TypeResolverSelector $typeResolverSelector): Closure
     {
         if ($node->fieldType === FieldNodeType::Property) {
-            return fn(object $object) => $typeResolverSelector
-                ->getResolver($node->reference)
-                ->resolve($node->reference, fn() => $object->{$node->propertyName});
+            return function (object $object) use ($node, $typeResolverSelector): mixed {
+                /** @var list<int|string|Stringable>|int|string|Stringable $result */
+                $result = $typeResolverSelector
+                    ->getResolver($node->reference)
+                    ->resolve($node->reference, fn() => $object->{$node->propertyName});
+
+                if ($node->deferredTypeLoader !== null) {
+                    return $this->deferredTypeResolver->resolve($node->deferredTypeLoader, $result);
+                }
+
+                return $result;
+            };
         }
 
         // FieldNodeType::Method
@@ -180,9 +192,16 @@ final readonly class FieldResolver
                 throw new LogicException(sprintf('Unknown argument node type: %s', $argumentNode::class));
             }
 
-            return $typeResolverSelector
+            /** @var list<int|string|Stringable>|int|string|Stringable $result */
+            $result = $typeResolverSelector
                 ->getResolver($node->reference)
                 ->resolve($node->reference, fn() => $object->{$node->methodName}(...$arguments));
+
+            if ($node->deferredTypeLoader !== null) {
+                return $this->deferredTypeResolver->resolve($node->deferredTypeLoader, $result);
+            }
+
+            return $result;
         };
     }
 }
