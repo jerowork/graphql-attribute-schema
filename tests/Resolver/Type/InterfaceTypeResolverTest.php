@@ -85,6 +85,7 @@ final class InterfaceTypeResolverTest extends TestCase
                         null,
                         'id',
                         null,
+                        null,
                     ),
                 ],
                 null,

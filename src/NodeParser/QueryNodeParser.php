@@ -14,6 +14,7 @@ use Override;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
+use Stringable;
 
 /**
  * @internal
@@ -22,6 +23,8 @@ final readonly class QueryNodeParser implements NodeParser
 {
     use RetrieveNameForFieldTrait;
     use GetAttributeTrait;
+
+    private const array ALLOWED_SCALAR_TYPES_FOR_DEFERRED_TYPE_LOADER = ['string', 'int', 'array'];
 
     public function __construct(
         private TypeReferenceDecider $typeReferenceDecider,
@@ -55,6 +58,24 @@ final readonly class QueryNodeParser implements NodeParser
             }
         }
 
+        // When it has a deferred type loader, the return type needs to be an integer, string or Stringable
+        if ($attribute->deferredTypeLoader !== null) {
+            if ($returnType === null) {
+                throw ParseException::missingDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+            }
+
+            if ($returnType instanceof ReflectionNamedType
+                && $returnType->isBuiltin()
+                && !in_array($returnType->getName(), self::ALLOWED_SCALAR_TYPES_FOR_DEFERRED_TYPE_LOADER, true)
+            ) {
+                throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+            }
+
+            if (!$returnType instanceof Stringable) {
+                throw ParseException::invalidDeferredTypeLoaderReturnType($class->getName(), $method->getName());
+            }
+        }
+
         yield new QueryNode(
             $class->getName(),
             $this->retrieveNameForField($method, $attribute),
@@ -63,6 +84,7 @@ final readonly class QueryNodeParser implements NodeParser
             $reference,
             $method->getName(),
             $attribute->deprecationReason,
+            $attribute->deferredTypeLoader,
         );
     }
 }

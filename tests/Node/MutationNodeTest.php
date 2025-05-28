@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -44,6 +45,7 @@ final class MutationNodeTest extends TestCase
             ObjectTypeReference::create(TestType::class),
             'method',
             'deprecated',
+            TestTypeLoader::class,
         );
 
         self::assertEquals(MutationNode::fromArray($mutationNode->toArray()), $mutationNode);

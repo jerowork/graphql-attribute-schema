@@ -21,6 +21,8 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidConnectionReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestInvalidQueryWithInvalidReturnType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQueryWithDeferredTypeLoader;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -108,6 +110,39 @@ final class QueryNodeParserTest extends TestCase
             ScalarTypeReference::create('string'),
             '__invoke',
             null,
+            null,
+        )], $nodes);
+    }
+
+    #[Test]
+    public function itShouldParseQueryWithDeferredTypeLoader(): void
+    {
+        $class = new ReflectionClass(TestQueryWithDeferredTypeLoader::class);
+
+        $nodes = iterator_to_array($this->parser->parse(Query::class, $class, $class->getMethod('__invoke')));
+
+        self::assertEquals([new QueryNode(
+            TestQueryWithDeferredTypeLoader::class,
+            'testQuery',
+            'Test query',
+            [
+                new ArgNode(
+                    ObjectTypeReference::create(DateTimeImmutable::class),
+                    'date',
+                    null,
+                    'date',
+                ),
+                new ArgNode(
+                    ScalarTypeReference::create('string'),
+                    'id',
+                    null,
+                    'id',
+                ),
+            ],
+            ScalarTypeReference::create('string'),
+            '__invoke',
+            null,
+            TestTypeLoader::class,
         )], $nodes);
     }
 }

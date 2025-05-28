@@ -19,6 +19,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
@@ -114,6 +115,7 @@ final class AstTest extends TestCase
                 ObjectTypeReference::create(TestType::class),
                 'method',
                 'deprecated',
+                null,
             ),
             new QueryNode(
                 TestQuery::class,
@@ -136,6 +138,7 @@ final class AstTest extends TestCase
                 ObjectTypeReference::create(TestType::class),
                 'method',
                 'deprecated',
+                TestTypeLoader::class,
             ),
         );
 

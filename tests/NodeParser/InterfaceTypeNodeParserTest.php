@@ -78,6 +78,7 @@ final class InterfaceTypeNodeParserTest extends TestCase
                     'getId',
                     null,
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('string')->setNullableValue(),
@@ -86,6 +87,7 @@ final class InterfaceTypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getName',
+                    null,
                     null,
                     null,
                 ),
@@ -123,6 +125,7 @@ final class InterfaceTypeNodeParserTest extends TestCase
                     null,
                     'constructId',
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('string')->setNullableValue(),
@@ -133,6 +136,7 @@ final class InterfaceTypeNodeParserTest extends TestCase
                     'getStatus',
                     null,
                     null,
+                    null,
                 ),
                 new FieldNode(
                     ScalarTypeReference::create('float'),
@@ -141,6 +145,7 @@ final class InterfaceTypeNodeParserTest extends TestCase
                     [],
                     FieldNodeType::Method,
                     'getValue',
+                    null,
                     null,
                     null,
                 ),

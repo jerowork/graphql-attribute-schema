@@ -89,6 +89,7 @@ final class ClassFieldsNodeParserTest extends TestCase
                 null,
                 'id',
                 null,
+                null,
             ),
             new FieldNode(
                 ObjectTypeReference::create(DateTimeImmutable::class),
@@ -98,6 +99,7 @@ final class ClassFieldsNodeParserTest extends TestCase
                 FieldNodeType::Property,
                 null,
                 'date',
+                null,
                 null,
             ),
             new FieldNode(
@@ -109,6 +111,7 @@ final class ClassFieldsNodeParserTest extends TestCase
                 'flow',
                 null,
                 null,
+                null,
             ),
             new FieldNode(
                 ScalarTypeReference::create('string'),
@@ -117,6 +120,7 @@ final class ClassFieldsNodeParserTest extends TestCase
                 [],
                 FieldNodeType::Method,
                 'getStatus',
+                null,
                 null,
                 null,
             ),

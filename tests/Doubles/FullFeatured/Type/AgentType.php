@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type;
 
 use Jerowork\GraphqlAttributeSchema\Attribute\Field;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 
 #[Type]
 final readonly class AgentType extends AbstractAdminType implements UserType, SomeInterface
@@ -16,6 +17,8 @@ final readonly class AgentType extends AbstractAdminType implements UserType, So
         public string $name,
         #[Field]
         public int $number,
+        #[Field(name: 'recipient', type: RecipientType::class, deferredTypeLoader: TestTypeLoader::class)]
+        public string $recipient,
     ) {
         parent::__construct($recipientName);
     }
@@ -38,6 +41,12 @@ final readonly class AgentType extends AbstractAdminType implements UserType, So
 
     #[Field]
     public function getOther(): string
+    {
+        return '';
+    }
+
+    #[Field(type: RecipientType::class, deferredTypeLoader: TestTypeLoader::class)]
+    public function getParentRecipient(): string
     {
         return '';
     }

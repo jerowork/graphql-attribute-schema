@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema\Node\Child;
 
 use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
@@ -26,7 +27,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *     fieldType: string,
  *     methodName: null|string,
  *     propertyName: null|string,
- *     deprecationReason: null|string
+ *     deprecationReason: null|string,
+ *     deferredTypeLoader: null|class-string<DeferredTypeLoader>
  * }
  *
  * @internal
@@ -35,6 +37,7 @@ final readonly class FieldNode implements ArraySerializable
 {
     /**
      * @param list<ArgumentNode> $argumentNodes
+     * @param null|class-string<DeferredTypeLoader> $deferredTypeLoader
      */
     public function __construct(
         public TypeReference $reference,
@@ -45,6 +48,7 @@ final readonly class FieldNode implements ArraySerializable
         public ?string $methodName,
         public ?string $propertyName,
         public ?string $deprecationReason,
+        public ?string $deferredTypeLoader,
     ) {}
 
     /**
@@ -72,6 +76,7 @@ final readonly class FieldNode implements ArraySerializable
             'methodName' => $this->methodName,
             'propertyName' => $this->propertyName,
             'deprecationReason' => $this->deprecationReason,
+            'deferredTypeLoader' => $this->deferredTypeLoader,
         ];
     }
 
@@ -108,6 +113,7 @@ final readonly class FieldNode implements ArraySerializable
             $payload['methodName'],
             $payload['propertyName'],
             $payload['deprecationReason'],
+            $payload['deferredTypeLoader'],
         );
     }
 }

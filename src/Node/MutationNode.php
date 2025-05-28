@@ -8,6 +8,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
+use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
@@ -26,7 +27,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
  *          payload: array<string, mixed>
  *     },
  *     methodName: string,
- *     deprecationReason: null|string
+ *     deprecationReason: null|string,
+ *     deferredTypeLoader: null|class-string<DeferredTypeLoader>
  * }
  *
  * @internal
@@ -36,6 +38,7 @@ final readonly class MutationNode implements Node
     /**
      * @param class-string $className
      * @param list<ArgumentNode> $argumentNodes
+     * @param null|class-string<DeferredTypeLoader> $deferredTypeLoader
      */
     public function __construct(
         public string $className,
@@ -45,6 +48,7 @@ final readonly class MutationNode implements Node
         public TypeReference $outputReference,
         public string $methodName,
         public ?string $deprecationReason,
+        public ?string $deferredTypeLoader,
     ) {}
 
     public function getClassName(): string
@@ -76,6 +80,7 @@ final readonly class MutationNode implements Node
             ],
             'methodName' => $this->methodName,
             'deprecationReason' => $this->deprecationReason,
+            'deferredTypeLoader' => $this->deferredTypeLoader,
         ];
     }
 
@@ -108,6 +113,7 @@ final readonly class MutationNode implements Node
             $type::fromArray($payload['outputReference']['payload']),
             $payload['methodName'],
             $payload['deprecationReason'],
+            $payload['deferredTypeLoader'],
         );
     }
 }

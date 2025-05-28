@@ -168,6 +168,7 @@ final class EnumTypeResolverTest extends TestCase
             null,
             'enum',
             null,
+            null,
         ), ['enum' => 'a']);
 
         self::assertSame(TestEnumType::A, $enum);
@@ -197,6 +198,7 @@ final class EnumTypeResolverTest extends TestCase
             null,
             'enum',
             null,
+            null,
         ), []);
 
         self::assertNull($enum);
@@ -225,6 +227,7 @@ final class EnumTypeResolverTest extends TestCase
             FieldNodeType::Property,
             null,
             'enum',
+            null,
             null,
         ), ['enum' => ['a', 'd']]);
 
