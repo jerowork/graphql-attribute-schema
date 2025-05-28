@@ -10,10 +10,12 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Psr\Container\ContainerInterface;
+use Stringable;
 
 /**
  * Creates root types as Query and Mutation.
@@ -26,6 +28,7 @@ final readonly class RootTypeResolver
         private TypeResolverSelector $typeResolverSelector,
         private ContainerInterface $container,
         private FieldResolver $fieldResolver,
+        private DeferredTypeResolver $deferredTypeResolver,
     ) {}
 
     /**
@@ -126,7 +129,14 @@ final readonly class RootTypeResolver
                 $arguments[] = $typeResolver->abstract($argumentNode, $args);
             }
 
-            return $resolver->{$node->methodName}(...$arguments);
+            /** @var list<int|string|Stringable>|int|string|Stringable $result */
+            $result = $resolver->{$node->methodName}(...$arguments);
+
+            if ($node->deferredTypeLoader !== null) {
+                return $this->deferredTypeResolver->resolve($node->deferredTypeLoader, $result);
+            }
+
+            return $result;
         };
     }
 }
