@@ -3,6 +3,7 @@
 - [Attributes](#attributes)
 - [Union types](#union-types)
 - [Connections (Pagination)](#connections-pagination)
+- [Deferred type loading (Solving N+1 problem)](#deferred-type-loading-solving-n1-problem)
 
 📌 At a minimum, you need to define a query and a mutation to build a valid schema.
 
@@ -707,3 +708,112 @@ You can also define additional custom input arguments if needed.
 Each 'node' in a connection must have a `#[Cursor]` attribute. You can add this on a **property** or a **method**. This defines the cursor output for each "edge."
 
 💡 **Note:** If you **don't** define a `#[Cursor]`, the cursor will always be `null` when querying.
+
+## Deferred type loading (Solving N+1 problem)
+
+When working with a nested GraphQL model, the famous N+1 problem can become an issue. 
+As a solution, Webonyx/graphql-php has introduced so-called 'Deferred type loading'
+
+For more details, check out:
+- [Phabricator: Performance: N+1 Query Problem](https://secure.phabricator.com/book/phabcontrib/article/n_plus_one/)
+- [Webonyx: Solving N+1 Problem](https://webonyx.github.io/graphql-php/data-fetching/#solving-n1-problem)
+
+To use 'Deferred type loading' in _GraphQL Attribute Schema_, for each type, a custom `DeferredTypeLoader` needs to be created.
+This `DeferredTypeLoader` can then be configured in `#[Query]`, `#[Mutation]` or `#[Field]`.
+
+### Example
+Create a custom `DeferredTypeLoader` for GraphQL type `SomeType`:
+
+```php 
+use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
+
+final readonly class SomeTypeLoader implements DeferredTypeLoader
+{
+    public function __construct(
+        private SomeRepository $repository,
+    ) {}
+
+    public function load(array $references) : array
+    {
+        return array_map(
+            fn($item) => new DeferredType($item->getId(), new SomeType($item)),
+            $this->repository->findByIds($references),
+        );
+    }
+}
+```
+
+Configure `#[Query]` or `#[Mutation]`:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Mutation;
+use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+
+final readonly class SomeQuery
+{
+    #[Query(type: SomeType::class, deferredTypeLoader: SomeTypeLoader::class)]
+    public function someQuery(string $id): string
+    {
+        return $id;    
+    }
+}
+
+final readonly class SomeMutation
+{
+    #[Mutation(type: SomeType::class, deferredTypeLoader: SomeTypeLoader::class)]
+    public function someMutation(string $id): string
+    {
+        return $id;    
+    }
+}
+```
+
+Or configure `#[Field]` on property or method:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\Field;
+use Jerowork\GraphqlAttributeSchema\Attribute\Type;
+
+#[Type]
+final readonly class SomeResponseType
+{
+    // Configure on property
+    public function __construct(
+        #[Field(name: 'some', type: SomeType::class, deferredTypeLoader: SomeTypeLoader::class)]
+        public string $id,
+    ) {}
+    
+    // Or configure on method
+    #[Field(type: SomeType::class, deferredTypeLoader: SomeTypeLoader::class)]
+    public function getSome(string $id): string 
+    {
+        return $id;
+    }
+}
+```
+
+### About `DeferredTypeLoader`
+
+A custom implementation needs to implement `DeferredTypeLoader`. This interface defines one method: `load`.
+
+Input `$references` is a list of type references (identifiers), requested by `#[Query]`, `#[Mutation]` or `#[Field]`.
+
+Output is a list of `DeferredType`, containing the reference of each type and the GraphQL type itself.
+
+Each `DeferredTypeLoader` implementation must be retrievable from the (PSR-11) container via `get()`.
+For Symfony users, make sure they're set to public (e.g., with `#[Autoconfigure(public: true)]`).
+This allows injection of database repositories and other necessary services.
+ 
+### Configuring in `#[Query]`, `#[Mutation]` or `#[Field]`
+
+By configuring the `deferredTypeLoader` option on `#[Query]`, `#[Mutation]` or `#[Field]`, 
+the property or method will be converted to a 'Deferred type loading' field.
+
+Each 'Deferred type loading' field should **only** return the identifier (or 'reference').
+It can also be a list of references. This reference(s) will automatically be added to the list `$references` in the configured `DeferredTypeLoader`.
+
+The returning reference should be of type: integer, string, `Stringable`, or a list of the mentioned.
+
+As the actual loading now is handled by the `DeferredTypeLoader`, no loading is required in this 'Deferred type loading' field anymore.
+
+**Note:** In order to configure the GraphQL schema with the correct GraphQL type. Setting the `type` option on `#[Query]`, `#[Mutation]` or `#[Field]` is required.
