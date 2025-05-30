@@ -38,7 +38,7 @@ final readonly class FoobarType
     }
 
     #[Field(type: new NullableType(new ConnectionType(AgentType::class)))]
-    public function getUsers(EdgeArgs $edgeArgs, ?string $status): Connection
+    public function getUsers(EdgeArgs $edgeArgs, ?FoobarStatusType $status): Connection
     {
         return new Connection([]);
     }
