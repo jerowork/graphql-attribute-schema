@@ -620,7 +620,7 @@ final class ParserTest extends TestCase
                         [
                             new EdgeArgsNode('edgeArgs'),
                             new ArgNode(
-                                ScalarTypeReference::create('string')->setNullableValue(),
+                                ObjectTypeReference::create(FoobarStatusType::class)->setNullableValue(),
                                 'status',
                                 null,
                                 'status',

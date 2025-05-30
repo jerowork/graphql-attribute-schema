@@ -817,7 +817,21 @@ final class SchemaBuilderTest extends TestCase
                                     'args' => [
                                         [
                                             'name' => 'status',
-                                            'type' => Type::string(),
+                                            'type' =>  new EnumType([
+                                                'name' => 'FoobarStatus',
+                                                'description' => 'Foobar status',
+                                                'values' => [
+                                                    'open' => [
+                                                        'value' => 'open',
+                                                        'description' => null,
+                                                    ],
+                                                    'closed' => [
+                                                        'value' => 'closed',
+                                                        'description' => 'Foobar status Closed',
+                                                        'deprecationReason' => 'Its deprecated',
+                                                    ],
+                                                ],
+                                            ]),
                                             'description' => null,
                                         ],
                                         [
@@ -1315,7 +1329,21 @@ final class SchemaBuilderTest extends TestCase
                             'args' => [
                                 [
                                     'name' => 'status',
-                                    'type' => Type::string(),
+                                    'type' => new EnumType([
+                                        'name' => 'FoobarStatus',
+                                        'description' => 'Foobar status',
+                                        'values' => [
+                                            'open' => [
+                                                'value' => 'open',
+                                                'description' => null,
+                                            ],
+                                            'closed' => [
+                                                'value' => 'closed',
+                                                'description' => 'Foobar status Closed',
+                                                'deprecationReason' => 'Its deprecated',
+                                            ],
+                                        ],
+                                    ]),
                                     'description' => null,
                                 ],
                                 [

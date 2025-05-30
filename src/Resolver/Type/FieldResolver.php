@@ -184,7 +184,9 @@ final readonly class FieldResolver
                 }
 
                 if ($argumentNode instanceof ArgNode) {
-                    $arguments[] = $args[$argumentNode->name] ?? null;
+                    $arguments[] = $typeResolverSelector
+                        ->getResolver($argumentNode->reference)
+                        ->abstract($argumentNode, $args);
 
                     continue;
                 }
