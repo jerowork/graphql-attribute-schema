@@ -4,13 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test;
 
-use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\FieldDefinition;
-use GraphQL\Type\Definition\InputObjectType;
-use GraphQL\Type\Definition\InterfaceType;
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\Type;
-use GraphQL\Type\Definition\UnionType;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
@@ -31,7 +25,6 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutp
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithUnionOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
-use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -100,1537 +93,618 @@ final class SchemaBuilderTest extends TestCase
         $this->container->set(WithDeferredTypeLoader::class, new WithDeferredTypeLoader());
 
         $ast = $this->parser->parse(__DIR__ . '/Doubles/FullFeatured');
-
         $schema = $this->schemaBuilder->build($ast);
 
+        self::assertSame([], $schema->validate());
+
+        // QUERIES
         $query = $schema->getConfig()->getQuery();
         self::assertInstanceOf(ObjectType::class, $query);
-        $queries = $query->getFields();
-        ksort($queries);
-        self::assertEquals([
-            'basicName' => new FieldDefinition([
-                'name' => 'basicName',
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'A description',
-                'args' => [
-                    [
-                        'name' => 'id',
-                        'type' => Type::nonNull(Type::int()),
-                        'description' => null,
-                    ],
-                    [
-                        'name' => 'name',
-                        'type' => Type::string(),
-                        'description' => null,
-                    ],
-                    [
-                        'name' => 'isTrue',
-                        'type' => Type::nonNull(Type::boolean()),
-                        'description' => null,
-                    ],
-                    [
-                        'name' => 'status',
-                        'type' => Type::nonNull(new EnumType([
-                            'name' => 'FoobarStatus',
-                            'description' => 'Foobar status',
-                            'values' => [
-                                'open' => [
-                                    'value' => 'open',
-                                    'description' => null,
-                                ],
-                                'closed' => [
-                                    'value' => 'closed',
-                                    'description' => 'Foobar status Closed',
-                                    'deprecationReason' => 'Its deprecated',
-                                ],
-                            ],
-                        ])),
-                        'description' => null,
-                    ],
-                ],
-                'resolve' => fn() => true,
-            ]),
-            'withInterface' => new FieldDefinition([
-                'name' => 'withInterface',
-                'type' => Type::nonNull(new InterfaceType([
-                    'name' => 'User',
-                    'description' => null,
-                    'fields' => [
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'Query',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'basicName',
+                    'type' => 'String!',
+                    'description' => 'A description',
+                    'deprecationReason' => null,
+                    'args' => [
                         [
-                            'name' => 'userId',
-                            'type' => Type::nonNull(Type::int()),
+                            'name' => 'id',
+                            'type' => 'Int!',
                             'description' => null,
-                            'args' => [],
-                            'resolve' => fn() => true,
-                        ],
-                    ],
-                    'resolveType' => fn() => true,
-                ])),
-                'description' => null,
-                'args' => [],
-                'resolve' => fn() => true,
-            ]),
-            'doSomeWork' => new FieldDefinition([
-                'name' => 'doSomeWork',
-                'type' => Type::string(),
-                'description' => null,
-                'args' => [],
-                'resolve' => fn() => true,
-                'deprecationReason' => 'This is deprecated.',
-            ]),
-            'withConnectionOutput' => new FieldDefinition([
-                'name' => 'withConnectionOutput',
-                'type' => Type::nonNull(new ObjectType([
-                    'name' => 'UserConnection',
-                    'fields' => [
-                        [
-                            'name' => 'edges',
-                            'type' => Type::nonNull(Type::listOf(Type::nonNull(new ObjectType([
-                                'name' => 'UserEdge',
-                                'fields' => [
-                                    [
-                                        'name' => 'node',
-                                        'type' => Type::nonNull(new InterfaceType([
-                                            'name' => 'User',
-                                            'description' => null,
-                                            'fields' => [
-                                                [
-                                                    'name' => 'userId',
-                                                    'type' => Type::nonNull(Type::int()),
-                                                    'description' => null,
-                                                    'args' => [],
-                                                    'resolve' => fn() => true,
-                                                ],
-                                            ],
-                                            'resolveType' => fn() => true,
-                                        ])),
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'cursor',
-                                        'type' => Type::string(),
-                                        'resolve' => fn() => true,
-                                    ],
-                                ],
-                            ])))),
-                            'resolve' => fn() => true,
+                            'deprecationReason' => null,
                         ],
                         [
-                            'name' => 'pageInfo',
-                            'type' => Type::nonNull(new ObjectType([
-                                'name' => 'PageInfo',
-                                'fields' => [
-                                    [
-                                        'name' => 'hasPreviousPage',
-                                        'type' => Type::nonNull(Type::boolean()),
-                                    ],
-                                    [
-                                        'name' => 'hasNextPage',
-                                        'type' => Type::nonNull(Type::boolean()),
-                                    ],
-                                    [
-                                        'name' => 'startCursor',
-                                        'type' => Type::string(),
-                                    ],
-                                    [
-                                        'name' => 'endCursor',
-                                        'type' => Type::string(),
-                                    ],
-                                ],
-                            ])),
-                            'resolve' => fn() => true,
-                        ],
-                    ],
-                ])),
-                'description' => null,
-                'args' => [
-                    [
-                        'name' => 'status',
-                        'type' => Type::nonNull(new EnumType([
-                            'name' => 'FoobarStatus',
-                            'description' => 'Foobar status',
-                            'values' => [
-                                'open' => [
-                                    'value' => 'open',
-                                    'description' => null,
-                                ],
-                                'closed' => [
-                                    'value' => 'closed',
-                                    'description' => 'Foobar status Closed',
-                                    'deprecationReason' => 'Its deprecated',
-                                ],
-                            ],
-                        ])),
-                        'description' => null,
-                    ],
-                    [
-                        'name' => 'first',
-                        'type' => Type::int(),
-                        'description' => 'Connection: return the first # items',
-                    ],
-                    [
-                        'name' => 'after',
-                        'type' => Type::string(),
-                        'description' => 'Connection: return items after cursor',
-                    ],
-                    [
-                        'name' => 'last',
-                        'type' => Type::int(),
-                        'description' => 'Connection: return the last # items',
-                    ],
-                    [
-                        'name' => 'before',
-                        'type' => Type::string(),
-                        'description' => 'Connection: return items before cursor',
-                    ],
-                ],
-                'resolve' => fn() => true,
-            ]),
-            'query' => new FieldDefinition([
-                'name' => 'query',
-                'type' => Type::nonNull(new EnumType([
-                    'name' => 'FoobarStatus',
-                    'description' => 'Foobar status',
-                    'values' => [
-                        'open' => [
-                            'value' => 'open',
+                            'name' => 'name',
+                            'type' => 'String',
                             'description' => null,
+                            'deprecationReason' => null,
                         ],
-                        'closed' => [
-                            'value' => 'closed',
-                            'description' => 'Foobar status Closed',
-                            'deprecationReason' => 'Its deprecated',
-                        ],
-                    ],
-                ])),
-                'description' => null,
-                'args' => [
-                    [
-                        'name' => 'input',
-                        'type' => Type::nonNull(new InputObjectType([
-                            'name' => 'QueryInput',
-                            'description' => null,
-                            'fields' => [
-                                [
-                                    'name' => 'queryId',
-                                    'description' => 'Query id',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'args' => [],
-                                ],
-                                [
-                                    'name' => 'status',
-                                    'description' => null,
-                                    'type' => Type::nonNull(new EnumType([
-                                        'name' => 'FoobarStatus',
-                                        'description' => 'Foobar status',
-                                        'values' => [
-                                            'open' => [
-                                                'value' => 'open',
-                                                'description' => null,
-                                            ],
-                                            'closed' => [
-                                                'value' => 'closed',
-                                                'description' => 'Foobar status Closed',
-                                                'deprecationReason' => 'Its deprecated',
-                                            ],
-                                        ],
-                                    ])),
-                                    'args' => [],
-                                ],
-                            ],
-                        ])),
-                        'description' => null,
-                    ],
-                ],
-                'resolve' => fn() => true,
-            ]),
-            'withListOutput' => new FieldDefinition([
-                'name' => 'withListOutput',
-                'type' => Type::listOf(Type::nonNull(new InterfaceType([
-                    'name' => 'User',
-                    'description' => null,
-                    'fields' => [
                         [
-                            'name' => 'userId',
-                            'type' => Type::nonNull(Type::int()),
+                            'name' => 'isTrue',
+                            'type' => 'Boolean!',
                             'description' => null,
-                            'args' => [],
-                            'resolve' => fn() => true,
-                        ],
-                    ],
-                    'resolveType' => fn() => true,
-                ]))),
-                'description' => null,
-                'args' => [],
-                'resolve' => fn() => true,
-            ]),
-            'withOverwrittenType' => new FieldDefinition([
-                'name' => 'withOverwrittenType',
-                'type' => Type::boolean(),
-                'description' => null,
-                'args' => [],
-                'resolve' => fn() => true,
-            ]),
-            'unionQuery' => new FieldDefinition([
-                'name' => 'unionQuery',
-                'type' => Type::nonNull(new UnionType([
-                    'name' => 'Union_AgentType_FoobarType',
-                    'types' => [
-                        new ObjectType([
-                            'name' => 'Agent',
-                            'description' => null,
-                            'fields' => [
-                                [
-                                    'name' => 'recipientId',
-                                    'type' => Type::nonNull(Type::int()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'userId',
-                                    'type' => Type::nonNull(Type::int()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'adminName',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'password',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'isAdmin',
-                                    'type' => Type::nonNull(Type::boolean()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'name',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'number',
-                                    'type' => Type::nonNull(Type::int()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'recipient',
-                                    'type' => Type::nonNull(new InterfaceType([
-                                        'name' => 'Recipient',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'recipientId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'resolveType' => fn() => true,
-                                    ])),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'other',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'parentRecipient',
-                                    'type' => Type::nonNull(new InterfaceType([
-                                        'name' => 'Recipient',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'recipientId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'resolveType' => fn() => true,
-                                    ])),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                            ],
-                            'interfaces' => [
-                                new InterfaceType([
-                                    'name' => 'Recipient',
-                                    'description' => null,
-                                    'fields' => [
-                                        [
-                                            'name' => 'recipientId',
-                                            'type' => Type::nonNull(Type::int()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                    ],
-                                    'resolveType' => fn() => true,
-                                ]),
-                                new InterfaceType([
-                                    'name' => 'User',
-                                    'description' => null,
-                                    'fields' => [
-                                        [
-                                            'name' => 'userId',
-                                            'type' => Type::nonNull(Type::int()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                    ],
-                                    'resolveType' => fn() => true,
-                                ]),
-                                new InterfaceType([
-                                    'name' => 'Admin',
-                                    'description' => null,
-                                    'fields' => [
-                                        [
-                                            'name' => 'adminName',
-                                            'type' => Type::nonNull(Type::string()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                        [
-                                            'name' => 'password',
-                                            'type' => Type::nonNull(Type::string()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                        [
-                                            'name' => 'isAdmin',
-                                            'type' => Type::nonNull(Type::boolean()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                        [
-                                            'name' => 'recipientId',
-                                            'type' => Type::nonNull(Type::int()),
-                                            'description' => null,
-                                            'args' => [],
-                                            'resolve' => fn() => true,
-                                        ],
-                                    ],
-                                    'resolveType' => fn() => true,
-                                ]),
-                            ],
-                        ]),
-                        new ObjectType([
-                            'name' => 'Foobar',
-                            'description' => 'A foobar',
-                            'fields' => [
-                                [
-                                    'name' => 'foobarId',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => 'A foobar ID',
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'status',
-                                    'type' => new EnumType([
-                                        'name' => 'FoobarStatus',
-                                        'description' => 'Foobar status',
-                                        'values' => [
-                                            'open' => [
-                                                'value' => 'open',
-                                                'description' => null,
-                                            ],
-                                            'closed' => [
-                                                'value' => 'closed',
-                                                'description' => 'Foobar status Closed',
-                                                'deprecationReason' => 'Its deprecated',
-                                            ],
-                                        ],
-                                    ]),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'date',
-                                    'type' => new DateTimeType([
-                                        'name' => 'DateTime',
-                                        'description' => 'Date and time (ISO-8601)',
-                                    ]),
-                                    'description' => 'A foobar date',
-                                    'args' => [
-                                        [
-                                            'name' => 'limiting',
-                                            'type' => Type::nonNull(Type::string()),
-                                            'description' => null,
-                                        ],
-                                        [
-                                            'name' => 'value',
-                                            'type' => Type::int(),
-                                            'description' => 'The value',
-                                        ],
-                                    ],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'users',
-                                    'type' => new ObjectType([
-                                        'name' => 'AgentConnection',
-                                        'fields' => [
-                                            [
-                                                'name' => 'edges',
-                                                'type' => Type::nonNull(Type::listOf(Type::nonNull(new ObjectType([
-                                                    'name' => 'AgentEdge',
-                                                    'fields' => [
-                                                        [
-                                                            'name' => 'node',
-                                                            'type' => Type::nonNull(new ObjectType([
-                                                                'name' => 'Agent',
-                                                                'description' => null,
-                                                                'fields' => [
-                                                                    [
-                                                                        'name' => 'recipientId',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'userId',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'adminName',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'password',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'isAdmin',
-                                                                        'type' => Type::nonNull(Type::boolean()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'name',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'number',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'recipient',
-                                                                        'type' => Type::nonNull(new InterfaceType([
-                                                                            'name' => 'Recipient',
-                                                                            'description' => null,
-                                                                            'fields' => [
-                                                                                [
-                                                                                    'name' => 'recipientId',
-                                                                                    'type' => Type::nonNull(Type::int()),
-                                                                                    'description' => null,
-                                                                                    'args' => [],
-                                                                                    'resolve' => fn() => true,
-                                                                                ],
-                                                                            ],
-                                                                            'resolveType' => fn() => true,
-                                                                        ])),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'other',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'parentRecipient',
-                                                                        'type' => Type::nonNull(new InterfaceType([
-                                                                            'name' => 'Recipient',
-                                                                            'description' => null,
-                                                                            'fields' => [
-                                                                                [
-                                                                                    'name' => 'recipientId',
-                                                                                    'type' => Type::nonNull(Type::int()),
-                                                                                    'description' => null,
-                                                                                    'args' => [],
-                                                                                    'resolve' => fn() => true,
-                                                                                ],
-                                                                            ],
-                                                                            'resolveType' => fn() => true,
-                                                                        ])),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                ],
-                                                                'interfaces' => [
-                                                                    new InterfaceType([
-                                                                        'name' => 'Recipient',
-                                                                        'description' => null,
-                                                                        'fields' => [
-                                                                            [
-                                                                                'name' => 'recipientId',
-                                                                                'type' => Type::nonNull(Type::int()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                        ],
-                                                                        'resolveType' => fn() => true,
-                                                                    ]),
-                                                                    new InterfaceType([
-                                                                        'name' => 'User',
-                                                                        'description' => null,
-                                                                        'fields' => [
-                                                                            [
-                                                                                'name' => 'userId',
-                                                                                'type' => Type::nonNull(Type::int()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                        ],
-                                                                        'resolveType' => fn() => true,
-                                                                    ]),
-                                                                    new InterfaceType([
-                                                                        'name' => 'Admin',
-                                                                        'description' => null,
-                                                                        'fields' => [
-                                                                            [
-                                                                                'name' => 'adminName',
-                                                                                'type' => Type::nonNull(Type::string()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                            [
-                                                                                'name' => 'password',
-                                                                                'type' => Type::nonNull(Type::string()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                            [
-                                                                                'name' => 'isAdmin',
-                                                                                'type' => Type::nonNull(Type::boolean()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                            [
-                                                                                'name' => 'recipientId',
-                                                                                'type' => Type::nonNull(Type::int()),
-                                                                                'description' => null,
-                                                                                'args' => [],
-                                                                                'resolve' => fn() => true,
-                                                                            ],
-                                                                        ],
-                                                                        'resolveType' => fn() => true,
-                                                                    ]),
-                                                                ],
-                                                            ])),
-                                                            'resolve' => fn() => true,
-                                                        ],
-                                                        [
-                                                            'name' => 'cursor',
-                                                            'type' => Type::string(),
-                                                            'resolve' => fn() => true,
-                                                        ],
-                                                    ],
-                                                ])))),
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'pageInfo',
-                                                'type' => Type::nonNull(new ObjectType([
-                                                    'name' => 'PageInfo',
-                                                    'fields' => [
-                                                        [
-                                                            'name' => 'hasPreviousPage',
-                                                            'type' => Type::nonNull(Type::boolean()),
-                                                        ],
-                                                        [
-                                                            'name' => 'hasNextPage',
-                                                            'type' => Type::nonNull(Type::boolean()),
-                                                        ],
-                                                        [
-                                                            'name' => 'startCursor',
-                                                            'type' => Type::string(),
-                                                        ],
-                                                        [
-                                                            'name' => 'endCursor',
-                                                            'type' => Type::string(),
-                                                        ],
-                                                    ],
-                                                ])),
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                    ]),
-                                    'description' => null,
-                                    'args' => [
-                                        [
-                                            'name' => 'status',
-                                            'type' =>  new EnumType([
-                                                'name' => 'FoobarStatus',
-                                                'description' => 'Foobar status',
-                                                'values' => [
-                                                    'open' => [
-                                                        'value' => 'open',
-                                                        'description' => null,
-                                                    ],
-                                                    'closed' => [
-                                                        'value' => 'closed',
-                                                        'description' => 'Foobar status Closed',
-                                                        'deprecationReason' => 'Its deprecated',
-                                                    ],
-                                                ],
-                                            ]),
-                                            'description' => null,
-                                        ],
-                                        [
-                                            'name' => 'first',
-                                            'type' => Type::int(),
-                                            'description' => 'Connection: return the first # items',
-                                        ],
-                                        [
-                                            'name' => 'after',
-                                            'type' => Type::string(),
-                                            'description' => 'Connection: return items after cursor',
-                                        ],
-                                        [
-                                            'name' => 'last',
-                                            'type' => Type::int(),
-                                            'description' => 'Connection: return the last # items',
-                                        ],
-                                        [
-                                            'name' => 'before',
-                                            'type' => Type::string(),
-                                            'description' => 'Connection: return items before cursor',
-                                        ],
-                                    ],
-                                    'resolve' => fn() => true,
-                                ],
-                                [
-                                    'name' => 'usersList',
-                                    'type' => Type::listOf(Type::nonNull(new ObjectType([
-                                        'name' => 'Agent',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'recipientId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'userId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'adminName',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'password',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'isAdmin',
-                                                'type' => Type::nonNull(Type::boolean()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'name',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'number',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'recipient',
-                                                'type' => Type::nonNull(new InterfaceType([
-                                                    'name' => 'Recipient',
-                                                    'description' => null,
-                                                    'fields' => [
-                                                        [
-                                                            'name' => 'recipientId',
-                                                            'type' => Type::nonNull(Type::int()),
-                                                            'description' => null,
-                                                            'args' => [],
-                                                            'resolve' => fn() => true,
-                                                        ],
-                                                    ],
-                                                    'resolveType' => fn() => true,
-                                                ])),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'other',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'parentRecipient',
-                                                'type' => Type::nonNull(new InterfaceType([
-                                                    'name' => 'Recipient',
-                                                    'description' => null,
-                                                    'fields' => [
-                                                        [
-                                                            'name' => 'recipientId',
-                                                            'type' => Type::nonNull(Type::int()),
-                                                            'description' => null,
-                                                            'args' => [],
-                                                            'resolve' => fn() => true,
-                                                        ],
-                                                    ],
-                                                    'resolveType' => fn() => true,
-                                                ])),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'interfaces' => [
-                                            new InterfaceType([
-                                                'name' => 'Recipient',
-                                                'description' => null,
-                                                'fields' => [
-                                                    [
-                                                        'name' => 'recipientId',
-                                                        'type' => Type::nonNull(Type::int()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                ],
-                                                'resolveType' => fn() => true,
-                                            ]),
-                                            new InterfaceType([
-                                                'name' => 'User',
-                                                'description' => null,
-                                                'fields' => [
-                                                    [
-                                                        'name' => 'userId',
-                                                        'type' => Type::nonNull(Type::int()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                ],
-                                                'resolveType' => fn() => true,
-                                            ]),
-                                            new InterfaceType([
-                                                'name' => 'Admin',
-                                                'description' => null,
-                                                'fields' => [
-                                                    [
-                                                        'name' => 'adminName',
-                                                        'type' => Type::nonNull(Type::string()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                    [
-                                                        'name' => 'password',
-                                                        'type' => Type::nonNull(Type::string()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                    [
-                                                        'name' => 'isAdmin',
-                                                        'type' => Type::nonNull(Type::boolean()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                    [
-                                                        'name' => 'recipientId',
-                                                        'type' => Type::nonNull(Type::int()),
-                                                        'description' => null,
-                                                        'args' => [],
-                                                        'resolve' => fn() => true,
-                                                    ],
-                                                ],
-                                                'resolveType' => fn() => true,
-                                            ]),
-                                        ],
-                                    ]))),
-                                    'description' => null,
-                                    'args' => [],
-                                    'resolve' => fn() => true,
-                                ],
-                            ],
-                        ]),
-                    ],
-                    'resolveType' => fn() => true,
-                ])),
-                'description' => null,
-                'args' => [],
-                'resolve' => fn() => true,
-            ]),
-            'withDeferredTypeLoader' => new FieldDefinition([
-                'name' => 'withDeferredTypeLoader',
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'A description',
-                'args' => [],
-                'resolve' => fn() => true,
-            ]),
-        ], $queries);
-
-        $mutation = $schema->getConfig()->getMutation();
-        self::assertInstanceOf(ObjectType::class, $mutation);
-        $mutations = $mutation->getFields();
-        ksort($mutations);
-        self::assertEquals([
-            'first' => new FieldDefinition([
-                'name' => 'first',
-                'type' => Type::nonNull(new ObjectType([
-                    'name' => 'Foobar',
-                    'description' => 'A foobar',
-                    'fields' => [
-                        [
-                            'name' => 'foobarId',
-                            'type' => Type::nonNull(Type::string()),
-                            'description' => 'A foobar ID',
-                            'args' => [],
-                            'resolve' => fn() => true,
+                            'deprecationReason' => null,
                         ],
                         [
                             'name' => 'status',
-                            'type' => new EnumType([
-                                'name' => 'FoobarStatus',
-                                'description' => 'Foobar status',
-                                'values' => [
-                                    'open' => [
-                                        'value' => 'open',
-                                        'description' => null,
-                                    ],
-                                    'closed' => [
-                                        'value' => 'closed',
-                                        'description' => 'Foobar status Closed',
-                                        'deprecationReason' => 'Its deprecated',
-                                    ],
-                                ],
-                            ]),
+                            'type' => 'FoobarStatus!',
                             'description' => null,
-                            'args' => [],
-                            'resolve' => fn() => true,
+                            'deprecationReason' => null,
                         ],
-                        [
-                            'name' => 'date',
-                            'type' => new DateTimeType([
-                                'name' => 'DateTime',
-                                'description' => 'Date and time (ISO-8601)',
-                            ]),
-                            'description' => 'A foobar date',
-                            'args' => [
-                                [
-                                    'name' => 'limiting',
-                                    'type' => Type::nonNull(Type::string()),
-                                    'description' => null,
-                                ],
-                                [
-                                    'name' => 'value',
-                                    'type' => Type::int(),
-                                    'description' => 'The value',
-                                ],
-                            ],
-                            'resolve' => fn() => true,
-                        ],
-                        [
-                            'name' => 'users',
-                            'type' => new ObjectType([
-                                'name' => 'AgentConnection',
-                                'fields' => [
-                                    [
-                                        'name' => 'edges',
-                                        'type' => Type::nonNull(Type::listOf(Type::nonNull(new ObjectType([
-                                            'name' => 'AgentEdge',
-                                            'fields' => [
-                                                [
-                                                    'name' => 'node',
-                                                    'type' => Type::nonNull(new ObjectType([
-                                                        'name' => 'Agent',
-                                                        'description' => null,
-                                                        'fields' => [
-                                                            [
-                                                                'name' => 'recipientId',
-                                                                'type' => Type::nonNull(Type::int()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'userId',
-                                                                'type' => Type::nonNull(Type::int()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'adminName',
-                                                                'type' => Type::nonNull(Type::string()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'password',
-                                                                'type' => Type::nonNull(Type::string()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'isAdmin',
-                                                                'type' => Type::nonNull(Type::boolean()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'name',
-                                                                'type' => Type::nonNull(Type::string()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'number',
-                                                                'type' => Type::nonNull(Type::int()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'recipient',
-                                                                'type' => Type::nonNull(new InterfaceType([
-                                                                    'name' => 'Recipient',
-                                                                    'description' => null,
-                                                                    'fields' => [
-                                                                        [
-                                                                            'name' => 'recipientId',
-                                                                            'type' => Type::nonNull(Type::int()),
-                                                                            'description' => null,
-                                                                            'args' => [],
-                                                                            'resolve' => fn() => true,
-                                                                        ],
-                                                                    ],
-                                                                    'resolveType' => fn() => true,
-                                                                ])),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'other',
-                                                                'type' => Type::nonNull(Type::string()),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                            [
-                                                                'name' => 'parentRecipient',
-                                                                'type' => Type::nonNull(new InterfaceType([
-                                                                    'name' => 'Recipient',
-                                                                    'description' => null,
-                                                                    'fields' => [
-                                                                        [
-                                                                            'name' => 'recipientId',
-                                                                            'type' => Type::nonNull(Type::int()),
-                                                                            'description' => null,
-                                                                            'args' => [],
-                                                                            'resolve' => fn() => true,
-                                                                        ],
-                                                                    ],
-                                                                    'resolveType' => fn() => true,
-                                                                ])),
-                                                                'description' => null,
-                                                                'args' => [],
-                                                                'resolve' => fn() => true,
-                                                            ],
-                                                        ],
-                                                        'interfaces' => [
-                                                            new InterfaceType([
-                                                                'name' => 'Recipient',
-                                                                'description' => null,
-                                                                'fields' => [
-                                                                    [
-                                                                        'name' => 'recipientId',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                ],
-                                                                'resolveType' => fn() => true,
-                                                            ]),
-                                                            new InterfaceType([
-                                                                'name' => 'User',
-                                                                'description' => null,
-                                                                'fields' => [
-                                                                    [
-                                                                        'name' => 'userId',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                ],
-                                                                'resolveType' => fn() => true,
-                                                            ]),
-                                                            new InterfaceType([
-                                                                'name' => 'Admin',
-                                                                'description' => null,
-                                                                'fields' => [
-                                                                    [
-                                                                        'name' => 'adminName',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'password',
-                                                                        'type' => Type::nonNull(Type::string()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'isAdmin',
-                                                                        'type' => Type::nonNull(Type::boolean()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                    [
-                                                                        'name' => 'recipientId',
-                                                                        'type' => Type::nonNull(Type::int()),
-                                                                        'description' => null,
-                                                                        'args' => [],
-                                                                        'resolve' => fn() => true,
-                                                                    ],
-                                                                ],
-                                                                'resolveType' => fn() => true,
-                                                            ]),
-                                                        ],
-                                                    ])),
-                                                    'resolve' => fn() => true,
-                                                ],
-                                                [
-                                                    'name' => 'cursor',
-                                                    'type' => Type::string(),
-                                                    'resolve' => fn() => true,
-                                                ],
-                                            ],
-                                        ])))),
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'pageInfo',
-                                        'type' => Type::nonNull(new ObjectType([
-                                            'name' => 'PageInfo',
-                                            'fields' => [
-                                                [
-                                                    'name' => 'hasPreviousPage',
-                                                    'type' => Type::nonNull(Type::boolean()),
-                                                ],
-                                                [
-                                                    'name' => 'hasNextPage',
-                                                    'type' => Type::nonNull(Type::boolean()),
-                                                ],
-                                                [
-                                                    'name' => 'startCursor',
-                                                    'type' => Type::string(),
-                                                ],
-                                                [
-                                                    'name' => 'endCursor',
-                                                    'type' => Type::string(),
-                                                ],
-                                            ],
-                                        ])),
-                                        'resolve' => fn() => true,
-                                    ],
-                                ],
-                            ]),
-                            'description' => null,
-                            'args' => [
-                                [
-                                    'name' => 'status',
-                                    'type' => new EnumType([
-                                        'name' => 'FoobarStatus',
-                                        'description' => 'Foobar status',
-                                        'values' => [
-                                            'open' => [
-                                                'value' => 'open',
-                                                'description' => null,
-                                            ],
-                                            'closed' => [
-                                                'value' => 'closed',
-                                                'description' => 'Foobar status Closed',
-                                                'deprecationReason' => 'Its deprecated',
-                                            ],
-                                        ],
-                                    ]),
-                                    'description' => null,
-                                ],
-                                [
-                                    'name' => 'first',
-                                    'type' => Type::int(),
-                                    'description' => 'Connection: return the first # items',
-                                ],
-                                [
-                                    'name' => 'after',
-                                    'type' => Type::string(),
-                                    'description' => 'Connection: return items after cursor',
-                                ],
-                                [
-                                    'name' => 'last',
-                                    'type' => Type::int(),
-                                    'description' => 'Connection: return the last # items',
-                                ],
-                                [
-                                    'name' => 'before',
-                                    'type' => Type::string(),
-                                    'description' => 'Connection: return items before cursor',
-                                ],
-                            ],
-                            'resolve' => fn() => true,
-                        ],
-                        [
-                            'name' => 'usersList',
-                            'type' => Type::listOf(Type::nonNull(new ObjectType([
-                                'name' => 'Agent',
-                                'description' => null,
-                                'fields' => [
-                                    [
-                                        'name' => 'recipientId',
-                                        'type' => Type::nonNull(Type::int()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'userId',
-                                        'type' => Type::nonNull(Type::int()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'adminName',
-                                        'type' => Type::nonNull(Type::string()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'password',
-                                        'type' => Type::nonNull(Type::string()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'isAdmin',
-                                        'type' => Type::nonNull(Type::boolean()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'name',
-                                        'type' => Type::nonNull(Type::string()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'number',
-                                        'type' => Type::nonNull(Type::int()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'recipient',
-                                        'type' => Type::nonNull(new InterfaceType([
-                                            'name' => 'Recipient',
-                                            'description' => null,
-                                            'fields' => [
-                                                [
-                                                    'name' => 'recipientId',
-                                                    'type' => Type::nonNull(Type::int()),
-                                                    'description' => null,
-                                                    'args' => [],
-                                                    'resolve' => fn() => true,
-                                                ],
-                                            ],
-                                            'resolveType' => fn() => true,
-                                        ])),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'other',
-                                        'type' => Type::nonNull(Type::string()),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                    [
-                                        'name' => 'parentRecipient',
-                                        'type' => Type::nonNull(new InterfaceType([
-                                            'name' => 'Recipient',
-                                            'description' => null,
-                                            'fields' => [
-                                                [
-                                                    'name' => 'recipientId',
-                                                    'type' => Type::nonNull(Type::int()),
-                                                    'description' => null,
-                                                    'args' => [],
-                                                    'resolve' => fn() => true,
-                                                ],
-                                            ],
-                                            'resolveType' => fn() => true,
-                                        ])),
-                                        'description' => null,
-                                        'args' => [],
-                                        'resolve' => fn() => true,
-                                    ],
-                                ],
-                                'interfaces' => [
-                                    new InterfaceType([
-                                        'name' => 'Recipient',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'recipientId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'resolveType' => fn() => true,
-                                    ]),
-                                    new InterfaceType([
-                                        'name' => 'User',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'userId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'resolveType' => fn() => true,
-                                    ]),
-                                    new InterfaceType([
-                                        'name' => 'Admin',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'adminName',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'password',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'isAdmin',
-                                                'type' => Type::nonNull(Type::boolean()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                            [
-                                                'name' => 'recipientId',
-                                                'type' => Type::nonNull(Type::int()),
-                                                'description' => null,
-                                                'args' => [],
-                                                'resolve' => fn() => true,
-                                            ],
-                                        ],
-                                        'resolveType' => fn() => true,
-                                    ]),
-                                ],
-                            ]))),
-                            'description' => null,
-                            'args' => [],
-                            'resolve' => fn() => true,
-                        ],
-                    ],
-                ])),
-                'description' => 'Mutate a foobar',
-                'resolve' => fn() => true,
-                'args' => [
-                    [
-                        'name' => 'input',
-                        'type' => Type::nonNull(new InputObjectType([
-                            'name' => 'MutateFoobar',
-                            'description' => null,
-                            'fields' => [
-                                [
-                                    'name' => 'id',
-                                    'type' => Type::nonNull(Type::int()),
-                                    'description' => null,
-                                    'args' => [],
-                                ],
-                                [
-                                    'name' => 'value',
-                                    'type' => Type::string(),
-                                    'description' => null,
-                                    'args' => [],
-                                ],
-                                [
-                                    'name' => 'baz',
-                                    'type' => Type::nonNull(new InputObjectType([
-                                        'name' => 'Baz',
-                                        'description' => null,
-                                        'fields' => [
-                                            [
-                                                'name' => 'bazId',
-                                                'type' => Type::nonNull(Type::string()),
-                                                'description' => 'A baz ID',
-                                                'args' => [],
-                                            ],
-                                            [
-                                                'name' => 'status',
-                                                'type' => Type::nonNull(new EnumType([
-                                                    'name' => 'FoobarStatus',
-                                                    'description' => 'Foobar status',
-                                                    'values' => [
-                                                        'open' => [
-                                                            'value' => 'open',
-                                                            'description' => null,
-                                                        ],
-                                                        'closed' => [
-                                                            'value' => 'closed',
-                                                            'description' => 'Foobar status Closed',
-                                                            'deprecationReason' => 'Its deprecated',
-                                                        ],
-                                                    ],
-                                                ])),
-                                                'description' => null,
-                                                'args' => [],
-                                            ],
-                                        ],
-                                    ])),
-                                    'description' => null,
-                                    'args' => [],
-                                ],
-                                [
-                                    'name' => 'date',
-                                    'type' => new DateTimeType([
-                                        'name' => 'DateTime',
-                                        'description' => 'Date and time (ISO-8601)',
-                                    ]),
-                                    'description' => null,
-                                    'args' => [],
-                                ],
-                            ],
-                        ])),
-                        'description' => null,
                     ],
                 ],
-            ]),
-            'second' => new FieldDefinition([
-                'name' => 'second',
-                'type' => Type::nonNull(Type::string()),
-                'description' => 'Mutate a second foobar',
-                'resolve' => fn() => true,
-                'deprecationReason' => 'Its deprecated',
-                'args' => [
-                    [
-                        'name' => 'value',
-                        'type' => Type::nonNull(Type::string()),
-                        'description' => null,
+                [
+                    'name' => 'doSomeWork',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => 'This is deprecated.',
+                    'args' => [],
+                ],
+                [
+                    'name' => 'query',
+                    'type' => 'FoobarStatus!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [
+                        [
+                            'name' => 'input',
+                            'type' => 'QueryInput!',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
                     ],
                 ],
-            ]),
-        ], $mutations);
+                [
+                    'name' => 'unionQuery',
+                    'type' => 'Union_AgentType_FoobarType!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'withConnectionOutput',
+                    'type' => 'UserConnection!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [
+                        [
+                            'name' => 'status',
+                            'type' => 'FoobarStatus!',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'first',
+                            'type' => 'Int',
+                            'description' => 'Connection: return the first # items',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'after',
+                            'type' => 'String',
+                            'description' => 'Connection: return items after cursor',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'last',
+                            'type' => 'Int',
+                            'description' => 'Connection: return the last # items',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'before',
+                            'type' => 'String',
+                            'description' => 'Connection: return items before cursor',
+                            'deprecationReason' => null,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'withDeferredTypeLoader',
+                    'type' => 'String!',
+                    'description' => 'A description',
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'withInterface',
+                    'type' => 'User!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'withListOutput',
+                    'type' => '[User!]',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'withOverwrittenType',
+                    'type' => 'Boolean',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $query, true);
+
+        // MUTATIONS
+        $mutation = $schema->getConfig()->getMutation();
+        self::assertInstanceOf(ObjectType::class, $mutation);
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'Mutation',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'first',
+                    'type' => 'Foobar!',
+                    'description' => 'Mutate a foobar',
+                    'deprecationReason' => null,
+                    'args' => [
+                        [
+                            'name' => 'input',
+                            'type' => 'MutateFoobar!',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'second',
+                    'type' => 'String!',
+                    'description' => 'Mutate a second foobar',
+                    'deprecationReason' => 'Its deprecated',
+                    'args' => [
+                        [
+                            'name' => 'value',
+                            'type' => 'String!',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
+                    ],
+                ],
+            ],
+        ], $mutation, true);
+
+        // TYPES
+        $types = $schema->getTypeMap();
+        ksort($types);
+
+        self::assertSame([
+            'Admin',
+            'Agent',
+            'AgentConnection',
+            'AgentEdge',
+            'Baz',
+            'Boolean',
+            'DateTime',
+            'Foobar',
+            'FoobarStatus',
+            'Int',
+            'MutateFoobar',
+            'Mutation',
+            'PageInfo',
+            'Query',
+            'QueryInput',
+            'Recipient',
+            'String',
+            'Union_AgentType_FoobarType',
+            'User',
+            'UserConnection',
+            'UserEdge',
+        ], array_filter(array_keys($types), fn($key) => !str_starts_with($key, '__')));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'Agent',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'recipientId',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'userId',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'adminName',
+                    'type' => 'String!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'password',
+                    'type' => 'String!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'isAdmin',
+                    'type' => 'Boolean!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'name',
+                    'type' => 'String!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'number',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'recipient',
+                    'type' => 'Recipient!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'other',
+                    'type' => 'String!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'parentRecipient',
+                    'type' => 'Recipient!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'foobar',
+                    'type' => 'Foobar!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('Agent'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'AgentConnection',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'edges',
+                    'type' => '[AgentEdge!]!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'pageInfo',
+                    'type' => 'PageInfo!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('AgentConnection'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'AgentEdge',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'node',
+                    'type' => 'Agent!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'cursor',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('AgentEdge'));
+
+        AssertSchemaConfig::assertInputObjectType([
+            'name' => 'Baz',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'bazId',
+                    'type' => 'String!',
+                    'description' => 'A baz ID',
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'status',
+                    'type' => 'FoobarStatus!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+            ],
+        ], $schema->getType('Baz'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'Foobar',
+            'description' => 'A foobar',
+            'fields' => [
+                [
+                    'name' => 'foobarId',
+                    'type' => 'String!',
+                    'description' => 'A foobar ID',
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'status',
+                    'type' => 'FoobarStatus',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'date',
+                    'type' => 'DateTime',
+                    'description' => 'A foobar date',
+                    'deprecationReason' => null,
+                    'args' => [
+                        [
+                            'name' => 'limiting',
+                            'type' => 'String!',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'value',
+                            'type' => 'Int',
+                            'description' => 'The value',
+                            'deprecationReason' => null,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'users',
+                    'type' => 'AgentConnection',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [
+                        [
+                            'name' => 'status',
+                            'type' => 'FoobarStatus',
+                            'description' => null,
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'first',
+                            'type' => 'Int',
+                            'description' => 'Connection: return the first # items',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'after',
+                            'type' => 'String',
+                            'description' => 'Connection: return items after cursor',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'last',
+                            'type' => 'Int',
+                            'description' => 'Connection: return the last # items',
+                            'deprecationReason' => null,
+                        ],
+                        [
+                            'name' => 'before',
+                            'type' => 'String',
+                            'description' => 'Connection: return items before cursor',
+                            'deprecationReason' => null,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'usersList',
+                    'type' => '[Agent!]',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('Foobar'));
+
+        AssertSchemaConfig::assertEnumType([
+            'name' => 'FoobarStatus',
+            'description' => 'Foobar status',
+            'values' => [
+                [
+                    'name' => 'open',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'closed',
+                    'description' => 'Foobar status Closed',
+                    'deprecationReason' => 'Its deprecated',
+                ],
+            ],
+        ], $schema->getType('FoobarStatus'));
+
+        AssertSchemaConfig::assertInputObjectType([
+            'name' => 'MutateFoobar',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'id',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'value',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'baz',
+                    'type' => 'Baz!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'date',
+                    'type' => 'DateTime',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+            ],
+        ], $schema->getType('MutateFoobar'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'PageInfo',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'hasPreviousPage',
+                    'type' => 'Boolean!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'hasNextPage',
+                    'type' => 'Boolean!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'startCursor',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'endCursor',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('PageInfo'));
+
+        AssertSchemaConfig::assertInputObjectType([
+            'name' => 'QueryInput',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'queryId',
+                    'type' => 'String!',
+                    'description' => 'Query id',
+                    'deprecationReason' => null,
+                ],
+                [
+                    'name' => 'status',
+                    'type' => 'FoobarStatus!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                ],
+            ],
+        ], $schema->getType('QueryInput'));
+
+        AssertSchemaConfig::assertInterfaceType([
+            'name' => 'Recipient',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'recipientId',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('Recipient'));
+
+        AssertSchemaConfig::assertUnionType([
+            'name' => 'Union_AgentType_FoobarType',
+            'description' => null,
+        ], $schema->getType('Union_AgentType_FoobarType'));
+
+        AssertSchemaConfig::assertInterfaceType([
+            'name' => 'User',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'userId',
+                    'type' => 'Int!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('User'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'UserConnection',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'edges',
+                    'type' => '[UserEdge!]!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'pageInfo',
+                    'type' => 'PageInfo!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('UserConnection'));
+
+        AssertSchemaConfig::assertObjectType([
+            'name' => 'UserEdge',
+            'description' => null,
+            'fields' => [
+                [
+                    'name' => 'node',
+                    'type' => 'User!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'cursor',
+                    'type' => 'String',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+            ],
+        ], $schema->getType('UserEdge'));
     }
 }

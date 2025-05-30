@@ -50,7 +50,7 @@ final class InterfaceTypeResolver implements TypeResolver
         return new InterfaceType([
             'name' => $node->name,
             'description' => $node->description,
-            'fields' => $this->fieldResolver->getFields($node->fieldNodes, $this->getTypeResolverSelector()),
+            'fields' => fn() => $this->fieldResolver->getFields($node->fieldNodes, $this->getTypeResolverSelector()),
             'resolveType' => fn(object $objectValue) => $this->builtTypesRegistry->getType($objectValue::class),
         ]);
     }

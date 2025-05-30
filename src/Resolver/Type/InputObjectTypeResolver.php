@@ -46,7 +46,7 @@ final class InputObjectTypeResolver implements TypeResolver
         return new InputObjectType([
             'name' => $node->name,
             'description' => $node->description,
-            'fields' => $this->getFields($node),
+            'fields' => fn() => $this->getFields($node),
         ]);
     }
 
@@ -103,11 +103,11 @@ final class InputObjectTypeResolver implements TypeResolver
      * @return list<array{
      *     name: string,
      *     description: null|string,
-     *     type: Type,
+     *     type: Closure(): Type,
      *     args: list<array{
      *         name: string,
      *         description: null|string,
-     *         type: Type
+     *         type: Closure(): Type
      *     }>
      * }>
      */
@@ -122,7 +122,7 @@ final class InputObjectTypeResolver implements TypeResolver
             $fields[] = [
                 'name' => $fieldNode->name,
                 'description' => $fieldNode->description,
-                'type' => $type,
+                'type' => fn() => $type,
                 'args' => $this->fieldResolver->getArgs($fieldNode, $this->getTypeResolverSelector()),
             ];
         }

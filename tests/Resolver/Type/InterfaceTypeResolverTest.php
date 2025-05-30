@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type;
 
-use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
 use Jerowork\GraphqlAttributeSchema\AstContainer;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
@@ -20,6 +18,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\InterfaceTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
+use Jerowork\GraphqlAttributeSchema\Test\AssertSchemaConfig;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
@@ -100,19 +99,18 @@ final class InterfaceTypeResolverTest extends TestCase
 
         $type = $this->resolver->createType(ObjectTypeReference::create(TestInterfaceType::class));
 
-        self::assertEquals(new InterfaceType([
+        AssertSchemaConfig::assertInterfaceType([
             'name' => 'name',
             'description' => null,
             'fields' => [
                 [
                     'name' => 'id',
+                    'type' => 'String',
                     'description' => null,
-                    'type' => Type::string(),
+                    'deprecationReason' => null,
                     'args' => [],
-                    'resolve' => fn() => true,
                 ],
             ],
-            'resolveType' => fn() => true,
-        ]), $type);
+        ], $type);
     }
 }

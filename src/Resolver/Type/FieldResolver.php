@@ -35,11 +35,11 @@ final readonly class FieldResolver
      * @return list<array{
      *     name: string,
      *     description: null|string,
-     *     type: Type,
+     *     type: Closure(): Type,
      *     args: list<array{
      *         name: string,
      *         description: null|string,
-     *         type: Type
+     *         type: Closure(): Type
      *     }>,
      *     resolve: Closure,
      *     deprecationReason?: string
@@ -56,7 +56,7 @@ final readonly class FieldResolver
             $field = [
                 'name' => $fieldNode->name,
                 'description' => $fieldNode->description,
-                'type' => $type,
+                'type' => fn() => $type,
                 'args' => [...$this->getArgs($fieldNode, $typeResolverSelector), ...$this->getConnectionArgs($fieldNode->reference)],
                 'resolve' => $this->resolveField($fieldNode, $typeResolverSelector),
             ];
@@ -75,7 +75,7 @@ final readonly class FieldResolver
      * @return list<array{
      *     name: string,
      *     description: null|string,
-     *     type: Type
+     *     type: Closure(): Type
      * }>
      */
     public function getArgs(FieldNode $fieldNode, TypeResolverSelector $typeResolverSelector): array
@@ -91,7 +91,7 @@ final readonly class FieldResolver
             $args[] = [
                 'name' => $argumentNode->name,
                 'description' => $argumentNode->description,
-                'type' => $typeResolver->createType($argumentNode->reference),
+                'type' => fn() => $typeResolver->createType($argumentNode->reference),
             ];
         }
 
