@@ -37,11 +37,11 @@ final readonly class RootTypeResolver
      * @return array{
      *     name: string,
      *     description: null|string,
-     *     type: Type,
+     *     type: Closure(): Type,
      *     args: list<array{
      *         name: string,
      *         description: null|string,
-     *         type: Type
+     *         type: Closure(): Type
      *     }>,
      *     resolve: Closure,
      *     deprecationReason?: string
@@ -54,7 +54,7 @@ final readonly class RootTypeResolver
         $rootType = [
             'name' => $node->name,
             'description' => $node->description,
-            'type' => $typeResolver->createType($node->outputReference),
+            'type' => fn() => $typeResolver->createType($node->outputReference),
             'args' => [...$this->createArgs($node), ...$this->fieldResolver->getConnectionArgs($node->outputReference)],
             'resolve' => $this->resolve($node),
         ];
@@ -70,7 +70,7 @@ final readonly class RootTypeResolver
      * @return list<array{
      *     name: string,
      *     description: null|string,
-     *     type: Type
+     *     type: Closure(): Type
      * }>
      */
     private function createArgs(MutationNode|QueryNode $node): array
@@ -79,7 +79,7 @@ final readonly class RootTypeResolver
             fn(ArgNode $argNode) => [
                 'name' => $argNode->name,
                 'description' => $argNode->description,
-                'type' => $this->typeResolverSelector
+                'type' => fn() => $this->typeResolverSelector
                     ->getResolver($argNode->reference)
                     ->createType($argNode->reference),
             ],

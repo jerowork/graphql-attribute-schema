@@ -67,10 +67,10 @@ final class ConnectionTypeResolver implements TypeResolver
 
         $connection = new ObjectType([
             'name' => $connectionName,
-            'fields' => [
+            'fields' => fn() => [
                 [
                     'name' => 'edges',
-                    'type' => Type::nonNull(Type::listOf(
+                    'type' => fn() => Type::nonNull(Type::listOf(
                         $this->edgeTypeResolver->createEdgeType($reference, $node, $this->getTypeResolverSelector()),
                     )),
                     'resolve' => fn(Connection $connection) => $connection,

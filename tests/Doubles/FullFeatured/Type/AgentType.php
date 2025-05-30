@@ -50,4 +50,10 @@ final readonly class AgentType extends AbstractAdminType implements UserType, So
     {
         return '';
     }
+
+    #[Field]
+    public function getFoobar(): FoobarType
+    {
+        return new FoobarType('', null);
+    }
 }

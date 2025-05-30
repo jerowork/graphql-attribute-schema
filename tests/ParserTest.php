@@ -543,6 +543,17 @@ final class ParserTest extends TestCase
                         TestTypeLoader::class,
                     ),
                     new FieldNode(
+                        ObjectTypeReference::create(FoobarType::class),
+                        'foobar',
+                        null,
+                        [],
+                        FieldNodeType::Method,
+                        'getFoobar',
+                        null,
+                        null,
+                        null,
+                    ),
+                    new FieldNode(
                         ScalarTypeReference::create('bool'),
                         'isAdmin',
                         null,

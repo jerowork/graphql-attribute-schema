@@ -52,7 +52,7 @@ final class ObjectTypeResolver implements TypeResolver
         $objectTypeConfig = [
             'name' => $node->name,
             'description' => $node->description,
-            'fields' => $this->fieldResolver->getFields(
+            'fields' => fn() => $this->fieldResolver->getFields(
                 $this->getCombinedFieldNodesFromInterfaceAndNode($node),
                 $this->getTypeResolverSelector(),
             ),

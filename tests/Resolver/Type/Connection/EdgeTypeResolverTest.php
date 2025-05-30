@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type\Connection;
 
+use GraphQL\Type\Definition\NonNull;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Ast;
@@ -21,6 +22,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ObjectTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
+use Jerowork\GraphqlAttributeSchema\Test\AssertSchemaConfig;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestAnother;
@@ -93,26 +95,28 @@ final class EdgeTypeResolverTest extends TestCase
         self::assertTrue($this->builtTypesRegistry->hasType('TestEdge'));
 
         self::assertSame($this->builtTypesRegistry->getType('TestEdge'), $edgeType);
+        self::assertInstanceOf(NonNull::class, $edgeType);
 
-        self::assertEquals(Type::nonNull(new ObjectType([
+        AssertSchemaConfig::assertObjectType([
             'name' => 'TestEdge',
+            'description' => null,
             'fields' => [
                 [
                     'name' => 'node',
-                    'type' => new ObjectType([
-                        'name' => 'Test',
-                        'description' => null,
-                        'fields' => [],
-                    ]),
-                    'resolve' => fn($objectValue) => $objectValue,
+                    'type' => 'Test',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
                 ],
                 [
                     'name' => 'cursor',
-                    'type' => Type::nonNull(Type::string()),
-                    'resolve' => fn() => true,
+                    'type' => 'String!',
+                    'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
                 ],
             ],
-        ])), $edgeType);
+        ], $edgeType->getWrappedType());
     }
 
     #[Test]

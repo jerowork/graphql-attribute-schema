@@ -58,17 +58,17 @@ final readonly class EdgeTypeResolver
 
         $edge = Type::nonNull(new ObjectType([
             'name' => $edgeName,
-            'fields' => [
+            'fields' => fn() => [
                 [
                     'name' => 'node',
-                    'type' => $typeResolverSelector
+                    'type' => fn() => $typeResolverSelector
                         ->getResolver(ObjectTypeReference::create($reference->className))
                         ->createType(ObjectTypeReference::create($reference->className)),
                     'resolve' => fn($objectValue) => $objectValue,
                 ],
                 [
                     'name' => 'cursor',
-                    'type' => $cursorNode?->reference->isValueNullable() !== false ? Type::string() : Type::nonNull(Type::string()),
+                    'type' => fn() => $cursorNode?->reference->isValueNullable() !== false ? Type::string() : Type::nonNull(Type::string()),
                     'resolve' => $cursorNode !== null ? $this->resolveCursor($node, $cursorNode, $typeResolverSelector) : fn() => null,
                 ],
             ],
