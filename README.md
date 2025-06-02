@@ -6,7 +6,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
 [![PHP Version](https://img.shields.io/badge/php-%5E8.3-8892BF.svg?style=flat)](https://packagist.org/packages/jerowork/graphql-attribute-schema)
 
-Easily build your GraphQL schema for [webonyx/graphql-php](https://github.com/webonyx/graphql-php) using **PHP attributes** instead of large configuration arrays.
+Build your GraphQL schema for [webonyx/graphql-php](https://github.com/webonyx/graphql-php) using **PHP attributes** instead of array-based configuration.
 
 ## Why use this library?
 
