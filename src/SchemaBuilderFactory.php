@@ -80,6 +80,8 @@ final readonly class SchemaBuilderFactory
 
         return new SchemaBuilder(
             $astContainer,
+            $builtTypesRegistry,
+            $typeResolverSelector,
             new RootTypeResolver(
                 $typeResolverSelector,
                 $container,

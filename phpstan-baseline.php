@@ -326,6 +326,24 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Resolver/Type/UnionTypeResolver.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\SchemaBuilder\\:\\:getTypesImplementingInterface\\(\\) return type has no value type specified in iterable type iterable\\<mixed\\>\\.$#',
+	'identifier' => 'missingType.iterableValue',
+	'count' => 1,
+	'path' => __DIR__ . '/src/SchemaBuilder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^PHPDoc tag @return contains unresolvable type\\.$#',
+	'identifier' => 'return.unresolvableType',
+	'count' => 1,
+	'path' => __DIR__ . '/src/SchemaBuilder.php',
+];
+$ignoreErrors[] = [
+	'message' => '#^Parameter \\#1 \\$config of class GraphQL\\\\Type\\\\Schema constructor expects array\\{query\\?\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null\\)\\)\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null, mutation\\?\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null\\)\\)\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null, subscription\\?\\: \\(callable\\(\\)\\: \\(GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null\\)\\)\\|GraphQL\\\\Type\\\\Definition\\\\ObjectType\\|null, types\\?\\: \\(callable\\(\\)\\: iterable\\<callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type&GraphQL\\\\Type\\\\Definition\\\\NamedType\\>\\)\\|\\(callable\\(\\)\\: iterable\\<GraphQL\\\\Type\\\\Definition\\\\NamedType&GraphQL\\\\Type\\\\Definition\\\\Type\\>\\)\\|iterable\\<\\(callable\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type&GraphQL\\\\Type\\\\Definition\\\\NamedType\\)\\|\\(GraphQL\\\\Type\\\\Definition\\\\NamedType&GraphQL\\\\Type\\\\Definition\\\\Type\\)\\>\\|null, directives\\?\\: array\\<GraphQL\\\\Type\\\\Definition\\\\Directive\\>\\|null, typeLoader\\?\\: \\(callable\\(string\\)\\: \\(\\(GraphQL\\\\Type\\\\Definition\\\\NamedType&GraphQL\\\\Type\\\\Definition\\\\Type\\)\\|null\\)\\)\\|null, assumeValid\\?\\: bool\\|null, astNode\\?\\: GraphQL\\\\Language\\\\AST\\\\SchemaDefinitionNode\\|null, \\.\\.\\.\\}\\|GraphQL\\\\Type\\\\SchemaConfig, array\\{query\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType, mutation\\: GraphQL\\\\Type\\\\Definition\\\\ObjectType, types\\: iterable\\<mixed\\>\\} given\\.$#',
+	'identifier' => 'argument.type',
+	'count' => 1,
+	'path' => __DIR__ . '/src/SchemaBuilder.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Util\\\\Reflector\\\\Reflector\\:\\:getClasses\\(\\) return type with generic class ReflectionClass does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,

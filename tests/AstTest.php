@@ -9,6 +9,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EnumValueNode;
 use Jerowork\GraphqlAttributeSchema\Node\EnumNode;
 use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
@@ -17,6 +18,8 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestAnotherEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Enum\TestEnumType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InputType\TestInputType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestOtherInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
@@ -34,6 +37,7 @@ final class AstTest extends TestCase
     private EnumNode $enumNode1;
     private EnumNode $enumNode2;
     private TypeNode $typeNode;
+    private InterfaceTypeNode $interfaceTypeNode;
 
     #[Override]
     protected function setUp(): void
@@ -56,7 +60,9 @@ final class AstTest extends TestCase
                 null,
                 [],
                 null,
-                [],
+                [
+                    TestInterfaceType::class,
+                ],
             ),
             $this->enumNode2 =new EnumNode(
                 TestAnotherEnumType::class,
@@ -73,6 +79,16 @@ final class AstTest extends TestCase
                 null,
                 [],
             ),
+            $this->interfaceTypeNode = new InterfaceTypeNode(
+                TestInterfaceType::class,
+                'test',
+                null,
+                [],
+                null,
+                [
+                    TestOtherInterfaceType::class,
+                ],
+            ),
         );
     }
 
@@ -88,6 +104,17 @@ final class AstTest extends TestCase
     {
         self::assertSame($this->typeNode, $this->ast->getNodeByClassName(TestType::class));
         self::assertSame($this->enumNode2, $this->ast->getNodeByClassName(TestAnotherEnumType::class));
+    }
+
+    #[Test]
+    public function itShouldGetNodesImplementingAnInterface(): void
+    {
+        $nodes = $this->ast->getNodesImplementingInterface();
+
+        self::assertSame([
+            $this->typeNode,
+            $this->interfaceTypeNode,
+        ], $nodes);
     }
 
     #[Test]
