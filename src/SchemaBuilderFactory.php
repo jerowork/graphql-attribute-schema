@@ -34,53 +34,54 @@ final readonly class SchemaBuilderFactory
         $deferredTypeResolver = new DeferredTypeResolver($container, new DeferredTypeRegistryFactory());
 
         $fieldResolver = new FieldResolver($container, $deferredTypeResolver);
+        $typeResolverSelector = new TypeResolverSelector([
+            new ListAndNullableTypeResolverDecorator(
+                new BuiltInScalarTypeResolver(),
+            ),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new CustomScalarTypeResolver($astContainer),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new EnumTypeResolver($astContainer),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new InputObjectTypeResolver($astContainer, $fieldResolver),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new ObjectTypeResolver($astContainer, $fieldResolver),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new InterfaceTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
+                $astContainer,
+                new UnionTypeResolver($builtTypesRegistry),
+                $builtTypesRegistry,
+            )),
+            new ListAndNullableTypeResolverDecorator(
+                new ConnectionTypeResolver(
+                    $astContainer,
+                    $builtTypesRegistry,
+                    new PageInfoTypeResolver($builtTypesRegistry),
+                    new EdgeTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
+                ),
+            ),
+        ]);
 
         return new SchemaBuilder(
             $astContainer,
             new RootTypeResolver(
-                new TypeResolverSelector([
-                    new ListAndNullableTypeResolverDecorator(
-                        new BuiltInScalarTypeResolver(),
-                    ),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new CustomScalarTypeResolver($astContainer),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new EnumTypeResolver($astContainer),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new InputObjectTypeResolver($astContainer, $fieldResolver),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new ObjectTypeResolver($astContainer, $fieldResolver),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new InterfaceTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(new BuiltTypesRegistryTypeResolverDecorator(
-                        $astContainer,
-                        new UnionTypeResolver($builtTypesRegistry),
-                        $builtTypesRegistry,
-                    )),
-                    new ListAndNullableTypeResolverDecorator(
-                        new ConnectionTypeResolver(
-                            $astContainer,
-                            $builtTypesRegistry,
-                            new PageInfoTypeResolver($builtTypesRegistry),
-                            new EdgeTypeResolver($astContainer, $builtTypesRegistry, $fieldResolver),
-                        ),
-                    ),
-                ]),
+                $typeResolverSelector,
                 $container,
                 $fieldResolver,
                 $deferredTypeResolver,
