@@ -105,10 +105,3 @@ enum UserStatus {
     REMOVED
 }
 ```
-
-### 🚀 Key Benefits
-
-✅ **No more complex PHP arrays** – Define everything using attributes.  
-✅ **Cleaner and more maintainable** – Your schema lives in your code, where it belongs.  
-✅ **Less boilerplate** – Focus on logic, not configuration.  
-✅ **GraphQL schema auto-generated** – No need to manually define types and fields.
