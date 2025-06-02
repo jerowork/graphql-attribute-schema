@@ -6,7 +6,9 @@ namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Node\AliasedNode;
 use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
+use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\Node;
+use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 
 /**
  * @phpstan-type AstPayload array{
@@ -67,6 +69,28 @@ final readonly class Ast implements ArraySerializable
         }
 
         return null;
+    }
+
+    /**
+     * @return list<TypeNode|InterfaceTypeNode>
+     */
+    public function getNodesImplementingInterface(): array
+    {
+        $nodes = [];
+
+        foreach ($this->nodes as $node) {
+            if (!$node instanceof InterfaceTypeNode && !$node instanceof TypeNode) {
+                continue;
+            }
+
+            if ($node->implementsInterfaces === []) {
+                continue;
+            }
+
+            $nodes[] = $node;
+        }
+
+        return $nodes;
     }
 
     /**
