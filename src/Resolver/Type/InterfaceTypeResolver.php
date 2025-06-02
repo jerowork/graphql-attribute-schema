@@ -58,7 +58,7 @@ final class InterfaceTypeResolver implements TypeResolver
     #[Override]
     public function resolve(TypeReference $reference, Closure $callback): mixed
     {
-        throw new LogicException('InterfaceType does not need to resolve');
+        return $callback();
     }
 
     #[Override]
