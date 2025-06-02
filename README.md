@@ -19,6 +19,7 @@ That’s exactly what **GraphQL Attribute Schema** does! 🚀
 By adding attributes (`#[Mutation]`, `#[Query]`, `#[Type]`, etc.) directly to your classes, this library **automatically generates** the GraphQL schema for you; **cleaner, faster, and easier to maintain**.
 
 ## 📖 Documentation
-Documentation is available at [jerowork.github.io/graphql-attribute-schema](https://jerowork.github.io/graphql-attribute-schema) or in the [docs](docs/index.md).
 
-There is also an example application, using most of the features: https://github.com/jerowork/example-application-graphql-attribute-schema
+The documentation is available on [GitHub pages](https://jerowork.github.io/graphql-attribute-schema/docs) or in the [GitHub repository](https://github.com/jerowork/graphql-attribute-schema/blob/main/docs/index.md).
+
+There is also an example application using most of the features at [https://github.com/jerowork/example-application-graphql-attribute-schema](https://github.com/jerowork/example-application-graphql-attribute-schema).
