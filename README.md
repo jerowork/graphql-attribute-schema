@@ -10,13 +10,9 @@ Build your GraphQL schema for [webonyx/graphql-php](https://github.com/webonyx/g
 
 ## Why use this library?
 
-The [webonyx/graphql-php](https://github.com/webonyx/graphql-php) package requires a **schema** to run a GraphQL server. Normally, this schema is defined using large and complex PHP arrays, making it harder to manage and maintain.
+The [webonyx/graphql-php](https://github.com/webonyx/graphql-php) package requires a **schema** to run a GraphQL server. Normally, this schema is defined based on array configuration. 
 
-Wouldn’t it be great if there was a **simpler, more structured way** to define your schema?
-
-That’s exactly what **GraphQL Attribute Schema** does! 🚀
-
-By adding attributes (`#[Mutation]`, `#[Query]`, `#[Type]`, etc.) directly to your classes, this library **automatically generates** the GraphQL schema for you; **cleaner, faster, and easier to maintain**.
+This package introduces PHP attributes to configure your GraphQL schema instead. By adding attributes (`#[Mutation]`, `#[Query]`, `#[Type]`, etc.) directly to your classes, this library **automatically generates** the GraphQL schema for you.
 
 ## 📖 Documentation
 
