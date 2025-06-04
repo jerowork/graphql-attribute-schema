@@ -7,16 +7,11 @@ namespace Jerowork\GraphqlAttributeSchema\Resolver\Type;
 use Closure;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\FieldNodeType;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
-use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
-use LogicException;
-use Psr\Container\ContainerInterface;
 use Stringable;
 
 /**
@@ -25,8 +20,8 @@ use Stringable;
 final readonly class FieldResolver
 {
     public function __construct(
-        private ContainerInterface $container,
         private DeferredTypeResolver $deferredTypeResolver,
+        private ArgumentNodeResolver $argumentNodeResolver,
     ) {}
 
     /**
@@ -158,40 +153,7 @@ final readonly class FieldResolver
             $arguments = [];
 
             foreach ($node->argumentNodes as $argumentNode) {
-                if ($argumentNode instanceof AutowireNode) {
-                    $arguments[] = $this->container->get($argumentNode->service);
-
-                    continue;
-                }
-
-                if ($argumentNode instanceof EdgeArgsNode) {
-                    /**
-                     * @var array{
-                     *     first?: int,
-                     *     after?: string,
-                     *     last?: int,
-                     *     before?: string
-                     * } $args
-                     */
-                    $arguments[] = new EdgeArgs(
-                        $args['first'] ?? null,
-                        $args['after'] ?? null,
-                        $args['last'] ?? null,
-                        $args['before'] ?? null,
-                    );
-
-                    continue;
-                }
-
-                if ($argumentNode instanceof ArgNode) {
-                    $arguments[] = $typeResolverSelector
-                        ->getResolver($argumentNode->reference)
-                        ->abstract($argumentNode, $args);
-
-                    continue;
-                }
-
-                throw new LogicException(sprintf('Unknown argument node type: %s', $argumentNode::class));
+                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $typeResolverSelector);
             }
 
             /** @var list<int|string|Stringable>|int|string|Stringable $result */

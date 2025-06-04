@@ -7,13 +7,12 @@ namespace Jerowork\GraphqlAttributeSchema\Resolver;
 use Closure;
 use GraphQL\Type\Definition\Type;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
-use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
-use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use Psr\Container\ContainerInterface;
 use Stringable;
 
@@ -29,6 +28,7 @@ final readonly class RootTypeResolver
         private ContainerInterface $container,
         private FieldResolver $fieldResolver,
         private DeferredTypeResolver $deferredTypeResolver,
+        private ArgumentNodeResolver $argumentNodeResolver,
     ) {}
 
     /**
@@ -103,30 +103,7 @@ final readonly class RootTypeResolver
             $arguments = [];
 
             foreach ($node->argumentNodes as $argumentNode) {
-                if ($argumentNode instanceof EdgeArgsNode) {
-                    /**
-                     * @var array{
-                     *     first?: int,
-                     *     after?: string,
-                     *     last?: int,
-                     *     before?: string
-                     * } $args
-                     */
-                    $arguments[] = new EdgeArgs(
-                        $args['first'] ?? null,
-                        $args['after'] ?? null,
-                        $args['last'] ?? null,
-                        $args['before'] ?? null,
-                    );
-                }
-
-                if (!$argumentNode instanceof ArgNode) {
-                    continue;
-                }
-
-                $typeResolver = $this->typeResolverSelector->getResolver($argumentNode->reference);
-
-                $arguments[] = $typeResolver->abstract($argumentNode, $args);
+                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $this->typeResolverSelector);
             }
 
             /** @var list<int|string|Stringable>|int|string|Stringable $result */

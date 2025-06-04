@@ -6,6 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\Resolver\RootTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltTypesRegistryTypeResolverDecorator;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
@@ -32,8 +33,9 @@ final readonly class SchemaBuilderFactory
         $astContainer = new AstContainer();
         $builtTypesRegistry = new BuiltTypesRegistry();
         $deferredTypeResolver = new DeferredTypeResolver($container, new DeferredTypeRegistryFactory());
+        $argumentNodeResolver = new ArgumentNodeResolver($container);
 
-        $fieldResolver = new FieldResolver($container, $deferredTypeResolver);
+        $fieldResolver = new FieldResolver($deferredTypeResolver, $argumentNodeResolver);
         $typeResolverSelector = new TypeResolverSelector([
             new ListAndNullableTypeResolverDecorator(
                 new BuiltInScalarTypeResolver(),
@@ -87,6 +89,7 @@ final readonly class SchemaBuilderFactory
                 $container,
                 $fieldResolver,
                 $deferredTypeResolver,
+                $argumentNodeResolver,
             ),
         );
     }
