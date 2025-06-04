@@ -33,7 +33,7 @@ final class NativeReflectorTest extends TestCase
     #[Test]
     public function itShouldGetAllClassesInFile(): void
     {
-        $classes = $this->reflector->getClasses(__DIR__ . '/Doubles/FileWithClasses.php');
+        $classes = iterator_to_array($this->reflector->getClasses(__DIR__ . '/Doubles/FileWithClasses.php'));
 
         $classNames = array_map(fn($class) => $class->getName(), $classes);
 

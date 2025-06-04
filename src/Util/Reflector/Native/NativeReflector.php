@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Util\Reflector\Native;
 
+use Generator;
 use Jerowork\GraphqlAttributeSchema\Util\Reflector\Reflector;
 use PhpToken;
 use ReflectionClass;
@@ -13,7 +14,7 @@ use ReflectionClass;
  */
 final readonly class NativeReflector implements Reflector
 {
-    public function getClasses(string $filePath): array
+    public function getClasses(string $filePath): Generator
     {
         $content = file_get_contents($filePath);
 
@@ -23,7 +24,6 @@ final readonly class NativeReflector implements Reflector
 
         $tokens = PhpToken::tokenize($content);
 
-        $classes = [];
         $namespace = '';
         $collectNamespace = false;
 
@@ -58,11 +58,10 @@ final readonly class NativeReflector implements Reflector
                 if ($next && $next->is(T_STRING)) {
                     /** @var class-string $className */
                     $className = trim($namespace . '\\' . $next->text, '\\');
-                    $classes[] = new ReflectionClass($className);
+
+                    yield new ReflectionClass($className);
                 }
             }
         }
-
-        return $classes;
     }
 }
