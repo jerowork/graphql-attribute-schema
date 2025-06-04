@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Util\Reflector;
 
+use Generator;
 use ReflectionClass;
 
 /**
@@ -12,7 +13,7 @@ use ReflectionClass;
 interface Reflector
 {
     /**
-     * @return list<ReflectionClass>
+     * @return Generator<ReflectionClass>
      */
-    public function getClasses(string $filePath): array;
+    public function getClasses(string $filePath): Generator;
 }
