@@ -21,7 +21,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\TypeNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Type\DateTimeType;
 use Jerowork\GraphqlAttributeSchema\Util\Finder\Native\NativeFinder;
-use Jerowork\GraphqlAttributeSchema\Util\Reflector\Roave\RoaveReflector;
+use Jerowork\GraphqlAttributeSchema\Util\Reflector\Native\NativeReflector;
 
 final readonly class ParserFactory
 {
@@ -48,7 +48,7 @@ final readonly class ParserFactory
 
         return new Parser(
             new NativeFinder(),
-            new RoaveReflector(),
+            new NativeReflector(),
             new ChainedNodeParser([
                 new EnumNodeParser(),
                 new InputTypeNodeParser($classFieldNodesParser),
