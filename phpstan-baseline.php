@@ -344,6 +344,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/SchemaBuilder.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Util\\\\Reflector\\\\Native\\\\NativeReflector\\:\\:getClasses\\(\\) return type with generic class ReflectionClass does not specify its types\\: T$#',
+	'identifier' => 'missingType.generics',
+	'count' => 1,
+	'path' => __DIR__ . '/src/Util/Reflector/Native/NativeReflector.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Util\\\\Reflector\\\\Reflector\\:\\:getClasses\\(\\) return type with generic class ReflectionClass does not specify its types\\: T$#',
 	'identifier' => 'missingType.generics',
 	'count' => 1,

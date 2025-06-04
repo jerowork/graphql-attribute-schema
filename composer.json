@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "ext-tokenizer": "*",
         "psr/container": "^2.0",
         "roave/better-reflection": "^6.51",
         "webonyx/graphql-php": "^15.19"
