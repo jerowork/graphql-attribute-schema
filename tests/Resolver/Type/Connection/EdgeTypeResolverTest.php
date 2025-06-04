@@ -16,6 +16,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
@@ -51,8 +52,8 @@ final class EdgeTypeResolverTest extends TestCase
             $this->astContainer = new AstContainer(),
             $this->builtTypesRegistry = new BuiltTypesRegistry(),
             $this->fieldResolver = new FieldResolver(
-                new TestContainer(),
                 new DeferredTypeResolver(new TestContainer(), new DeferredTypeRegistryFactory()),
+                new ArgumentNodeResolver(new TestContainer()),
             ),
         );
     }

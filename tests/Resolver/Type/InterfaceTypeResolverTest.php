@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
@@ -43,8 +44,8 @@ final class InterfaceTypeResolverTest extends TestCase
             $this->astContainer = new AstContainer(),
             new BuiltTypesRegistry(),
             new FieldResolver(
-                new TestContainer(),
                 new DeferredTypeResolver(new TestContainer(), new DeferredTypeRegistryFactory()),
+                new ArgumentNodeResolver(new TestContainer()),
             ),
         );
         $this->resolver->setTypeResolverSelector(new TypeResolverSelector([
