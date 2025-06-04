@@ -356,12 +356,6 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Util/Reflector/Reflector.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Util\\\\Reflector\\\\Roave\\\\RoaveReflector\\:\\:getClasses\\(\\) return type with generic class ReflectionClass does not specify its types\\: T$#',
-	'identifier' => 'missingType.generics',
-	'count' => 1,
-	'path' => __DIR__ . '/src/Util/Reflector/Roave/RoaveReflector.php',
-];
-$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\DeprecatedQuery\\:\\:doSomeWork\\(\\) never returns string so it can be removed from the return type\\.$#',
 	'identifier' => 'return.unusedType',
 	'count' => 1,
