@@ -17,7 +17,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Field\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use LogicException;
 

@@ -16,7 +16,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\CustomScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\EnumTypeResolver;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Field\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\InputObjectTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\InterfaceTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ListAndNullableTypeResolverDecorator;

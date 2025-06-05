@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Resolver\Type;
+namespace Jerowork\GraphqlAttributeSchema\Resolver\Type\Field;
 
 use Closure;
 use GraphQL\Type\Definition\Type;
@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Stringable;
 
 /**

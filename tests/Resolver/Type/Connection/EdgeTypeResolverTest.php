@@ -20,7 +20,7 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\FieldResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Field\FieldResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\ObjectTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Jerowork\GraphqlAttributeSchema\Test\AssertSchemaConfig;

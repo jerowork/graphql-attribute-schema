@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Field\FieldResolver;
 use LogicException;
 use Override;
 
