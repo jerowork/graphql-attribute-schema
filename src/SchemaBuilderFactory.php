@@ -6,7 +6,7 @@ namespace Jerowork\GraphqlAttributeSchema;
 
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
 use Jerowork\GraphqlAttributeSchema\Resolver\RootTypeResolver;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltTypesRegistryTypeResolverDecorator;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;

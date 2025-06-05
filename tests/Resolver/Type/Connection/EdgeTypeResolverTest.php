@@ -16,7 +16,7 @@ use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ConnectionTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Connection\EdgeTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;

@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Resolver\Type;
+namespace Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Jerowork\GraphqlAttributeSchema\Type\Connection\EdgeArgs;
 use LogicException;
 use Psr\Container\ContainerExceptionInterface;

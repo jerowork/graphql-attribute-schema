@@ -12,7 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\BuiltTypesRegistry;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistryFactory;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeResolver;

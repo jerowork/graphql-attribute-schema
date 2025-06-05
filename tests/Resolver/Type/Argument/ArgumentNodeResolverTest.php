@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type;
+namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type\Argument;
 
 use Exception;
 use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
@@ -11,7 +11,7 @@ use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
-use Jerowork\GraphqlAttributeSchema\Resolver\Type\ArgumentNodeResolver;
+use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\TypeResolverSelector;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Container\TestContainer;

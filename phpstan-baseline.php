@@ -302,10 +302,10 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/src/Resolver/RootTypeResolver.php',
 ];
 $ignoreErrors[] = [
-	'message' => '#^Parameter \\#1 \\$args of method Jerowork\\\\GraphqlAttributeSchema\\\\Resolver\\\\Type\\\\ArgumentNodeResolver\\:\\:resolveEdgeArgsNode\\(\\) expects array\\{first\\?\\: int, after\\?\\: string, last\\?\\: int, before\\?\\: string\\}, array\\<string, mixed\\> given\\.$#',
+	'message' => '#^Parameter \\#1 \\$args of method Jerowork\\\\GraphqlAttributeSchema\\\\Resolver\\\\Type\\\\Argument\\\\ArgumentNodeResolver\\:\\:resolveEdgeArgsNode\\(\\) expects array\\{first\\?\\: int, after\\?\\: string, last\\?\\: int, before\\?\\: string\\}, array\\<string, mixed\\> given\\.$#',
 	'identifier' => 'argument.type',
 	'count' => 1,
-	'path' => __DIR__ . '/src/Resolver/Type/ArgumentNodeResolver.php',
+	'path' => __DIR__ . '/src/Resolver/Type/Argument/ArgumentNodeResolver.php',
 ];
 $ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Resolver\\\\Type\\\\FieldResolver\\:\\:getFields\\(\\) should return list\\<array\\{name\\: string, description\\: string\\|null, type\\: Closure\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type, args\\: list\\<array\\{name\\: string, description\\: string\\|null, type\\: Closure\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type\\}\\>, resolve\\: Closure, deprecationReason\\?\\: string\\}\\> but returns list\\<array\\{name\\: string, description\\: string\\|null, type\\: Closure\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type, args\\: list\\<array\\{name\\: string, type\\: \\(Closure\\(\\)\\: GraphQL\\\\Type\\\\Definition\\\\Type\\)\\|GraphQL\\\\Type\\\\Definition\\\\Type, description\\: string\\|null\\}\\>, resolve\\: Closure, deprecationReason\\?\\: string\\}\\>\\.$#',
