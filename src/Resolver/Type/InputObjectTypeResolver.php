@@ -83,12 +83,12 @@ final class InputObjectTypeResolver implements TypeResolver
             );
         }
 
-        if (!array_key_exists($node->name, $args)) {
+        /** @var null|array<string, mixed> $nodeArgs */
+        $nodeArgs = $args[$node->name] ?? null;
+
+        if ($nodeArgs === null) {
             return null;
         }
-
-        /** @var array<string, mixed> $nodeArgs */
-        $nodeArgs = $args[$node->name];
 
         return new $className(...array_map(
             fn($fieldNode) => $this->getTypeResolverSelector()

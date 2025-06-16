@@ -102,12 +102,12 @@ final class EnumTypeResolver implements TypeResolver
             return array_map(fn($item) => $className::from($item), $value);
         }
 
-        if (!array_key_exists($node->name, $args)) {
+        /** @var null|string $value */
+        $value = $args[$node->name] ?? null;
+
+        if ($value === null) {
             return null;
         }
-
-        /** @var string $value */
-        $value = $args[$node->name];
 
         return $className::from($value);
     }

@@ -201,4 +201,84 @@ final class InputObjectTypeResolverTest extends TestCase
 
         self::assertEquals(new TestSmallInputType('identifier'), $abstract);
     }
+
+    #[Test]
+    public function itShouldAbstractWithAbsentArgument(): void
+    {
+        $this->astContainer->setAst(new Ast(
+            new InputTypeNode(
+                TestSmallInputType::class,
+                'TestInput',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'id',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'id',
+                        null,
+                        null,
+                    ),
+                ],
+            ),
+        ));
+
+        $abstract = $this->resolver->abstract(new FieldNode(
+            ObjectTypeReference::create(TestSmallInputType::class),
+            'smallInput',
+            null,
+            [],
+            FieldNodeType::Property,
+            null,
+            'smallInput',
+            null,
+            null,
+        ), []);
+
+        self::assertNull($abstract);
+    }
+
+    #[Test]
+    public function itShouldAbstractWithNullArgument(): void
+    {
+        $this->astContainer->setAst(new Ast(
+            new InputTypeNode(
+                TestSmallInputType::class,
+                'TestInput',
+                null,
+                [
+                    new FieldNode(
+                        ScalarTypeReference::create('string'),
+                        'id',
+                        null,
+                        [],
+                        FieldNodeType::Property,
+                        null,
+                        'id',
+                        null,
+                        null,
+                    ),
+                ],
+            ),
+        ));
+
+        $abstract = $this->resolver->abstract(new FieldNode(
+            ObjectTypeReference::create(TestSmallInputType::class),
+            'smallInput',
+            null,
+            [],
+            FieldNodeType::Property,
+            null,
+            'smallInput',
+            null,
+            null,
+        ), [
+            'smallInput' => null,
+        ]);
+
+        self::assertNull($abstract);
+    }
 }
