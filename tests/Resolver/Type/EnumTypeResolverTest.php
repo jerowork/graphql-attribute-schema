@@ -175,7 +175,7 @@ final class EnumTypeResolverTest extends TestCase
     }
 
     #[Test]
-    public function itShouldAbstractNullable(): void
+    public function itShouldAbstractAbsentArgument(): void
     {
         $this->astContainer->setAst(new Ast(
             new EnumNode(
@@ -200,6 +200,38 @@ final class EnumTypeResolverTest extends TestCase
             null,
             null,
         ), []);
+
+        self::assertNull($enum);
+    }
+
+    #[Test]
+    public function itShouldAbstractNullArgument(): void
+    {
+        $this->astContainer->setAst(new Ast(
+            new EnumNode(
+                TestEnumType::class,
+                'enum',
+                'A description',
+                [
+                    new EnumValueNode('a', 'Value A', null),
+                    new EnumValueNode('b', null, 'Its deprecated'),
+                ],
+            ),
+        ));
+
+        $enum = $this->resolver->abstract(new FieldNode(
+            ObjectTypeReference::create(TestEnumType::class),
+            'enum',
+            null,
+            [],
+            FieldNodeType::Property,
+            null,
+            'enum',
+            null,
+            null,
+        ), [
+            'enum' => null,
+        ]);
 
         self::assertNull($enum);
     }
