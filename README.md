@@ -4,6 +4,7 @@
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/jerowork/graphql-attribute-schema.svg?style=flat)](https://scrutinizer-ci.com/g/jerowork/graphql-attribute-schema/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/jerowork/graphql-attribute-schema.svg?style=flat)](https://scrutinizer-ci.com/g/jerowork/graphql-attribute-schema)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
+[![Downloads](https://img.shields.io/packagist/dt/jerowork/graphql-attribute-schema?style=flat&color=4bc61d)](https://packagist.org/packages/jerowork/graphql-attribute-schema)
 [![PHP Version](https://img.shields.io/badge/php-%5E8.3-8892BF.svg?style=flat)](https://packagist.org/packages/jerowork/graphql-attribute-schema)
 
 Build your GraphQL schema for [webonyx/graphql-php](https://github.com/webonyx/graphql-php) using **PHP attributes** instead of array-based configuration.
