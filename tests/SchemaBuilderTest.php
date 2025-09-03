@@ -22,6 +22,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithDeferred
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObjectQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithNullableReturnDeferredTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithUnionOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
@@ -91,6 +92,7 @@ final class SchemaBuilderTest extends TestCase
         $this->container->set(WithOverwrittenTypeQuery::class, new WithOverwrittenTypeQuery());
         $this->container->set(WithUnionOutputQuery::class, new WithUnionOutputQuery());
         $this->container->set(WithDeferredTypeLoader::class, new WithDeferredTypeLoader());
+        $this->container->set(WithNullableReturnDeferredTypeLoader::class, new WithNullableReturnDeferredTypeLoader());
 
         $ast = $this->parser->parse(__DIR__ . '/Doubles/FullFeatured');
         $schema = $this->schemaBuilder->build($ast);
@@ -220,6 +222,13 @@ final class SchemaBuilderTest extends TestCase
                     'name' => 'withListOutput',
                     'type' => '[User!]',
                     'description' => null,
+                    'deprecationReason' => null,
+                    'args' => [],
+                ],
+                [
+                    'name' => 'withNullableReturnDeferredTypeLoader',
+                    'type' => 'String',
+                    'description' => 'A description',
                     'deprecationReason' => null,
                     'args' => [],
                 ],

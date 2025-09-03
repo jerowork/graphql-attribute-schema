@@ -33,6 +33,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithDeferred
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInputObjectQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithInterfaceOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithListOutputQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithNullableReturnDeferredTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithOverwrittenTypeQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Query\WithUnionOutputQuery;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\FullFeatured\Type\AbstractAdminType;
@@ -232,6 +233,16 @@ final class ParserTest extends TestCase
                 'withListOutput',
                 null,
                 null,
+            ),
+            new QueryNode(
+                WithNullableReturnDeferredTypeLoader::class,
+                'withNullableReturnDeferredTypeLoader',
+                'A description',
+                [],
+                ScalarTypeReference::create('string')->setNullableValue(),
+                '__invoke',
+                null,
+                TestTypeLoader::class,
             ),
             new QueryNode(
                 WithOverwrittenTypeQuery::class,

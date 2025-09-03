@@ -368,6 +368,12 @@ $ignoreErrors[] = [
 	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/DeprecatedQuery.php',
 ];
 $ignoreErrors[] = [
+	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\WithNullableReturnDeferredTypeLoader\\:\\:__invoke\\(\\) never returns string so it can be removed from the return type\\.$#',
+	'identifier' => 'return.unusedType',
+	'count' => 1,
+	'path' => __DIR__ . '/tests/Doubles/FullFeatured/Query/WithNullableReturnDeferredTypeLoader.php',
+];
+$ignoreErrors[] = [
 	'message' => '#^Method Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Query\\\\WithUnionOutputQuery\\:\\:getUnionQuery\\(\\) never returns Jerowork\\\\GraphqlAttributeSchema\\\\Test\\\\Doubles\\\\FullFeatured\\\\Type\\\\AgentType so it can be removed from the return type\\.$#',
 	'identifier' => 'return.unusedType',
 	'count' => 1,

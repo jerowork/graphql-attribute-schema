@@ -136,12 +136,12 @@ final readonly class FieldResolver
     {
         if ($node->fieldType === FieldNodeType::Property) {
             return function (object $object) use ($node, $typeResolverSelector): mixed {
-                /** @var list<int|string|Stringable>|int|string|Stringable $result */
+                /** @var null|list<int|string|Stringable>|int|string|Stringable $result */
                 $result = $typeResolverSelector
                     ->getResolver($node->reference)
                     ->resolve($node->reference, fn() => $object->{$node->propertyName});
 
-                if ($node->deferredTypeLoader !== null) {
+                if ($node->deferredTypeLoader !== null && $result !== null) {
                     return $this->deferredTypeResolver->resolve($node->deferredTypeLoader, $result);
                 }
 
@@ -158,12 +158,12 @@ final readonly class FieldResolver
                 $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $typeResolverSelector);
             }
 
-            /** @var list<int|string|Stringable>|int|string|Stringable $result */
+            /** @var null|list<int|string|Stringable>|int|string|Stringable $result */
             $result = $typeResolverSelector
                 ->getResolver($node->reference)
                 ->resolve($node->reference, fn() => $object->{$node->methodName}(...$arguments));
 
-            if ($node->deferredTypeLoader !== null) {
+            if ($node->deferredTypeLoader !== null && $result !== null) {
                 return $this->deferredTypeResolver->resolve($node->deferredTypeLoader, $result);
             }
 
