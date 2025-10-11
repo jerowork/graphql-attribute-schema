@@ -8,7 +8,6 @@ use Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred\DeferredTypeRegistry;
 use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredType;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use stdClass;
 
 /**
@@ -48,12 +47,10 @@ final class DeferredTypeRegistryTest extends TestCase
     }
 
     #[Test]
-    public function itShouldThrowWhenTypeNotLoaded(): void
+    public function itShouldReturnNullWhenTypeNotLoaded(): void
     {
         $registry = new DeferredTypeRegistry();
 
-        self::expectException(RuntimeException::class);
-
-        $registry->getLoadedType('1');
+        self::assertNull($registry->getLoadedType('1'));
     }
 }

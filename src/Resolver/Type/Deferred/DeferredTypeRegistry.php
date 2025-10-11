@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Resolver\Type\Deferred;
 
 use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredType;
-use RuntimeException;
 use Stringable;
 
 /**
@@ -50,10 +49,10 @@ final class DeferredTypeRegistry
         $this->deferredReferences = [];
     }
 
-    public function getLoadedType(int|string|Stringable $reference): object
+    public function getLoadedType(int|string|Stringable $reference): ?object
     {
         if (!isset($this->loaded[(string) $reference])) {
-            throw new RuntimeException(sprintf('Type with reference %s not loaded', $reference));
+            return null;
         }
 
         return $this->loaded[(string) $reference];
