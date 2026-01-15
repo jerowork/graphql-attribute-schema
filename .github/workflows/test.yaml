@@ -11,7 +11,7 @@ jobs:
     name: Test
     strategy:
       matrix:
-        php-version: ['8.3', '8.4']
+        php-version: ['8.3', '8.4', '8.5']
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
