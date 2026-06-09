@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Jerowork\GraphqlAttributeSchema\Test\NodeParser\Child;
 
+use DateTime;
 use DateTimeImmutable;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ContextNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\MapContextNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MapContextNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestInvalidMutationWithInvalidMethodArgument;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestTypeWithMapContext;
 use Override;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -34,6 +39,7 @@ final class MethodArgumentsNodeParserTest extends TestCase
         parent::setUp();
 
         $this->parser = new MethodArgumentsNodeParser(
+            new MapContextNodeParser(),
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
             new ArgNodeParser(new TypeReferenceDecider()),
@@ -70,6 +76,34 @@ final class MethodArgumentsNodeParserTest extends TestCase
                 'Mutation ID',
                 'id',
             ),
+        ], $argNodes);
+    }
+
+    #[Test]
+    public function itShouldParseMappedContext(): void
+    {
+        $class = new ReflectionClass(TestTypeWithMapContext::class);
+
+        $argNodes = iterator_to_array($this->parser->parse($class->getMethod('mappedContext')));
+
+        self::assertEquals([
+            new MapContextNode(
+                DateTime::class,
+                'service',
+                false,
+            ),
+        ], $argNodes);
+    }
+
+    #[Test]
+    public function itShouldParseContextParameter(): void
+    {
+        $class = new ReflectionClass(TestTypeWithMapContext::class);
+
+        $argNodes = iterator_to_array($this->parser->parse($class->getMethod('context')));
+
+        self::assertEquals([
+            new ContextNode('context'),
         ], $argNodes);
     }
 }

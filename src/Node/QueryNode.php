@@ -6,13 +6,19 @@ namespace Jerowork\GraphqlAttributeSchema\Node;
 
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ContextNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\MapContextNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\TypeReference;
 use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
 
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
+ * @phpstan-import-type AutowireNodePayload from AutowireNode
+ * @phpstan-import-type ContextNodePayload from ContextNode
  * @phpstan-import-type EdgeArgsNodePayload from EdgeArgsNode
+ * @phpstan-import-type MapContextNodePayload from MapContextNode
  *
  * @phpstan-type QueryNodePayload array{
  *     className: class-string,
@@ -20,7 +26,7 @@ use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
  *     description: null|string,
  *     argumentNodes: list<array{
  *          node: class-string<ArgumentNode>,
- *          payload: ArgNodePayload|EdgeArgsNodePayload
+ *          payload: ArgNodePayload|AutowireNodePayload|ContextNodePayload|EdgeArgsNodePayload|MapContextNodePayload
  *     }>,
  *     outputReference: array{
  *          type: class-string,
@@ -96,9 +102,18 @@ final readonly class QueryNode implements Node
             if ($argumentNode['node'] === ArgNode::class) {
                 /** @var ArgNodePayload $argumentPayload */
                 $argumentNodes[] = ArgNode::fromArray($argumentPayload);
-            } else {
+            } elseif ($argumentNode['node'] === EdgeArgsNode::class) {
                 /** @var EdgeArgsNodePayload $argumentPayload */
                 $argumentNodes[] = EdgeArgsNode::fromArray($argumentPayload);
+            } elseif ($argumentNode['node'] === ContextNode::class) {
+                /** @var ContextNodePayload $argumentPayload */
+                $argumentNodes[] = ContextNode::fromArray($argumentPayload);
+            } elseif ($argumentNode['node'] === MapContextNode::class) {
+                /** @var MapContextNodePayload $argumentPayload */
+                $argumentNodes[] = MapContextNode::fromArray($argumentPayload);
+            } else {
+                /** @var AutowireNodePayload $argumentPayload */
+                $argumentNodes[] = AutowireNode::fromArray($argumentPayload);
             }
         }
 

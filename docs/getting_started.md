@@ -45,6 +45,10 @@ $server = new StandardServer(ServerConfig::create([
 ]));
 ```
 
+💡 *Want to pass per-request data (the HTTP request, the current user, …) to your resolvers? Set a*
+`Context` *as the server's context value and read it with* `#[MapContext]`*. See*
+[#[MapContext]](usage.md#mapcontext) *and* [Context](usage.md#context).
+
 📌 *This library does not create a GraphQL server for you.*  
 
 To learn how to set up a server, check the [webonyx documentation](https://webonyx.github.io/graphql-php/executing-queries/#using-server).

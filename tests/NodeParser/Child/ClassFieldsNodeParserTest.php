@@ -13,6 +13,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ArgNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MapContextNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\ParseException;
 use Jerowork\GraphqlAttributeSchema\NodeParser\TypeReferenceDecider;
@@ -40,6 +41,7 @@ final class ClassFieldsNodeParserTest extends TestCase
         $this->parser = new ClassFieldsNodeParser(
             $typeReferenceDecider = new TypeReferenceDecider(),
             new MethodArgumentsNodeParser(
+                new MapContextNodeParser(),
                 new AutowireNodeParser(),
                 new EdgeArgsNodeParser(),
                 new ArgNodeParser($typeReferenceDecider),
