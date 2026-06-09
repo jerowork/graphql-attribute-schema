@@ -25,9 +25,35 @@ final readonly class Ast implements ArraySerializable
      */
     private array $nodes;
 
+    /**
+     * Index of nodes by class name, with aliases as a fallback, for O(1) lookups in getNodeByClassName().
+     *
+     * @var array<class-string, Node>
+     */
+    private array $nodesByName;
+
     public function __construct(Node ...$nodes)
     {
         $this->nodes = array_values($nodes);
+
+        // Index class names first so they take precedence over aliases.
+        $nodesByName = [];
+
+        foreach ($this->nodes as $node) {
+            $nodesByName[$node->getClassName()] ??= $node;
+        }
+
+        foreach ($this->nodes as $node) {
+            if ($node instanceof AliasedNode) {
+                $alias = $node->getAlias();
+
+                if ($alias !== null) {
+                    $nodesByName[$alias] ??= $node;
+                }
+            }
+        }
+
+        $this->nodesByName = $nodesByName;
     }
 
     /**
@@ -47,28 +73,7 @@ final readonly class Ast implements ArraySerializable
      */
     public function getNodeByClassName(string $className): ?Node
     {
-        foreach ($this->nodes as $node) {
-            if ($node->getClassName() !== $className) {
-                continue;
-            }
-
-            return $node;
-        }
-
-        // Try to retrieve node by alias
-        foreach ($this->nodes as $node) {
-            if (!$node instanceof AliasedNode) {
-                continue;
-            }
-
-            if ($node->getAlias() !== $className) {
-                continue;
-            }
-
-            return $node;
-        }
-
-        return null;
+        return $this->nodesByName[$className] ?? null;
     }
 
     /**

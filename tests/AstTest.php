@@ -12,6 +12,7 @@ use Jerowork\GraphqlAttributeSchema\Node\InputTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\InterfaceTypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\MutationNode;
 use Jerowork\GraphqlAttributeSchema\Node\QueryNode;
+use Jerowork\GraphqlAttributeSchema\Node\ScalarNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ObjectTypeReference;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
@@ -22,6 +23,7 @@ use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestInterfaceType
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\InterfaceType\TestOtherInterfaceType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Mutation\TestMutation;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Query\TestQuery;
+use Jerowork\GraphqlAttributeSchema\Test\Doubles\Scalar\TestScalarType;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\Loader\TestTypeLoader;
 use Jerowork\GraphqlAttributeSchema\Test\Doubles\Type\TestType;
 use Override;
@@ -104,6 +106,46 @@ final class AstTest extends TestCase
     {
         self::assertSame($this->typeNode, $this->ast->getNodeByClassName(TestType::class));
         self::assertSame($this->enumNode2, $this->ast->getNodeByClassName(TestAnotherEnumType::class));
+        self::assertNull($this->ast->getNodeByClassName(TestQuery::class));
+    }
+
+    #[Test]
+    public function itShouldGetNodeByAliasWhenThereIsNoClassNameMatch(): void
+    {
+        $ast = new Ast(
+            $scalarNode = new ScalarNode(
+                TestScalarType::class,
+                'TestScalar',
+                null,
+                TestAnotherEnumType::class,
+            ),
+        );
+
+        self::assertSame($scalarNode, $ast->getNodeByClassName(TestScalarType::class));
+        self::assertSame($scalarNode, $ast->getNodeByClassName(TestAnotherEnumType::class));
+    }
+
+    #[Test]
+    public function itShouldPreferAClassNameMatchOverAnAliasMatch(): void
+    {
+        $ast = new Ast(
+            new ScalarNode(
+                TestScalarType::class,
+                'TestScalar',
+                null,
+                TestType::class,
+            ),
+            $typeNode = new TypeNode(
+                TestType::class,
+                'type',
+                null,
+                [],
+                null,
+                [],
+            ),
+        );
+
+        self::assertSame($typeNode, $ast->getNodeByClassName(TestType::class));
     }
 
     #[Test]
