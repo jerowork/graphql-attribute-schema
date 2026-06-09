@@ -1,0 +1,8 @@
+# Ignore everything by default
+* export-ignore
+
+# Include only these in distribution
+src/ -export-ignore
+src/** -export-ignore
+composer.json -export-ignore
+LICENSE -export-ignore
