@@ -11,7 +11,9 @@ use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
 /**
  * @phpstan-import-type ArgNodePayload from ArgNode
  * @phpstan-import-type AutowireNodePayload from AutowireNode
+ * @phpstan-import-type ContextNodePayload from ContextNode
  * @phpstan-import-type EdgeArgsNodePayload from EdgeArgsNode
+ * @phpstan-import-type MapContextNodePayload from MapContextNode
  *
  * @phpstan-type FieldNodePayload array{
  *     reference: array{
@@ -22,7 +24,7 @@ use Jerowork\GraphqlAttributeSchema\Type\Loader\DeferredTypeLoader;
  *     description: null|string,
  *     argumentNodes: list<array{
  *          node: class-string<ArgumentNode>,
- *          payload: ArgNodePayload|AutowireNodePayload|EdgeArgsNodePayload
+ *          payload: ArgNodePayload|AutowireNodePayload|ContextNodePayload|EdgeArgsNodePayload|MapContextNodePayload
  *     }>,
  *     fieldType: string,
  *     methodName: null|string,
@@ -95,6 +97,12 @@ final readonly class FieldNode implements ArraySerializable
             } elseif ($argumentNode['node'] === EdgeArgsNode::class) {
                 /** @var EdgeArgsNodePayload $argumentPayload */
                 $argumentNodes[] = EdgeArgsNode::fromArray($argumentPayload);
+            } elseif ($argumentNode['node'] === ContextNode::class) {
+                /** @var ContextNodePayload $argumentPayload */
+                $argumentNodes[] = ContextNode::fromArray($argumentPayload);
+            } elseif ($argumentNode['node'] === MapContextNode::class) {
+                /** @var MapContextNodePayload $argumentPayload */
+                $argumentNodes[] = MapContextNode::fromArray($argumentPayload);
             } else {
                 /** @var AutowireNodePayload $argumentPayload */
                 $argumentNodes[] = AutowireNode::fromArray($argumentPayload);

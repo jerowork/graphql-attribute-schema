@@ -135,7 +135,7 @@ final readonly class FieldResolver
     public function resolveField(FieldNode $node, TypeResolverSelector $typeResolverSelector): Closure
     {
         if ($node->fieldType === FieldNodeType::Property) {
-            return function (object $object) use ($node, $typeResolverSelector): mixed {
+            return function (object $object, array $args, mixed $context) use ($node, $typeResolverSelector): mixed {
                 /** @var null|list<int|string|Stringable>|int|string|Stringable $result */
                 $result = $typeResolverSelector
                     ->getResolver($node->reference)
@@ -150,12 +150,12 @@ final readonly class FieldResolver
         }
 
         // FieldNodeType::Method
-        return function (object $object, array $args) use ($node, $typeResolverSelector): mixed {
+        return function (object $object, array $args, mixed $context) use ($node, $typeResolverSelector): mixed {
             /** @var array<string, mixed> $args */
             $arguments = [];
 
             foreach ($node->argumentNodes as $argumentNode) {
-                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $typeResolverSelector);
+                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $typeResolverSelector, $context);
             }
 
             /** @var null|list<int|string|Stringable>|int|string|Stringable $result */

@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace Jerowork\GraphqlAttributeSchema\Test\Resolver\Type\Argument;
 
 use Exception;
+use Jerowork\GraphqlAttributeSchema\Context;
+use Jerowork\GraphqlAttributeSchema\ContextException;
 use Jerowork\GraphqlAttributeSchema\Node\ArraySerializable;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\ArgumentNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\AutowireNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\ContextNode;
 use Jerowork\GraphqlAttributeSchema\Node\Child\EdgeArgsNode;
+use Jerowork\GraphqlAttributeSchema\Node\Child\MapContextNode;
 use Jerowork\GraphqlAttributeSchema\Node\TypeReference\ScalarTypeReference;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\Argument\ArgumentNodeResolver;
 use Jerowork\GraphqlAttributeSchema\Resolver\Type\BuiltInScalarTypeResolver;
@@ -48,7 +52,7 @@ final class ArgumentNodeResolverTest extends TestCase
         $result = $this->argumentNodeResolver->resolve(new AutowireNode(
             stdClass::class,
             'propertyName',
-        ), [], new TypeResolverSelector([]));
+        ), [], new TypeResolverSelector([]), new Context());
 
         self::assertSame($service, $result);
     }
@@ -65,6 +69,7 @@ final class ArgumentNodeResolverTest extends TestCase
                 'before' => null,
             ],
             new TypeResolverSelector([]),
+            new Context(),
         );
 
         self::assertEquals(new EdgeArgs(
@@ -86,9 +91,80 @@ final class ArgumentNodeResolverTest extends TestCase
             new TypeResolverSelector([
                 new BuiltInScalarTypeResolver(),
             ]),
+            new Context(),
         );
 
         self::assertSame('value', $result);
+    }
+
+    #[Test]
+    public function itShouldResolveContextNode(): void
+    {
+        $context = new Context();
+
+        $result = $this->argumentNodeResolver->resolve(
+            new ContextNode('propertyName'),
+            [],
+            new TypeResolverSelector([]),
+            $context,
+        );
+
+        self::assertSame($context, $result);
+    }
+
+    #[Test]
+    public function itShouldThrowWhenContextNodeIsResolvedWithoutContextInstance(): void
+    {
+        self::expectException(ContextException::class);
+
+        $this->argumentNodeResolver->resolve(
+            new ContextNode('propertyName'),
+            [],
+            new TypeResolverSelector([]),
+            new stdClass(),
+        );
+    }
+
+    #[Test]
+    public function itShouldResolveMapContextNode(): void
+    {
+        $context = new Context();
+        $context->attachObject($object = new stdClass());
+
+        $result = $this->argumentNodeResolver->resolve(
+            new MapContextNode(stdClass::class, 'propertyName', false),
+            [],
+            new TypeResolverSelector([]),
+            $context,
+        );
+
+        self::assertSame($object, $result);
+    }
+
+    #[Test]
+    public function itShouldResolveNullableMapContextNodeAsNullWhenMissing(): void
+    {
+        $result = $this->argumentNodeResolver->resolve(
+            new MapContextNode(stdClass::class, 'propertyName', true),
+            [],
+            new TypeResolverSelector([]),
+            new Context(),
+        );
+
+        self::assertNull($result);
+    }
+
+    #[Test]
+    public function itShouldThrowWhenMapContextNodeIsResolvedWithoutContextInstance(): void
+    {
+        self::expectException(ContextException::class);
+
+        $this->argumentNodeResolver->resolve(
+            new MapContextNode(stdClass::class, 'propertyName', false),
+            [],
+            new TypeResolverSelector([]),
+            new stdClass(),
+        );
     }
 
     #[Test]
@@ -107,6 +183,6 @@ final class ArgumentNodeResolverTest extends TestCase
             {
                 throw new Exception();
             }
-        }, [], new TypeResolverSelector([]));
+        }, [], new TypeResolverSelector([]), new Context());
     }
 }

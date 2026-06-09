@@ -21,6 +21,7 @@ You can use the following attributes:
 - [#[Field]](#field)
 - [#[Arg]](#arg)
 - [#[Autowire]](#autowire)
+- [#[MapContext]](#mapcontext)
 - [#[Scalar]](#scalar)
 - [#[Cursor]](#cursor)
 
@@ -455,6 +456,10 @@ This can make injecting services into a `#[Type]` challenging.
 That's where `#[Autowire]` comes in. You can use it inside `#[Type]` methods (marked with `#[Field]`) to automatically
 inject services via parameters.
 
+It also works on `#[Query]` and `#[Mutation]` methods. Those resolvers are themselves resolved from the DI container,
+so they can usually receive dependencies through their constructor — but `#[Autowire]` is available there too when you
+prefer to inject a service per method.
+
 ```php
 use Jerowork\GraphqlAttributeSchema\Attribute\Autowire;
 use Jerowork\GraphqlAttributeSchema\Attribute\Type;
@@ -491,6 +496,132 @@ By default, the service to inject is determined by the parameter type. If needed
 | Option    | Description                                                                        |
 |-----------|------------------------------------------------------------------------------------|
 | `service` | *(Optional)* Custom service identifier to retrieve from the DI container (PSR-11). |
+
+### #[MapContext]
+
+Webonyx/graphql-php passes a **context value** to every resolver. This library wraps it in a
+`Context` object (see [Context](#context)) that you can populate per request — for example with the
+current HTTP request, the authenticated user, or any value resolved higher up in the query tree.
+
+`#[MapContext]` injects an object stored in that `Context` into a resolver parameter, looked up by the
+parameter's type. It works on `#[Query]`, `#[Mutation]`, and `#[Field]` method parameters.
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\MapContext;
+use Jerowork\GraphqlAttributeSchema\Attribute\Query;
+use Symfony\Component\HttpFoundation\Request;
+
+final readonly class YourQuery
+{
+    #[Query]
+    public function yourQuery(
+        int $filter,
+        #[MapContext]
+        Request $request,
+    ): YourType {
+        // $request is fetched from the Context by its class
+    }
+}
+```
+
+A resolver can also attach objects to the `Context` so descendant fields can read them through
+`#[MapContext]`. Because `Context` is a webonyx `ScopedContext`, children receive a clone, so values
+attached by a resolver are visible to its descendants without leaking to sibling fields:
+
+```php
+#[Field]
+public function getChild(Context $context): ChildType
+{
+    $context->attachObject(new Locale('en'));
+    // ... children resolving under this field can now `#[MapContext] Locale $locale`
+}
+```
+
+#### Nullable parameters
+
+- A **non-nullable** parameter (`Request $request`) throws a `ContextException` when no matching object
+  is present in the `Context`.
+- A **nullable** parameter (`?Request $request`) resolves to `null` when no matching object is present.
+
+#### Requirements
+
+- The parameter must be type-hinted with a class (not a built-in type).
+- The GraphQL context value **must** be an instance of
+  `Jerowork\GraphqlAttributeSchema\Context`. If it is anything else, a `ContextException` is thrown when
+  the parameter is resolved. See [Context](#context) for how to set this up on your server.
+
+### Context
+
+`Jerowork\GraphqlAttributeSchema\Context` is the per-request context value passed to your resolvers. It
+stores objects keyed by their class and also implements `ArrayAccess`, so you can use it as a typed
+container or as a simple map.
+
+There are two ways to read it from a resolver, and they do different things:
+
+- **Type-hint `Context $context`** (no attribute) — the resolver receives the **whole `Context` object**.
+  This is built into the framework: any parameter typed `Context` is recognised automatically. Use it to
+  read multiple values, or to `attachObject()` something for descendant fields.
+- **`#[MapContext] Request $request`** — the resolver receives **a single item out of the `Context`**,
+  looked up by the parameter's type (here `Request`). See [#[MapContext]](#mapcontext).
+
+```php
+use Jerowork\GraphqlAttributeSchema\Attribute\MapContext;
+use Jerowork\GraphqlAttributeSchema\Context;
+use Symfony\Component\HttpFoundation\Request;
+
+#[Query]
+public function yourQuery(
+    Context $context,    // the whole Context object
+    #[MapContext]
+    Request $request,    // just the Request stored in the Context
+): YourType {
+    // ...
+}
+```
+
+The `Context` object itself:
+
+```php
+use Jerowork\GraphqlAttributeSchema\Context;
+
+$context = new Context();
+
+// Attach by class
+$context->attachObject($request);            // stored under Request::class
+$request = $context->getObject(Request::class);      // throws if missing/wrong type
+$request = $context->maybeGetObject(Request::class); // null if missing
+
+// Or as an array (any key)
+$context[Request::class] = $request;
+$locale = $context['locale'] ?? null;
+```
+
+Set it on your server through the webonyx `context` option. Using a callable means a fresh `Context`
+is built per request:
+
+```php
+use GraphQL\Error\DebugFlag;
+use GraphQL\Server\ServerConfig;
+use GraphQL\Server\StandardServer;
+use Jerowork\GraphqlAttributeSchema\Context;
+use Symfony\Component\HttpFoundation\Request;
+
+$config = [
+    'schema' => $this->createSchema(),
+    'context' => function () {
+        $context = new Context();
+        $context[Request::class] = $this->requestStack->getMainRequest();
+
+        return $context;
+    },
+];
+
+if ($this->environment !== EnvironmentName::PROD) {
+    $config['debugFlag'] = DebugFlag::INCLUDE_DEBUG_MESSAGE | DebugFlag::INCLUDE_TRACE | DebugFlag::RETHROW_INTERNAL_EXCEPTIONS;
+}
+
+return new StandardServer(ServerConfig::create($config));
+```
 
 ### #[Scalar]
 

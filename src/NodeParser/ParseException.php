@@ -41,6 +41,11 @@ final class ParseException extends Exception
         return new self(sprintf('Invalid autowired parameter type for parameter %s', $parameter));
     }
 
+    public static function invalidMapContextParameterType(string $parameter): self
+    {
+        return new self(sprintf('Invalid mapped context parameter type for parameter %s', $parameter));
+    }
+
     public static function invalidPropertyType(string $class, string $property): self
     {
         return new self(sprintf('Invalid property type for class %s:%s', $class, $property));

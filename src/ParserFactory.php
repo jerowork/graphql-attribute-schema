@@ -10,6 +10,7 @@ use Jerowork\GraphqlAttributeSchema\NodeParser\Child\AutowireNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\ClassFieldsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\CursorNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\EdgeArgsNodeParser;
+use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MapContextNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\Child\MethodArgumentsNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\EnumNodeParser;
 use Jerowork\GraphqlAttributeSchema\NodeParser\InputTypeNodeParser;
@@ -36,6 +37,7 @@ final readonly class ParserFactory
         $typeReferenceDecider = new TypeReferenceDecider();
 
         $methodArgNodesParser = new MethodArgumentsNodeParser(
+            new MapContextNodeParser(),
             new AutowireNodeParser(),
             new EdgeArgsNodeParser(),
             new ArgNodeParser($typeReferenceDecider),

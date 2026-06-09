@@ -98,12 +98,12 @@ final readonly class RootTypeResolver
 
         $resolver = $this->container->get($node->className);
 
-        return function (mixed $rootValue, array $args) use ($resolver, $node): mixed {
+        return function (mixed $rootValue, array $args, mixed $context) use ($resolver, $node): mixed {
             /** @var array<string, mixed> $args */
             $arguments = [];
 
             foreach ($node->argumentNodes as $argumentNode) {
-                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $this->typeResolverSelector);
+                $arguments[] = $this->argumentNodeResolver->resolve($argumentNode, $args, $this->typeResolverSelector, $context);
             }
 
             /** @var list<int|string|Stringable>|int|string|Stringable $result */
